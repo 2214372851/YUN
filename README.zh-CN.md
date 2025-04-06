@@ -128,7 +128,7 @@ bun run start
 
 项目可以轻松部署到 Vercel 平台：
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/linear-clone)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/YUN)
 
 ### Vercel 部署说明
 
