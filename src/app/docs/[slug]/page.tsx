@@ -2,8 +2,9 @@ import {notFound} from "next/navigation";
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import {markdownToHtml, type TableOfContents as TocItem} from "@/lib/markdown"; // Renamed import
+import {markdownToHtml} from "@/lib/markdown"; // Renamed import
 import {DocsClient} from "@/components/docs-client";
+import Script from "next/script";
 
 // 获取文档文件目录
 const docsDirectory = path.join(process.cwd(), 'src/content/docs');
@@ -72,12 +73,33 @@ export async function generateMetadata({params}: { params: { slug: string } }) {
     const doc = await getDocBySlug((await params).slug);
     if (!doc) return {title: '文档未找到'};
 
-    // Missing return statement for the metadata object
     return {
         title: doc.title,
         description: doc.description,
+        openGraph: {
+            title: doc.title,
+            description: doc.description,
+            type: 'article',
+            images: [
+                {
+                    url: 'https://minio-endpoint.bybxbwg.fun/docs/Avatar.png',
+                    width: 1200,
+                    height: 630,
+                    alt: doc.title,
+                }
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: doc.title,
+            description: doc.description,
+            images: ['https://minio-endpoint.bybxbwg.fun/docs/Avatar.png'],
+        },
+        alternates: {
+            canonical: `/docs/${params.slug}`,
+        },
     };
-} // End of generateMetadata
+}
 
 // 文档页面组件 - Now primarily fetches data and passes it to DocsClient
 export default async function DocPage({params}: { params: { slug: string } }) {
@@ -96,13 +118,52 @@ export default async function DocPage({params}: { params: { slug: string } }) {
         // 将 Markdown 转换为 HTML，并提取标题
         const {content: contentHtml, headings} = await markdownToHtml(doc.content || '');
 
+        // 生成结构化数据
+        const structuredData = {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": doc.title,
+            "description": doc.description,
+            "image": [{
+                "@type": "ImageObject",
+                "url": "https://minio-endpoint.bybxbwg.fun/docs/Avatar.png",
+                "width": 1200,
+                "height": 630
+            }],
+            "author": {
+                "@type": "Person",
+                "name": "YunHai"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "YunHai",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://minio-endpoint.bybxbwg.fun/docs/Avatar.png"
+                }
+            },
+            "datePublished": new Date().toISOString(),
+            "dateModified": new Date().toISOString(),
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": `https://bybxbwg.fun/docs/${slug}`
+            }
+        };
+
         return (
-            <DocsClient
-                allDocs={allDocs}
-                currentSlug={slug}
-                contentHtml={contentHtml}
-                headings={headings}
-            />
+            <>
+                <Script
+                    id="doc-structured-data"
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{__html: JSON.stringify(structuredData)}}
+                />
+                <DocsClient
+                    allDocs={allDocs}
+                    currentSlug={slug}
+                    contentHtml={contentHtml}
+                    headings={headings}
+                />
+            </>
         );
     } catch (error) {
         console.error('Error processing markdown:', error);
