@@ -1,0 +1,70 @@
+---
+title: 文章分享
+---
+
+## Vue
+
+- [Vue自定义权限指令](https://mp.weixin.qq.com/s/tH98-1pMAROJK5J5pojnaw)
+- [Vue Hook（Composables）](https://mp.weixin.qq.com/s/6pcZgDyrFwMxv-weZaVwEg)
+
+## Python
+
+### Python从入门到放弃
+
+- [第一篇 markdown编辑器](https://www.cnblogs.com/nickchen121/p/10718112.html#第一篇-markdown编辑器)
+- [第二篇 计算机基础](https://www.cnblogs.com/nickchen121/p/10718112.html#第二篇-计算机基础)
+- [第三篇 Python解释器和集成环境](https://www.cnblogs.com/nickchen121/p/10718112.html#第三篇-python解释器和集成环境)
+- [第三篇 Python基础](https://www.cnblogs.com/nickchen121/p/10718112.html#第三篇-python基础)
+- [第四篇 Python进阶](https://www.cnblogs.com/nickchen121/p/10718112.html#第四篇-python进阶)
+- [第五篇 文件处理](https://www.cnblogs.com/nickchen121/p/10718112.html#第五篇-文件处理)
+- [第六篇 函数基础](https://www.cnblogs.com/nickchen121/p/10718112.html#第六篇-函数基础)
+- [第七篇 函数进阶](https://www.cnblogs.com/nickchen121/p/10718112.html#第七篇-函数进阶)
+- [第八篇 模块基础](https://www.cnblogs.com/nickchen121/p/10718112.html#第八篇-模块基础)
+- [第九篇 Python常用模块](https://www.cnblogs.com/nickchen121/p/10718112.html#第九篇-python常用模块)
+- [第十篇 面向对象基础](https://www.cnblogs.com/nickchen121/p/10718112.html#第十篇-面向对象基础)
+- [第十一篇 面向对象进阶](https://www.cnblogs.com/nickchen121/p/10718112.html#第十一篇-面向对象进阶)
+- [第十二篇 面向对象高阶](https://www.cnblogs.com/nickchen121/p/10718112.html#第十二篇-面向对象高阶)
+- [第十三篇 网络编程](https://www.cnblogs.com/nickchen121/p/10718112.html#第十三篇-网络编程)
+- [第十四篇 并发编程](https://www.cnblogs.com/nickchen121/p/10718112.html#第十四篇-并发编程)
+- [第十五篇 MySQL数据库](https://www.cnblogs.com/nickchen121/p/10718112.html#第十五篇-mysql数据库)
+- [第十六篇 推荐阅读](https://www.cnblogs.com/nickchen121/p/10718112.html#第十六篇-推荐阅读)
+
+
+
+### 爬虫入门到入土
+
+- [Python爬虫（一）：从基础到复杂请求](https://mp.weixin.qq.com/s/mBpWOh6wQ730yDsyY4YcmA)
+- [Python爬虫（二）：绕过反爬机制思路](https://mp.weixin.qq.com/s/7-I_zKXJC2WGBVR6Vm5aPg)
+- [Python爬虫（三）：HTML解析（BeautifulSoup与lxml）](https://mp.weixin.qq.com/s/QfKcwOJKJbivOXPE0-R5HA)
+- [python爬虫（四）：使用异步和多线程技术加速爬虫](https://mp.weixin.qq.com/s/7XkaHZFOfFkJwwXZwRKHRw)
+- [python爬虫（五）：Scrapy光速入门](https://mp.weixin.qq.com/s/xwmABL_U26jC2QYHvM_pAQ)
+- [Python爬虫（六）：如何定位网页元素](https://mp.weixin.qq.com/s/WgdwldznIjQ1385CppqmSw)
+- [Python爬虫（七）：图片（文件）的下载与处理](https://mp.weixin.qq.com/s/DA4vWjaF8_gr0hmfVvMUsw)
+- [Python爬虫（八）：模拟用户行为技巧（上）](https://mp.weixin.qq.com/s/SkLFdCNq5JGBkFoG1gI3Xw)
+- [Python爬虫（九）：模拟用户行为技巧（下）](https://mp.weixin.qq.com/s/qS7lJe0p6hkMRwXWrzJ_xg)
+- [Python爬虫（十）：构建自己的验证码识别模型](https://mp.weixin.qq.com/s/OXhM3qKXE8baInl6SQ3HMw)
+- [Python爬虫（十一）：教你用深度学习秒破“计算题”验证码！](https://mp.weixin.qq.com/s/AOEpGEJIVQX1MTn_As6R9w)
+- [Python爬虫(十三)：Ajax动态解析](https://mp.weixin.qq.com/s/LRVT9pQu9wHCE1fpyUbriQ)
+- [Python爬虫（十四）：如何高效存储抓取的海量数据（文件存储）](https://mp.weixin.qq.com/s/LHs_GisasAfHapsrkI_6Rg)
+- [Proxy代理补环境](https://blog.csdn.net/m0_51159233/article/details/123988187)
+
+### 其他
+
+- [Python程序语言国际化](https://www.cnblogs.com/miaoweiye/p/12525259.html)
+- [Aiokafka，一个华而实用的Python库](https://mp.weixin.qq.com/s/8yFeWHpnoBUXOvDddPmlLQ)
+- [Django REST Framework 文档生成](https://blog.lyh543.cn/posts/2021-01-24-drf-yasg.html)
+- [Python多进程通讯](https://cloud.tencent.com/developer/article/2338277)
+- [mysqlclient Linux安装失败](https://blog.csdn.net/qq_34511096/article/details/137609441)
+- [大文件上传requests-toolbelt](https://www.cnblogs.com/chiyun/p/17653549.html)
+
+## 通讯
+
+- [实现可靠的UDP通讯](https://mp.weixin.qq.com/s/xe32fVUSQU-QIpZPtBszeQ)
+
+
+
+## 其余
+
+- [IP纯净度、节点质量检测攻略](https://mp.weixin.qq.com/s/AGpy9RbJ_cQlRmz33HVzAQ)
+- [Markdown画图](https://blog.csdn.net/qq_32708605/article/details/123801702)
+
