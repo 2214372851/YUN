@@ -1,6 +1,7 @@
 import Link from "next/link";
 import {getAllBlogPosts} from "@/data/blog-posts";
 import {Navbar} from "@/components/navbar";
+import Image from "next/image";
 
 interface BlogPostProps {
     slug: string;
@@ -15,17 +16,17 @@ function FeaturedPost({slug, category, title, imageUrl, excerpt}: BlogPostProps)
     return (
         <Link
             href={`/blog/${slug}`}
-            className="block rounded-lg border border-white/5 bg-card hover:bg-[hsl(var(--linear-gray))/0.1] transition-colors overflow-hidden p-1 h-full"
+            className="block rounded-lg border border-white/5 hover:border-white/20  bg-card  transition-colors overflow-hidden p-1 h-full"
         >
             <div
-                className="h-48 rounded-md overflow-hidden flex items-center justify-center mb-4 bg-[hsl(var(--linear-gray))/0.1]">
+                className="h-48 rounded-md overflow-hidden flex items-center justify-center mb-4">
                 {imageUrl ? (
-                    <img src={imageUrl} alt={title} className="w-full h-full object-cover"/>
+                    <Image loading="lazy" src={imageUrl} alt={title} width={100} height={50} className="w-full h-full object-cover"/>
                 ) : (
                     <div className="w-full h-full flex items-center justify-center">
                         <div
-                            className="w-4/5 h-4/5 bg-[hsl(var(--linear-gray))/0.1] rounded-md flex items-center justify-center">
-                            <div className="w-24 h-24 rounded-md bg-[hsl(var(--linear-gray))/0.2]"></div>
+                            className="w-4/5 h-4/5 rounded-md flex items-center justify-center">
+                            <div className="w-24 h-24 rounded-md"></div>
                         </div>
                     </div>
                 )}

@@ -47,7 +47,7 @@ export async function markdownToHtml(markdown: string): Promise<{ content: strin
         headings.push({id, title, level});
     });
     $("img").each((_, element) => {
-        $(element).wrap("<div class='flex justify-center'></div>");
+        $(element).attr('class', 'w-2/4 mx-auto rounded-lg')
     });
 
     return {content: $.html(), headings};

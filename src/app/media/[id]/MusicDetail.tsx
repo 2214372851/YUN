@@ -56,23 +56,47 @@ const MusicDetail = ({musicItem}: Props) => {
     useEffect(() => {
         if (lyricsUrl) {
             console.log('Fetching lyrics from:', lyricsUrl);
-            fetch(lyricsUrl)
-                .then(res => {
-                    if (!res.ok) {
-                        throw new Error(`HTTP error! status: ${res.status}`);
+            const fetchLyrics = async (retryCount = 0) => {
+                try {
+                    const response = await fetch(lyricsUrl, {
+                        credentials: 'include',
+                        headers: {
+                            'Accept': 'text/plain',
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        console.error('Failed to fetch lyrics:', lyricsUrl);
                     }
-                    return res.text();
-                })
-                .then(text => {
+
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('text/plain')) {
+                        console.error('Failed to fetch lyrics:', lyricsUrl);
+                    }
+
+                    const text = await response.text();
                     console.log('Received lyrics:', text.substring(0, 100) + '...');
                     const parsed = parseLRC(text);
                     console.log('Parsed lyrics count:', parsed.length);
                     setLyrics(parsed);
-                })
-                .catch(error => {
+                } catch (error: unknown) {
                     console.error('Failed to load lyrics:', error);
-                    setLyrics([{time: 0, text: '歌词加载失败'}]);
-                });
+                    
+                    // 如果是DNS错误或网络错误，尝试重试
+                    if (retryCount < 3 && error instanceof Error && 
+                        (error.message.includes('DNS') || error.message.includes('network'))) {
+                        console.log(`Retrying... (${retryCount + 1}/3)`);
+                        // 使用指数退避策略
+                        await new Promise(resolve => setTimeout(resolve, Math.pow(2, retryCount) * 1000));
+                        return fetchLyrics(retryCount + 1);
+                    }
+                    
+                    setLyrics([{time: 0, text: '歌词加载失败，请稍后重试'}]);
+                }
+            };
+
+            fetchLyrics();
         } else {
             console.log('No lyricsUrl provided');
             setLyrics([{time: 0, text: '暂无歌词'}]);
