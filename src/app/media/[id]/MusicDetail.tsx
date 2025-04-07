@@ -82,16 +82,16 @@ const MusicDetail = ({musicItem}: Props) => {
                     setLyrics(parsed);
                 } catch (error: unknown) {
                     console.error('Failed to load lyrics:', error);
-                    
+
                     // 如果是DNS错误或网络错误，尝试重试
-                    if (retryCount < 3 && error instanceof Error && 
+                    if (retryCount < 3 && error instanceof Error &&
                         (error.message.includes('DNS') || error.message.includes('network'))) {
                         console.log(`Retrying... (${retryCount + 1}/3)`);
                         // 使用指数退避策略
                         await new Promise(resolve => setTimeout(resolve, Math.pow(2, retryCount) * 1000));
                         return fetchLyrics(retryCount + 1);
                     }
-                    
+
                     setLyrics([{time: 0, text: '歌词加载失败，请稍后重试'}]);
                 }
             };

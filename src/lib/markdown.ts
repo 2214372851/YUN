@@ -50,5 +50,9 @@ export async function markdownToHtml(markdown: string): Promise<{ content: strin
         $(element).attr('class', 'w-2/4 mx-auto rounded-lg')
     });
 
+    $("table").each((_, element) => {
+        $(element).wrap('<div class="overflow-x-auto">');
+    });
+
     return {content: $.html(), headings};
 }

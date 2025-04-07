@@ -96,7 +96,7 @@ export async function generateMetadata({params}: { params: { slug: string } }) {
             images: ['https://minio-endpoint.bybxbwg.fun/docs/Avatar.png'],
         },
         alternates: {
-            canonical: `/docs/${params.slug}`,
+            canonical: `/docs/${(await params).slug}`,
         },
     };
 }

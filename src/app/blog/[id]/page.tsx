@@ -101,62 +101,72 @@ export default async function BlogPost({params}: { params: { id: string } }) {
             />
             <main className="min-h-screen flex flex-col">
                 <Navbar/>
-                <div className="flex-1 pt-32 pb-24 container max-w-7xl mx-auto">
-                    <div className="flex">
-                        <article className="flex-1 px-28">
-                            <header className="mb-8">
-                                <div className="text-sm text-muted-foreground mb-2">{post.category}</div>
-                                <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
-                                <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                                    <div className="flex items-center gap-2">
-                                        <span>{post.author}</span>
-                                        {post.authorRole && (
-                                            <>
-                                                <span>·</span>
-                                                <span>{post.authorRole}</span>
-                                            </>
-                                        )}
+                <div className="flex-1 pt-32 pb-24">
+                    <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="flex flex-col lg:flex-row gap-8">
+                            <article className="flex-1 max-w-4xl mx-auto w-full">
+                                <header className="mb-8">
+                                    <div className="text-sm text-muted-foreground mb-2">{post.category}</div>
+                                    <h1 className="text-3xl sm:text-4xl font-bold mb-4">{post.title}</h1>
+                                    <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm text-muted-foreground">
+                                        <div className="flex items-center gap-2">
+                                            <span>{post.author}</span>
+                                            {post.authorRole && (
+                                                <>
+                                                    <span>·</span>
+                                                    <span>{post.authorRole}</span>
+                                                </>
+                                            )}
+                                        </div>
+                                        <span>·</span>
+                                        <time dateTime={post.lastEdited}>
+                                            {post.lastEdited}
+                                        </time>
+                                        <span>·</span>
+                                        <span>{post.readingTime}</span>
                                     </div>
-                                    <span>·</span>
-                                    <time dateTime={post.lastEdited}>
-                                        {post.lastEdited}
-                                    </time>
-                                    <span>·</span>
-                                    <span>{post.readingTime}</span>
-                                </div>
-                            </header>
+                                </header>
 
-                            {post.imageUrl && (
-                                <div className="relative w-full h-[400px] mb-8 rounded-lg overflow-hidden">
-                                    <Image
-                                        src={post.imageUrl}
-                                        alt={post.title}
-                                        width={100}
-                                        height={100}
-                                        className="object-cover w-full h-full"
-                                    />
-                                </div>
-                            )}
+                                {post.imageUrl && (
+                                    <div className="relative w-full h-[200px] sm:h-[300px] md:h-[400px] mb-8 rounded-lg overflow-hidden">
+                                        <Image
+                                            src={post.imageUrl}
+                                            alt={post.title}
+                                            fill
+                                            className="object-cover"
+                                            priority
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                        />
+                                    </div>
+                                )}
 
-                            <div
-                                className="prose prose-invert max-w-none prose-headings:scroll-mt-32"
-                                dangerouslySetInnerHTML={{__html: content}}
-                            />
+                                <div
+                                    className="prose prose-invert max-w-none prose-headings:scroll-mt-32
+                                    prose-p:text-base sm:prose-p:text-lg
+                                    prose-h1:text-3xl sm:prose-h1:text-4xl
+                                    prose-h2:text-2xl sm:prose-h2:text-3xl
+                                    prose-h3:text-xl sm:prose-h3:text-2xl
+                                    prose-img:rounded-lg prose-img:shadow-lg
+                                    prose-a:text-blue-400 hover:prose-a:text-blue-300
+                                    prose-code:bg-gray-800 prose-code:px-1 prose-code:py-0.5 prose-code:rounded
+                                    prose-pre:bg-gray-900 prose-pre:rounded-lg"
+                                    dangerouslySetInnerHTML={{__html: content}}
+                                />
 
-                            <footer className="mt-8 pt-8 border-t border-white/10">
-                                <div className="flex flex-wrap gap-2">
-                                    {post.tags.map((tag) => (
-                                        <span
-                                            key={tag}
-                                            className="px-3 py-1 rounded-full bg-[hsl(var(--linear-gray))/0.1] text-sm text-muted-foreground"
-                                        >
-                      {tag}
-                    </span>
-                                    ))}
-                                </div>
-                            </footer>
-                        </article>
-
+                                <footer className="mt-8 pt-8 border-t border-white/10">
+                                    <div className="flex flex-wrap gap-2">
+                                        {post.tags.map((tag) => (
+                                            <span
+                                                key={tag}
+                                                className="px-3 py-1 rounded-full bg-[hsl(var(--linear-gray))/0.1] text-sm text-muted-foreground"
+                                            >
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </footer>
+                            </article>
+                        </div>
                     </div>
                 </div>
                 <Footer/>
