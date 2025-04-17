@@ -471,6 +471,13 @@ const otherTools: Tool[] = [
 
 const mcpTools: Tool[] = [
     {
+        id: 'smithery',
+        name: 'Smithery',
+        description: 'MCP 服务集合',
+        href: 'https://smithery.ai/',
+        category: 'MCP',
+    },
+    {
         id: 'mcp-filesystem',
         name: 'MCP Filesystem',
         description: '使用可配置的访问控件安全文件操作',
