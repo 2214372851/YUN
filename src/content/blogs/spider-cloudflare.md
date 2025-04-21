@@ -1,7 +1,7 @@
 ---
 title: "数据采集 CloudFlare 人机验证"
 category: "数据采集"
-excerpt: 所有的相遇都会别离，但别离又是为了下次更好的相遇
+excerpt: 数据采集中通过 CloudFlare 人机验证方案
 lastEdited: 2025年4月18日
 tags: [数据采集,Python,CloudFlare]
 imageUrl: https://minio-endpoint.bybxbwg.fun/docs/CF_logo_stacked_whitetype.png
