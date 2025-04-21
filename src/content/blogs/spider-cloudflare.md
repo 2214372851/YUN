@@ -4,7 +4,7 @@ category: "数据采集"
 excerpt: 所有的相遇都会别离，但别离又是为了下次更好的相遇
 lastEdited: 2025年4月18日
 tags: [数据采集,Python,CloudFlare]
-imageUrl: https://minio-endpoint.bybxbwg.fun/docs/IMG_20250416_114840.jpg
+imageUrl: https://minio-endpoint.bybxbwg.fun/docs/CF_logo_stacked_whitetype.png
 ---
 
 ## 绕过 cloudflare 人机验证
