@@ -2,7 +2,6 @@ import {getAllBlogPosts, getBlogPostBySlug} from "@/data/blog-posts";
 import {markdownToHtml} from "@/lib/markdown";
 import {notFound} from "next/navigation";
 import {Navbar} from "@/components/navbar";
-import {Footer} from "@/components/footer";
 import Script from "next/script";
 import Image from "next/image";
 
@@ -108,7 +107,8 @@ export default async function BlogPost({params}: { params: { id: string } }) {
                                 <header className="mb-8">
                                     <div className="text-sm text-muted-foreground mb-2">{post.category}</div>
                                     <h1 className="text-3xl sm:text-4xl font-bold mb-4">{post.title}</h1>
-                                    <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm text-muted-foreground">
+                                    <div
+                                        className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm text-muted-foreground">
                                         <div className="flex items-center gap-2">
                                             <span>{post.author}</span>
                                             {post.authorRole && (
@@ -128,7 +128,8 @@ export default async function BlogPost({params}: { params: { id: string } }) {
                                 </header>
 
                                 {post.imageUrl && (
-                                    <div className="relative w-full h-[200px] sm:h-[300px] md:h-[400px] mb-8 rounded-lg overflow-hidden">
+                                    <div
+                                        className="relative w-full h-[200px] sm:h-[300px] md:h-[400px] mb-8 rounded-lg overflow-hidden">
                                         <Image
                                             src={post.imageUrl}
                                             alt={post.title}
@@ -169,7 +170,6 @@ export default async function BlogPost({params}: { params: { id: string } }) {
                         </div>
                     </div>
                 </div>
-                <Footer/>
             </main>
         </>
     );
