@@ -644,7 +644,7 @@ plt.show()
 ![matplotlib绘图](https://c.biancheng.net/uploads/allimg/210907/131I550a-0.gif)
 图1：绘制坐标轴刻度与标签
 
-# Matplotlib中文乱码解决方案（两种方式）https://c.biancheng.net/matplotlib/twin-axes.html)
+# [Matplotlib中文乱码解决方案（两种方式）](https://c.biancheng.net/matplotlib/twin-axes.html)
 
 Matplotlib 默认不支持中文字体，这因为 Matplotlib 只支持 ASCII 字符，但中文标注更加符合中国人的阅读习惯。因此，本节重点讲解如何在
 Windows 环境下让 Matplotlib 显示中文。

@@ -97,7 +97,7 @@ pre {
 
 ::-webkit-scrollbar-track {
     width: 6px;
-    background: rgba(#101F1C, 0.1);
+    background: rgb(16, 31, 28, 0.1);
     -webkit-border-radius: 2em;
     -moz-border-radius: 2em;
     border-radius: 2em;
@@ -134,7 +134,7 @@ input[type="color"]::-moz-color-swatch {
     border-radius: 50%;
 }
 
-img-center {
+.img-center {
     display: block;
     margin: 0 auto;
 }

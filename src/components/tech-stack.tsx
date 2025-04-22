@@ -1,6 +1,5 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { motion } from "framer-motion";
 
 export function TechStack() {

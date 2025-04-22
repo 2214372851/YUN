@@ -467,6 +467,13 @@ const otherTools: Tool[] = [
         href: 'https://tutu.to/upload',
         category: '图床',
     },
+    {
+        id: 'mermaid',
+        name: 'Mermaid 图表转换器',
+        description: '在线将 Mermaid 代码转换为 SVG 图表，支持流程图、时序图、甘特图等多种图表类型。',
+        href: '/tools/mermaid',
+        category: '开发工具',
+    },
 ];
 
 const mcpTools: Tool[] = [

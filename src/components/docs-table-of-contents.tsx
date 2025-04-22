@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, RefObject, useRef } from "react";
+import React, { useEffect, useState, RefObject, useRef } from "react";
 
 interface Heading {
   id: string;

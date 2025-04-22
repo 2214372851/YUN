@@ -1511,7 +1511,7 @@ $.ajax({
         n1: 12,
         n2: 23
     },
-    dataType: 'JSON'
+    dataType: 'JSON',
     success: function (res) {
         console.log(res);
         console.log(res.a);
@@ -1540,7 +1540,7 @@ $.ajax({
         user: $('#user').val(),
         password: $('#password').val()
     },
-    dataType: 'JSON'
+    dataType: 'JSON',
     success: function (res) {
         console.log(res);
         console.log(res.a);

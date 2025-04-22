@@ -70,7 +70,7 @@ export async function generateStaticParams() {
 
 // 生成页面元数据
 export async function generateMetadata({params}: { params: { slug: string } }) {
-    const doc = await getDocBySlug((await params).slug);
+    const doc = await getDocBySlug((params).slug);
     if (!doc) return {title: '文档未找到'};
 
     return {
@@ -96,14 +96,14 @@ export async function generateMetadata({params}: { params: { slug: string } }) {
             images: ['https://minio-endpoint.bybxbwg.fun/docs/Avatar.png'],
         },
         alternates: {
-            canonical: `/docs/${(await params).slug}`,
+            canonical: `/docs/${(params).slug}`,
         },
     };
 }
 
 // 文档页面组件 - Now primarily fetches data and passes it to DocsClient
 export default async function DocPage({params}: { params: { slug: string } }) {
-    const slug = (await params).slug;
+    const slug = (params).slug;
     const [doc, allDocs] = await Promise.all([
         getDocBySlug(slug),
         getAllDocs()

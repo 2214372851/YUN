@@ -4,6 +4,7 @@ import "./globals.css";
 import {Navbar} from "@/components/navbar";
 import {Footer} from "@/components/footer";
 import {LoadingOverlay} from "@/components/loading-overlay";
+import React from "react";
 
 const inter = Inter({subsets: ["latin"]});
 

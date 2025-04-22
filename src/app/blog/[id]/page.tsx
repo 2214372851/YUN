@@ -16,7 +16,7 @@ export async function generateStaticParams() {
 
 // 生成页面元数据
 export async function generateMetadata({params}: { params: { id: string } }) {
-    const id = (await params).id
+    const id = (params).id
     const post = await getBlogPostBySlug(id);
     if (!post) return {title: '文章未找到'};
 
@@ -54,7 +54,7 @@ export async function generateMetadata({params}: { params: { id: string } }) {
 
 // 博客文章页面组件
 export default async function BlogPost({params}: { params: { id: string } }) {
-    const id = (await params).id
+    const id = (params).id
     const post = await getBlogPostBySlug(id);
 
     if (!post) {

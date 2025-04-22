@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import type { BlogPost } from "@/types/blog";
 
 interface BlogArticleRecommendationsProps {
   currentSlug: string;
