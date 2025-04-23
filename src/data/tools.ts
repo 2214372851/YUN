@@ -209,6 +209,13 @@ const otherTools: Tool[] = [
       category: '开发工具'
     },
     {
+      id: 'neon',
+      name: 'Neon',
+      description: '便捷的云上 Postgres 数据库，免费 500MB 大小',
+      href: 'https://neon.tech/',
+      category: '开发工具'
+    },
+    {
         id: 'fastfetch',
         name: 'Fastfetch',
         description: '终端系统信息获取工具，注重性能和可定制性。',
@@ -241,6 +248,13 @@ const otherTools: Tool[] = [
         name: 'Pake',
         description: '利用 Rust 轻松构建轻量级多端桌面应用 (打包网页)。',
         href: 'https://github.com/tw93/Pake',
+        category: '开发工具',
+    },
+    {
+        id: 'fumadocs',
+        name: 'Fumadocs',
+        description: 'Fumadocs 是一个基于 nextjs 面向开发人员的现代文档框架',
+        href: 'https://fumadocs.vercel.app/',
         category: '开发工具',
     },
     {

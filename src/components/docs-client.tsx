@@ -42,29 +42,71 @@ function DocNavigation({docs, currentSlug, className}: { docs: DocData[]; curren
     );
 }
 
-function TableOfContents({headings, className}: { headings: TocItem[]; className?: string }) {
+function TableOfContents({ headings, className }: { headings: TocItem[]; className?: string }) {
+    const [activeId, setActiveId] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return; // SSR 保护
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const visibleHeadings = entries
+                    .filter((entry) => entry.isIntersecting)
+                    .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+                if (visibleHeadings.length > 0) {
+                    setActiveId(visibleHeadings[0].target.id);
+                }
+            },
+            {
+                rootMargin: '-70px 0px -70% 0px',
+                threshold: 0.1,
+            }
+        );
+
+        // 确保 heading 元素已挂载再注册
+        const observedElements: HTMLElement[] = [];
+        setTimeout(() => {
+            headings.forEach((heading) => {
+                const el = document.getElementById(heading.id);
+                if (el) {
+                    observer.observe(el);
+                    observedElements.push(el);
+                }
+            });
+        }, 0); // 微任务中注册，确保 DOM 完整
+
+        return () => {
+            observedElements.forEach(el => observer.unobserve(el));
+            observer.disconnect();
+        };
+    }, [headings]);
+
     if (headings.length === 0) return null;
+
     return (
         <div className={className}>
             <div className="sticky top-32">
                 <div className="text-sm font-medium mb-4">页面目录</div>
                 <nav
                     className="space-y-1 overflow-y-auto max-h-[calc(100vh-16rem)] scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent pr-4">
-                    {headings.map((heading) => (
-                        <a
-                            key={heading.id}
-                            href={`#${heading.id}`}
-                            className={`block text-sm text-muted-foreground hover:text-foreground transition-colors ${
-                                heading.level === 1 ? 'pl-0 font-semibold' :
-                                    heading.level === 2 ? 'pl-2' :
-                                        heading.level === 3 ? 'pl-4' :
-                                            heading.level === 4 ? 'pl-6' :
-                                                heading.level === 5 ? 'pl-8' : 'pl-10'
-                            }`}
-                        >
-                            {heading.title}
-                        </a>
-                    ))}
+                    {headings.map((heading) => {
+                        const isActive = activeId === heading.id;
+                        return (
+                            <a
+                                key={heading.id}
+                                href={`#${heading.id}`}
+                                className={`block text-sm hover:text-foreground transition-colors ${
+                                    heading.level === 1 ? 'pl-0 font-semibold' :
+                                        heading.level === 2 ? 'pl-2' :
+                                            heading.level === 3 ? 'pl-4' :
+                                                heading.level === 4 ? 'pl-6' :
+                                                    heading.level === 5 ? 'pl-8' : 'pl-10'
+                                } ${isActive ? 'text-foreground font-bold' : 'text-muted-foreground'}`}
+                            >
+                                {heading.title}
+                            </a>
+                        );
+                    })}
                 </nav>
             </div>
         </div>

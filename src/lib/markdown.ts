@@ -13,6 +13,7 @@ export interface TableOfContents {
 
 const renderer = new marked.Renderer();
 renderer.code = ({text, lang}) => {
+    console.log(text, lang)
     if (lang === 'mermaid') {
         const uniqueId = `mermaid-${Date.now()}`
         return `<div class="mermaid" id="${uniqueId}" style="white-space: break-spaces">${text}</div>`;
@@ -34,11 +35,17 @@ export async function markdownToHtml(markdown: string): Promise<{ content: strin
     const headings: TableOfContents[] = [];
     const idCount: Record<string, number> = {};
 
-    $("h1, h2, h3, h4, h5, h6").each((_index, element) => {
+    $("h1, h2, h3, h4").each((_index, element) => {
         const tagName = element.tagName.toLowerCase();
         const level = parseInt(tagName.substring(1));
-        const title = $(element).text();
-        let id = title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-]/g, "");
+        const title = $(element).text().trim();
+
+        let id = title
+            .toLowerCase()
+            .replace(/[^\w\s-]/g, "")     // 移除标点
+            .replace(/\s+/g, "-");        // 空格换成 -
+
+        id = `toc-${id}`;
 
         if (idCount[id] !== undefined) {
             idCount[id] += 1;
@@ -48,15 +55,22 @@ export async function markdownToHtml(markdown: string): Promise<{ content: strin
         }
 
         $(element).attr("id", id);
-        headings.push({id, title, level});
+        headings.push({ id, title, level });
     });
+
     $("img").each((_, element) => {
         $(element).attr('class', 'w-2/4 mx-auto rounded-lg')
+    });
+    $("p").each((_, element) => {
+        $(element).attr('class', 'whitespace-pre-wrap')
     });
 
     $("table").each((_, element) => {
         $(element).wrap('<div class="overflow-x-auto">');
     });
+    const htmlContent = $.html().replace(/::: (info|warning|tip|danger)\s([\s\S]*?):::/g, (match, type, content) => {
+        return `<div class="whitespace-pre-wrap rounded-md p-4 text-black alert ${type}">${marked.parseInline(content.trim())}</div>`;
+    })
 
-    return {content: $.html(), headings};
+    return {content: htmlContent, headings};
 }

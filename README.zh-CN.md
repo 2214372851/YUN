@@ -112,6 +112,9 @@ bun run start
 
 - 响应式设计
 - Markdown 支持
+  - 自定义容器支持（info | warning | tip | danger）
+    - 语法 `::: danger :::`
+  - mermaid 图表支持
 - 代码高亮
 - 图表渲染
 - 动画效果

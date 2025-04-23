@@ -112,6 +112,9 @@ bun run start
 
 - Responsive Design
 - Markdown Support
+  - Custom container support (`info` | `warning` | `tip` | `danger`)
+     - Syntax: `::: danger :::`
+  - Mermaid diagram support
 - Code Highlighting
 - Chart Rendering
 - Animation Effects
