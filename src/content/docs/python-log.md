@@ -1,10 +1,5 @@
 ---
 title: Python 日志
-category: Python
-excerpt: Python 日志使用指南：从入门到实战
-lastEdited: 2025年4月22日
-tags: [Python,日志]
-imageUrl: https://minio-endpoint.bybxbwg.fun/docs/python-log.png
 ---
 
 在开发 Python 项目的过程中，`print()` 虽然简单直接，但并不适合生产环境。一个良好的日志系统不仅可以帮助我们排查 bug，还可以用于监控服务状态、记录系统行为等。Python 的标准库 `logging` 提供了强大而灵活的日志功能。本文将从基础讲起，一步步教你如何优雅地使用 `logging` 模块。

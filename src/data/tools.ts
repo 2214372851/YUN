@@ -195,6 +195,20 @@ const otherTools: Tool[] = [
         category: '开发工具',
     },
     {
+        id: 'chat-ui',
+        name: 'Chat UI',
+        description: '达摩院阿里小蜜孵化的AI对话组件库',
+        href: 'https://chatui.io/',
+        category: '开发工具'
+    },
+    {
+      id: 'icraft',
+      name: 'iCraft Editor',
+      description: '轻松创建直观的3D架构图，让复杂的系统一目了然！',
+      href: 'https://icraft.gantcloud.com/zh-CN',
+      category: '开发工具'
+    },
+    {
         id: 'fastfetch',
         name: 'Fastfetch',
         description: '终端系统信息获取工具，注重性能和可定制性。',

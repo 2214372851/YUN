@@ -73,8 +73,15 @@ export function Footer() {
 
                 <Separator className="bg-white/5 mb-8"/>
 
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-muted-foreground flex justify-between">
                     <p>© 2025 YunHai. All rights reserved.</p>
+                    <p>Sharing Agreement&nbsp;
+                        <Link
+                            className="hover:text-blue-400"
+                            href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.en">
+                            (CC BY-NC-SA 4.0)
+                        </Link>
+                    </p>
                 </div>
             </div>
         </footer>

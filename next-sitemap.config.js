@@ -8,8 +8,12 @@ module.exports = {
         policies: [
             {
                 userAgent: '*',
-                allow: ['/blog', '/docs'],
-                disallow: '/', // 先 disallow 所有路径
+                allow: '/',
+                disallow: [
+                    '/api',
+                    '/tools',
+                    '/media'
+                ]
             },
         ],
     },

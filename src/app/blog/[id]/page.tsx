@@ -1,7 +1,6 @@
 import {getAllBlogPosts, getBlogPostBySlug} from "@/data/blog-posts";
 import {markdownToHtml} from "@/lib/markdown";
 import {notFound} from "next/navigation";
-import {Navbar} from "@/components/navbar";
 import Script from "next/script";
 import Image from "next/image";
 
@@ -99,7 +98,6 @@ export default async function BlogPost({params}: { params: { id: string } }) {
                 dangerouslySetInnerHTML={{__html: JSON.stringify(structuredData)}}
             />
             <main className="min-h-screen flex flex-col">
-                <Navbar/>
                 <div className="flex-1 pt-32 pb-24">
                     <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex flex-col lg:flex-row gap-8">
