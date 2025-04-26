@@ -21,11 +21,11 @@ function FeaturedPost({slug, category, title, imageUrl, excerpt}: BlogPostProps)
             <div
                 className="h-48 rounded-md overflow-hidden flex items-center justify-center mb-4">
                 {imageUrl ? (
-                    <Image loading="lazy" src={imageUrl} alt={title} width={100} height={50} className="w-full h-full object-cover"/>
+                    <Image src={imageUrl} alt={title} width={100} height={50} className="w-full h-full object-cover" priority/>
                 ) : (
                     <div className="h-full flex justify-center">
                         <svg width="890" height="478" xmlns="http://www.w3.org/2000/svg" version="1.1"
-                             fill-rule="evenodd" clip-rule="evenodd">
+                             fillRule="evenodd" clipRule="evenodd">
                             <g className="layer">
                                 <title>Layer 1</title>
                                 <g id="svg_419">

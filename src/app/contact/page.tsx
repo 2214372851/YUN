@@ -59,8 +59,9 @@ export default function Contact() {
                             <p className="text-muted-foreground text-lg mb-4">
                                 Feel free to reach out to me via email for any inquiries or collaboration opportunities.
                             </p>
-                            <Link href="mailto:bybxbwg@foxmail.com" className="text-blue-500 hover:underline">
-                                bybxbwg@foxmail.com
+                            <Link href="mailto:yunhai@bybxbwg.com" className="text-blue-500 hover:underline"
+                                  target="_blank">
+                                Click Contact me by email
                             </Link>
                         </div>
 
@@ -72,8 +73,9 @@ export default function Contact() {
                             <p className="text-muted-foreground text-lg mb-4">
                                 Check out my open source projects and contributions on GitHub.
                             </p>
-                            <Link href="https://github.com/2214372851" className="text-blue-500 hover:underline">
-                                github.com/2214372851
+                            <Link href="https://github.com/2214372851" className="text-blue-500 hover:underline"
+                                  target="_blank">
+                                Click here to view my Github
                             </Link>
                         </div>
 
@@ -85,9 +87,28 @@ export default function Contact() {
                             <p className="text-muted-foreground text-lg mb-4">
                                 Follow my projects and activities on Gitee.
                             </p>
-                            <Link href="https://gitee.com/yun2hai" className="text-blue-500 hover:underline">
-                                gitee.com/yun2hai
+                            <Link href="https://gitee.com/yun2hai" className="text-blue-500 hover:underline"
+                                  target="_blank">
+                                Click here to view my Gitee
                             </Link>
+                        </div>
+                        <div className="border rounded-lg p-6 hover:bg-white/5 transition-colors">
+                            <h3 className="flex items-center text-xl font-semibold mb-4">
+                                <div className="size-3 bg-green-500 mr-3 rounded-full"/>
+                                WeChat
+                            </h3>
+                            <div className="flex">
+                                <p className="text-muted-foreground text-lg mb-4">
+                                    I can be contacted in this way, but of course you need to indicate your intention when
+                                    adding it to facilitate our subsequent communication
+                                </p>
+                                <Image
+                                    width={120}
+                                    height={120}
+                                    alt="aaa"
+                                    src="https://minio-endpoint.bybxbwg.fun/docs/contact-wechat.png"/>
+                            </div>
+
                         </div>
                     </div>
                 </motion.div>

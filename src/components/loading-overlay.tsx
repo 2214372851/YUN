@@ -12,7 +12,7 @@ export function LoadingOverlay() {
     setIsLoading(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 500);
+    }, 800);
 
     return () => clearTimeout(timer);
   }, [pathname]);
@@ -21,19 +21,18 @@ export function LoadingOverlay() {
     <AnimatePresence>
       {isLoading && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "100%" }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-background/60 backdrop-blur-md flex items-center justify-center"
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center"
         >
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
+            initial={{ scale: 0.7, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="flex flex-col items-center gap-4 p-8 rounded-lg bg-background/60 backdrop-blur-xl shadow-lg border border-border/50"
+            className="flex flex-col items-center gap-4 p-8 rounded-lg bg-transparent backdrop-blur-xl shadow-lg border border-border/50"
           >
             <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-            <p className="text-sm text-muted-foreground">加载中...</p>
           </motion.div>
         </motion.div>
       )}

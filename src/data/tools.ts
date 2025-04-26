@@ -168,11 +168,46 @@ const otherAi: Tool[] = [
         description: '免费 AI LOGO 生成。',
         href: 'https://ailogomaker.io/zh-CN/app',
         category: 'AI 工具',
+    },
+    {
+        id: 'lmarena',
+        name: 'Lmarena',
+        description: '免费的大模型竞技场，可以体验国内外主流大模型。',
+        href: 'https://lmarena.ai/',
+        category: 'AI 工具'
+    },
+    {
+        id: 'ocoolai',
+        name: 'ocoolAI',
+        description: '大模型 API 聚合服务商',
+        href: 'https://one.ooo.cool/',
+        category: 'AI 社区'
+    },
+    {
+        id: 'siliconflow',
+        name: '硅基流动',
+        description: '为开发者和企业提供高效、低成本且全面的生成式人工智能（GenAI）模型服务',
+        href: 'https://siliconflow.cn/zh-cn/',
+        category: 'AI 社区'
+    },
+    {
+        id: 'o3',
+        name: 'O3',
+        description: '多服务商模型集成系统,大模型 API 聚合服务商',
+        href: 'https://o3.fan/',
+        category: 'AI 社区'
     }
 ]
 
 // 从 tools.md 提取的新工具数据
 const otherTools: Tool[] = [
+    {
+        id: 'heroicons',
+        name: 'Heroicons',
+        description: '精美的手工制作的 SVG 图标，由 Tailwind CSS 的制作者提供。',
+        href: 'https://heroicons.com/',
+        category: '开发工具',
+    },
     {
         id: 'uiverse',
         name: 'Uiverse',
@@ -260,14 +295,14 @@ const otherTools: Tool[] = [
     {
         id: 'iconkitchen',
         name: 'IconKitchen',
-        description: '生成简介的应用图标。',
+        description: '生成简洁的应用图标。',
         href: 'https://icon.kitchen',
         category: '设计工具',
     },
     {
         id: 'logofast',
         name: 'LogoFast',
-        description: '生成简介的应用图标。',
+        description: '生成简洁的应用图标。',
         href: 'https://logofa.st/',
         category: '设计工具',
     },
@@ -283,6 +318,27 @@ const otherTools: Tool[] = [
         name: 'vectorCraftr',
         description: '开源插画网站。',
         href: 'https://vectorcraftr.com/',
+        category: '设计资源',
+    },
+    {
+        id: 'wallspic',
+        name: 'Wallspic',
+        description: '免费的壁纸软件',
+        href: 'https://wallspic.com/cn',
+        category: '设计资源',
+    },
+    {
+        id: '100font',
+        name: '100 Font',
+        description: '聚合字体网站，包含免费及付费的文字',
+        href: 'https://www.100font.com/',
+        category: '设计资源',
+    },
+    {
+        id: 'pixabay',
+        name: 'Pixabay',
+        description: '免费正版的音频、视频、图片网站',
+        href: 'https://pixabay.com/zh/',
         category: '设计资源',
     },
     {
@@ -349,11 +405,25 @@ const otherTools: Tool[] = [
         category: '下载工具',
     },
     {
+        id: 'xyjun',
+        name: '视频解析',
+        description: '免费全网VIP视频会员免广告看电影',
+        href: 'http://www.xyjun.com/vip/',
+        category: '下载工具',
+    },
+    {
         id: 'curlconverter',
         name: 'CurlConverter',
         description: '将 curl 命令转换为多种编程语言的代码。',
         href: 'https://curlconverter.com/',
         category: '开发工具',
+    },
+    {
+        id: 'freefilesync',
+        name: 'FreeFileSync',
+        description: '高效免费的文件同步软件',
+        href: 'https://freefilesync.org/',
+        category: '系统工具',
     },
     {
         id: 'patorjk-taag',
