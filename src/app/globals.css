@@ -78,6 +78,13 @@
     }
 }
 
+@font-face {
+    font-family: 'MapleMono-NF-CN-Light';
+    src: url('/MapleMono-NF-CN-Light.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 }
@@ -91,6 +98,10 @@ pre {
 
     code.hljs {
         background: #151B23;
+    }
+
+    * {
+        font-family: MapleMono-NF-CN-Light, serif !important;
     }
 }
 
