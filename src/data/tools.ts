@@ -209,10 +209,31 @@ const otherTools: Tool[] = [
         category: '开发工具',
     },
     {
+        id: 'pake',
+        name: 'Pake',
+        description: '使用 Rust 轻松将任何网页转变为桌面应用程序。',
+        href: 'https://github.com/tw93/Pake',
+        category: '开发工具',
+    },
+    {
         id: 'uiverse',
         name: 'Uiverse',
         description: '一个开源的 UI 组件库。',
         href: 'https://uiverse.io/',
+        category: '开发工具',
+    },
+    {
+        id: 'clawcloud',
+        name: 'Claw Cloud',
+        description: '面向开发人员的云基础设施和应用部署平台。',
+        href: 'https://uiverse.io/',
+        category: '开发工具',
+    },
+    {
+        id: 'onlook',
+        name: 'Onlook',
+        description: '直观地编辑您的 React 网站或 Web 应用程序，并将更改实时写回代码。',
+        href: 'https://onlook.com/',
         category: '开发工具',
     },
     {
@@ -293,6 +314,13 @@ const otherTools: Tool[] = [
         category: '开发工具',
     },
     {
+        id: 'slidev',
+        name: 'Slidev',
+        description: 'Slidev 位开发者打造的演示文稿工具',
+        href: 'https://cn.sli.dev/',
+        category: '开发工具',
+    },
+    {
         id: 'iconkitchen',
         name: 'IconKitchen',
         description: '生成简洁的应用图标。',
@@ -353,7 +381,21 @@ const otherTools: Tool[] = [
         name: 'Akile Monitor',
         description: '开源、轻量、易用、简洁的服务器监控。',
         href: 'https://github.com/akile-network/akile_monitor',
-        category: '服务器监控',
+        category: '监控',
+    },
+    {
+        id: 'uptime-kuma',
+        name: 'uptime Kuma',
+        description: '开源免费的易于使用的自托管的服务监控工具。',
+        href: 'https://github.com/louislam/uptime-kuma',
+        category: '监控',
+    },
+    {
+        id: 'beszel',
+        name: 'Beszel',
+        description: '轻量级服务器监控平台，包含 Docker 统计、历史数据和警报功能。',
+        href: 'https://github.com/henrygd/beszel',
+        category: '监控',
     },
     {
         id: 'starship',
@@ -570,6 +612,13 @@ const otherTools: Tool[] = [
         name: 'Mermaid 图表转换器',
         description: '在线将 Mermaid 代码转换为 SVG 图表，支持流程图、时序图、甘特图等多种图表类型。',
         href: '/tools/mermaid',
+        category: '开发工具',
+    },
+    {
+        id: 'tree-converter',
+        name: '文件树转换器',
+        description: '将缩进格式的文本转换为树形结构显示。',
+        href: '/tools/tree-converter',
         category: '开发工具',
     },
 ];

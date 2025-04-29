@@ -94,14 +94,15 @@ function TableOfContents({ headings, className }: { headings: TocItem[]; classNa
                         return (
                             <a
                                 key={heading.id}
+                                id={`table-toc-${heading.id}`}
                                 href={`#${heading.id}`}
-                                className={`block text-sm hover:text-foreground transition-colors ${
+                                className={`py-0.5 rounded block text-sm hover:text-foreground transition-colors ${
                                     heading.level === 1 ? 'pl-0 font-semibold' :
                                         heading.level === 2 ? 'pl-2' :
-                                            heading.level === 3 ? 'pl-4' :
-                                                heading.level === 4 ? 'pl-6' :
-                                                    heading.level === 5 ? 'pl-8' : 'pl-10'
-                                } ${isActive ? 'text-foreground font-bold' : 'text-muted-foreground'}`}
+                                            heading.level === 3 ? 'pl-8' :
+                                                heading.level === 4 ? 'pl-14' :
+                                                    heading.level === 5 ? 'pl-20' : 'pl-8'
+                                } ${isActive ? 'text-foreground font-bold bg-blue-900/70' : 'text-muted-foreground'}`}
                             >
                                 {heading.title}
                             </a>
