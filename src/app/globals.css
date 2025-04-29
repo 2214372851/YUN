@@ -154,15 +154,35 @@ input[type="color"]::-moz-color-swatch {
     margin: 0 auto;
 }
 
+.alert {
+    a {
+        @apply text-blue-500;
+    }
+}
+
+.whitespace-pre-wrap {
+    code {
+        padding: 5px 10px;
+    }
+    code::before,
+    code::after {
+        content: none;
+    }
+
+}
+
 .alert.info {
     @apply bg-gray-200;
 }
+
 .alert.warning {
     @apply bg-yellow-50;
 }
+
 .alert.tip {
     @apply bg-indigo-200;
 }
+
 .alert.danger {
     @apply bg-red-200;
 }

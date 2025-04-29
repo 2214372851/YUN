@@ -255,7 +255,5 @@ for plugin in entry_points(group='example.plugins'):
 ```
 
 ::: tip
-
 `group` 键可以是任意值，不需要包含包名或 "plugins"。然而，建议使用包名来命名该键，以避免与其他包发生冲突。
-
 :::

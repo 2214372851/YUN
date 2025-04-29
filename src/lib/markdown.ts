@@ -13,7 +13,6 @@ export interface TableOfContents {
 
 const renderer = new marked.Renderer();
 renderer.code = ({text, lang}) => {
-    console.log(text, lang)
     if (lang === 'mermaid') {
         const uniqueId = `mermaid-${Date.now()}`
         return `<div class="mermaid" id="${uniqueId}" style="white-space: break-spaces">${text}</div>`;
@@ -21,6 +20,10 @@ renderer.code = ({text, lang}) => {
     const validLang = lang && hljs.getLanguage(lang) ? lang : "plaintext";
     const highlighted = hljs.highlight(text, {language: validLang}).value;
     return `<pre><code class="hljs ${validLang}">${highlighted}</code></pre>`;
+};
+renderer.codespan = (code) => {
+    const highlighted = hljs.highlight(code.text, {language: 'bash'}).value;
+    return `<code>${highlighted}</code>`;
 };
 
 marked.use({renderer});
