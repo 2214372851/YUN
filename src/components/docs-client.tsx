@@ -5,6 +5,7 @@ import {List, Menu, X} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 import type {TableOfContents as TocItem} from "@/lib/markdown";
 import mermaid from "mermaid";
+import TransitionLink from "@/components/TransitionLink";
 
 interface DocData {
     slug: string;
@@ -26,7 +27,7 @@ function DocNavigation({docs, currentSlug, className}: { docs: DocData[]; curren
                 <nav
                     className="space-y-1 overflow-y-auto max-h-[calc(100vh-16rem)] scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent pr-4">
                     {docs.map((doc) => (
-                        <a
+                        <TransitionLink
                             key={doc.slug}
                             href={`/docs/${doc.slug}`}
                             className={`block text-sm py-1 text-muted-foreground hover:text-foreground transition-colors ${
@@ -34,7 +35,7 @@ function DocNavigation({docs, currentSlug, className}: { docs: DocData[]; curren
                             }`}
                         >
                             {doc.title}
-                        </a>
+                        </TransitionLink>
                     ))}
                 </nav>
             </div>
@@ -297,6 +298,9 @@ export function DocsClient({allDocs, currentSlug, contentHtml, headings}: DocsCl
 
                     {/* Main Content */}
                     <article className="flex-1 min-w-0 px-0 lg:px-4">
+                        {/* add title*/}
+                        <h1 className="text-4xl font-bold">{allDocs.find(doc => doc.slug === currentSlug)?.title}</h1>
+                        <div className="w-full h-[1px] bg-gray-500 my-8"></div>
                         {renderContent()}
                     </article>
 

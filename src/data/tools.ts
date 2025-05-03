@@ -196,7 +196,7 @@ const otherAi: Tool[] = [
         description: '多服务商模型集成系统,大模型 API 聚合服务商',
         href: 'https://o3.fan/',
         category: 'AI 社区'
-    }
+    },
 ]
 
 // 从 tools.md 提取的新工具数据
@@ -207,6 +207,13 @@ const otherTools: Tool[] = [
         description: '精美的手工制作的 SVG 图标，由 Tailwind CSS 的制作者提供。',
         href: 'https://heroicons.com/',
         category: '开发工具',
+    },
+    {
+        id: 'sealos',
+        name: 'Sealos',
+        description: '一站式云开发平台，提供即时协作开发、无缝部署和环境隔离能力，助您高效管理开发工作流程，轻松实现团队协作。',
+        href: 'https://sealos.run/?s=%E9%A6%96%E9%A1%B5',
+        category: '开发工具'
     },
     {
         id: 'pake',

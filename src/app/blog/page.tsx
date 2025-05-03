@@ -1,7 +1,5 @@
-import Link from "next/link";
 import {getAllBlogPosts} from "@/data/blog-posts";
-import {Navbar} from "@/components/navbar";
-import Image from "next/image";
+import TransitionLink from "@/components/TransitionLink";
 
 interface BlogPostProps {
     slug: string;
@@ -14,17 +12,19 @@ interface BlogPostProps {
 
 function FeaturedPost({slug, category, title, imageUrl, excerpt}: BlogPostProps) {
     return (
-        <Link
+        <TransitionLink
             href={`/blog/${slug}`}
             className="block rounded-lg border border-white/5 hover:border-white/20  bg-card  transition-colors overflow-hidden p-1 h-full"
         >
             <div
                 className="h-48 rounded-md overflow-hidden flex items-center justify-center mb-4">
                 {imageUrl ? (
-                    <Image src={imageUrl} alt={title} width={100} height={50} className="w-full h-full object-cover" priority/>
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={imageUrl} alt={title} width={0} height={0} className="w-full h-full object-fill"
+                         loading="lazy"/>
                 ) : (
-                    <div className="h-full flex justify-center">
-                        <svg width="890" height="478" xmlns="http://www.w3.org/2000/svg" version="1.1"
+                    <div className="size-full flex justify-center">
+                        <svg className="size-full"  xmlns="http://www.w3.org/2000/svg" version="1.1"
                              fillRule="evenodd" clipRule="evenodd">
                             <g className="layer">
                                 <title>Layer 1</title>
@@ -449,13 +449,13 @@ function FeaturedPost({slug, category, title, imageUrl, excerpt}: BlogPostProps)
                     <p className="text-sm text-muted-foreground line-clamp-2">{excerpt}</p>
                 )}
             </div>
-        </Link>
+        </TransitionLink>
     );
 }
 
 function RegularPost({slug, category, title, date}: BlogPostProps) {
     return (
-        <Link
+        <TransitionLink
             href={`/blog/${slug}`}
             className="flex justify-between items-center py-6 border-t border-white/5 hover:bg-[hsl(var(--linear-gray))/0.05] transition-colors px-2 group"
         >
@@ -477,7 +477,7 @@ function RegularPost({slug, category, title, date}: BlogPostProps) {
                 <path d="M7 5L12 10L7 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
                       strokeLinejoin="round"/>
             </svg>
-        </Link>
+        </TransitionLink>
     );
 }
 
@@ -498,7 +498,6 @@ export default async function BlogPage() {
 
     return (
         <main className="min-h-screen flex flex-col">
-            <Navbar/>
             <div className="flex-1 pt-32 pb-24 px-4 container max-w-7xl mx-auto">
                 <div className="flex items-center justify-between mb-16">
                     <h1 className="text-4xl font-bold">博客</h1>

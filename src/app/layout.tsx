@@ -3,7 +3,6 @@ import {Inter} from "next/font/google";
 import "./globals.css";
 import {Navbar} from "@/components/navbar";
 import {Footer} from "@/components/footer";
-import {LoadingOverlay} from "@/components/loading-overlay";
 import React from "react";
 
 const inter = Inter({subsets: ["latin"]});
@@ -15,7 +14,7 @@ export const metadata: Metadata = {
     },
     description: "YunHai的个人网站，分享技术文章、项目经验和生活点滴",
     keywords: ["YunHai", "个人网站", "技术博客", "前端开发", "全栈开发"],
-    authors: [{ name: "YunHai" }],
+    authors: [{name: "YunHai"}],
     creator: "YunHai",
     publisher: "YunHai",
     formatDetection: {
@@ -28,8 +27,8 @@ export const metadata: Metadata = {
         canonical: '/',
     },
     openGraph: {
-        title: "YunHai - 个人网站",
-        description: "YunHai的个人网站，分享技术文章、项目经验和生活点滴",
+        title: "YunHai - 云海亦云",
+        description: "YunHai的网站，分享技术文章、项目经验和生活点滴",
         url: 'https://your-domain.com',
         siteName: 'YunHai',
         images: [
@@ -44,8 +43,8 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: "YunHai - 个人网站",
-        description: "YunHai的个人网站，分享技术文章、项目经验和生活点滴",
+        title: "YunHai - 云海亦云",
+        description: "YunHai的网站，分享技术文章、项目经验和生活点滴",
         images: ['https://minio-endpoint.bybxbwg.fun/docs/Avatar.png'],
     },
     icons: {
@@ -79,7 +78,6 @@ export default function RootLayout({
         <Navbar/>
         {children}
         <Footer/>
-        <LoadingOverlay />
         </body>
         </html>
     );

@@ -59,6 +59,7 @@ export function Footer() {
                                 {section.links.map((link) => (
                                     <li key={link.label}>
                                         <Link
+                                            target="_blank"
                                             href={link.href}
                                             className="text-sm text-muted-foreground hover:text-white transition-colors"
                                         >
@@ -77,6 +78,7 @@ export function Footer() {
                     <p>© 2025 YunHai. All rights reserved.</p>
                     <p>Sharing Agreement&nbsp;
                         <Link
+                            target="_blank"
                             className="hover:text-blue-400"
                             href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.en">
                             (CC BY-NC-SA 4.0)

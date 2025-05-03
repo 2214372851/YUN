@@ -2,10 +2,10 @@
 "use client";
 
 import React from 'react';
-import Link from 'next/link';
 import {getAllMediaItems} from '@/data/media';
 import type {MediaItem} from '@/types/media';
 import Image from 'next/image'
+import TransitionLink from "@/components/TransitionLink";
 
 interface MediaCardProps {
     item: MediaItem;
@@ -34,9 +34,9 @@ function MediaCard({item}: MediaCardProps) {
     );
 
     return (
-        <Link href={`/media/${item.id}`} className="h-full group">
+        <TransitionLink href={`/media/${item.id}`} className="h-full group">
             {cardContent}
-        </Link>
+        </TransitionLink>
     );
 }
 

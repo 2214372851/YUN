@@ -1,10 +1,10 @@
 "use client";
 
 import {Button} from "./ui/button";
-import Link from "next/link";
 import {motion} from "framer-motion";
 import Image from 'next/image';
-import { TypeAnimation } from 'react-type-animation';
+import {TypeAnimation} from 'react-type-animation';
+import TransitionLink from "@/components/TransitionLink";
 
 
 function ProductDiagram() {
@@ -76,36 +76,36 @@ export function Hero() {
                 className="max-w-4xl mx-auto"
             >
                 <TypeAnimation
-                  sequence={[
-                    "Hi, I'm Yunhai",
-                    1000,
-                    'My whimsical thoughts',
-                    1000,
-                    'My Learning Journey',
-                    1000
-                  ]}
-                  wrapper="h1"
-                  cursor={true}
-                  repeat={Infinity}
-                  className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-6"
+                    sequence={[
+                        "Hi, I'm Yunhai",
+                        1000,
+                        'My whimsical thoughts',
+                        1000,
+                        'My Learning Journey',
+                        1000
+                    ]}
+                    wrapper="h1"
+                    cursor={true}
+                    repeat={Infinity}
+                    className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-6"
                 />
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
                     I hope the content here can help you
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <Button size="lg" asChild className="px-8 py-6 text-base">
-                        <Link href="/docs">Start reading</Link>
+                        <TransitionLink href="/docs">Start reading</TransitionLink>
                     </Button>
 
                     <Button size="lg" variant="secondary" asChild className="px-8 py-6 text-base">
-                        <Link href="/about" className="flex items-center gap-2">
+                        <TransitionLink href="/about" className="flex items-center gap-2">
                             <span>Introduce me</span>
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
                                 <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
                                       strokeLinejoin="round"/>
                             </svg>
-                        </Link>
+                        </TransitionLink>
                     </Button>
                 </div>
             </motion.div>

@@ -99,7 +99,8 @@ export default function Contact() {
                             </h3>
                             <div className="flex">
                                 <p className="text-muted-foreground text-lg mb-4">
-                                    I can be contacted in this way, but of course you need to indicate your intention when
+                                    I can be contacted in this way, but of course you need to indicate your intention
+                                    when
                                     adding it to facilitate our subsequent communication
                                 </p>
                                 <Image

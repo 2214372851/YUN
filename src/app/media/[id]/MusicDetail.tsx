@@ -70,15 +70,8 @@ const MusicDetail = ({musicItem}: Props) => {
                         console.error('Failed to fetch lyrics:', lyricsUrl);
                     }
 
-                    const contentType = response.headers.get('content-type');
-                    if (!contentType || !contentType.includes('text/plain')) {
-                        console.error('Failed to fetch lyrics:', lyricsUrl);
-                    }
-
                     const text = await response.text();
-                    console.log('Received lyrics:', text.substring(0, 100) + '...');
                     const parsed = parseLRC(text);
-                    console.log('Parsed lyrics count:', parsed.length);
                     setLyrics(parsed);
                 } catch (error: unknown) {
                     console.error('Failed to load lyrics:', error);

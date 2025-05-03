@@ -29,10 +29,6 @@ renderer.codespan = (code) => {
 marked.use({renderer});
 
 export async function markdownToHtml(markdown: string): Promise<{ content: string; headings: TableOfContents[] }> {
-    if (typeof window !== "undefined") {
-        throw new Error("markdownToHtml should be run on the server-side in Next.js");
-    }
-
     const content = await marked.parse(markdown);
     const $ = cheerio.load(content);
     const headings: TableOfContents[] = [];
@@ -58,7 +54,7 @@ export async function markdownToHtml(markdown: string): Promise<{ content: strin
         }
 
         $(element).attr("id", id);
-        headings.push({ id, title, level });
+        headings.push({id, title, level});
     });
 
     $("img").each((_, element) => {
