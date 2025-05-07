@@ -170,9 +170,7 @@ export default function TreeConverter() {
                             ref={fileInputRef}
                             onChange={handleFolderSelect}
                             style={{display: 'none'}}
-                            // @ts-expect-error
-                            webkitdirectory=""
-                            directory=""
+                            {...({ webkitdirectory: "true", directory: "true" })}
                         />
                         <Textarea
                             id="input"
