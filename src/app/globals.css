@@ -80,7 +80,7 @@
 
 @font-face {
     font-family: 'MapleMono-NF-CN-Light';
-    src: url('/MapleMono-NF-CN-Light.ttf');
+    src: url('https://bybxbwg.fun/MapleMono-NF-CN-Light.ttf');
     font-weight: normal;
     font-style: normal;
 }
@@ -185,4 +185,15 @@ input[type="color"]::-moz-color-swatch {
 
 .alert.danger {
     @apply bg-red-200;
+}
+
+.mk-img {
+    @apply mx-auto;
+    @apply rounded-lg;
+    max-height: 75vh;
+}
+
+.mk-iframe {
+    @apply w-full;
+    height: 65vh;
 }

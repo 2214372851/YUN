@@ -79,7 +79,7 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
             "name": "YunHai",
             "logo": {
                 "@type": "ImageObject",
-                "url": "https://minio-endpoint.bybxbwg.fun/docs/Avatar.png"
+                "url": "https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp"
             }
         },
         "datePublished": post.lastEdited,

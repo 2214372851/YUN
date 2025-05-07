@@ -1,13 +1,11 @@
 "use client";
 
-import {Navbar} from "@/components/navbar";
 import Image from "next/image";
 import {motion} from "framer-motion";
 
 export default function About() {
     return (
         <main className="min-h-screen flex flex-col">
-            <Navbar/>
 
             {/* Hero Section */}
             <section className="pt-32 pb-16 px-4">
@@ -21,7 +19,7 @@ export default function About() {
                     <div className="flex flex-col md:flex-row items-center justify-center gap-8">
                         <div className="w-32 h-32 md:w-64 md:h-64">
                             <Image
-                                src={"https://minio-endpoint.bybxbwg.fun/docs/Avatar.png"}
+                                src={"https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp"}
                                 alt="头像"
                                 width={128}
                                 height={128}

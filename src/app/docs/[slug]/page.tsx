@@ -83,7 +83,7 @@ export async function generateMetadata({params}: { params: Promise<{ slug: strin
             type: 'article',
             images: [
                 {
-                    url: 'https://minio-endpoint.bybxbwg.fun/docs/Avatar.png',
+                    url: 'https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp',
                     width: 1200,
                     height: 630,
                     alt: doc.title,
@@ -94,7 +94,7 @@ export async function generateMetadata({params}: { params: Promise<{ slug: strin
             card: 'summary_large_image',
             title: doc.title,
             description: doc.description,
-            images: ['https://minio-endpoint.bybxbwg.fun/docs/Avatar.png'],
+            images: ['https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp'],
         },
         alternates: {
             canonical: `/docs/${pageParams.slug}`,
@@ -127,7 +127,7 @@ export default async function DocPage({params}: { params: Promise<{ slug: string
             "description": doc.description,
             "image": [{
                 "@type": "ImageObject",
-                "url": "https://minio-endpoint.bybxbwg.fun/docs/Avatar.png",
+                "url": "https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp",
                 "width": 1200,
                 "height": 630
             }],
@@ -140,7 +140,7 @@ export default async function DocPage({params}: { params: Promise<{ slug: string
                 "name": "YunHai",
                 "logo": {
                     "@type": "ImageObject",
-                    "url": "https://minio-endpoint.bybxbwg.fun/docs/Avatar.png"
+                    "url": "https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp"
                 }
             },
             "datePublished": new Date().toISOString(),

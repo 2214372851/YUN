@@ -3,7 +3,6 @@ title: 光影交错间的城市心跳
 category: 游记
 excerpt: "初春的夜风还带着一丝凉意，准备开启一场说走就走的夜游"
 lastEdited: "2025年4月6日"
-authorRole: "Linear设计总监"
 tags: ["游记", "上海", "东方明珠"]
 imageUrl: "https://minio-endpoint.bybxbwg.fun/docs/IMG_20250405_185851.jpg"
 ---

@@ -58,10 +58,13 @@ export async function markdownToHtml(markdown: string): Promise<{ content: strin
     });
 
     $("img").each((_, element) => {
-        $(element).attr('class', 'w-2/4 mx-auto rounded-lg')
+        $(element).attr('class', 'mk-img')
     });
     $("p").each((_, element) => {
         $(element).attr('class', 'whitespace-pre-wrap')
+    });
+    $("iframe").each((_, element) => {
+        $(element).attr('class', 'mk-iframe')
     });
 
     $("table").each((_, element) => {

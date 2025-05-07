@@ -22,18 +22,18 @@ export const metadata: Metadata = {
         address: false,
         telephone: false,
     },
-    metadataBase: new URL('https://your-domain.com'),
+    metadataBase: new URL('https://bybxbwg.fun'),
     alternates: {
         canonical: '/',
     },
     openGraph: {
         title: "YunHai - 云海亦云",
         description: "YunHai的网站，分享技术文章、项目经验和生活点滴",
-        url: 'https://your-domain.com',
+        url: 'https://bybxbwg.fun',
         siteName: 'YunHai',
         images: [
             {
-                url: 'https://minio-endpoint.bybxbwg.fun/docs/Avatar.png',
+                url: 'https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp',
                 width: 800,
                 height: 600,
             },
@@ -45,11 +45,11 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: "YunHai - 云海亦云",
         description: "YunHai的网站，分享技术文章、项目经验和生活点滴",
-        images: ['https://minio-endpoint.bybxbwg.fun/docs/Avatar.png'],
+        images: ['https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp'],
     },
     icons: {
-        icon: 'https://minio-endpoint.bybxbwg.fun/docs/Avatar.png',
-        apple: 'https://minio-endpoint.bybxbwg.fun/docs/Avatar.png',
+        icon: 'https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp',
+        apple: 'https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp',
     },
     robots: {
         index: true,

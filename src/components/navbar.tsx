@@ -31,7 +31,7 @@ export function Navbar() {
                 {/* Logo Link - Centered on mobile via container justify-center */}
                 <TransitionLink href="/" className="flex items-center gap-2">
                     <Image
-                        src="https://minio-endpoint.bybxbwg.fun/docs/Avatar.png"
+                        src="https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp"
                         alt="头像"
                         width={24}
                         height={24}
