@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import {Separator} from "./ui/separator";
+import TransitionLink from "@/components/TransitionLink";
 
 const footerLinks = [
     {
@@ -27,7 +28,7 @@ const footerLinks = [
     {
         title: "Resource",
         links: [
-            {href: "", label: "API"},
+            {href: "/404", label: "API"},
         ],
     },
     {
@@ -58,13 +59,21 @@ export function Footer() {
                             <ul className="space-y-3">
                                 {section.links.map((link) => (
                                     <li key={link.label}>
-                                        <Link
-                                            target="_blank"
-                                            href={link.href}
-                                            className="text-sm text-muted-foreground hover:text-white transition-colors"
-                                        >
-                                            {link.label}
-                                        </Link>
+                                        {
+                                            link.href.startsWith("http") ? (
+                                                <Link
+                                                    target="_blank"
+                                                    href={link.href}
+                                                    className="text-sm text-muted-foreground hover:text-white transition-colors"
+                                                >
+                                                    {link.label}
+                                                </Link>
+                                            ) : (
+                                               <TransitionLink href={link.href} className="text-sm text-muted-foreground hover:text-white transition-colors">
+                                                   {link.label}
+                                               </TransitionLink>
+                                            )
+                                        }
                                     </li>
                                 ))}
                             </ul>

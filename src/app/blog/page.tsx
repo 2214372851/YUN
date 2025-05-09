@@ -20,7 +20,7 @@ function FeaturedPost({slug, category, title, imageUrl, excerpt}: BlogPostProps)
                 className="h-48 rounded-md overflow-hidden flex items-center justify-center mb-4">
                 {imageUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={imageUrl} alt={title} width={0} height={0} className="w-full h-full object-fill"
+                    <img src={imageUrl} alt={title} width={0} height={0} className="w-full h-full object-cover"
                          loading="lazy"/>
                 ) : (
                     <div className="size-full flex justify-center">

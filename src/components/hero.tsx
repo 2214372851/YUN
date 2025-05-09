@@ -121,12 +121,17 @@ export function Hero() {
                 transition={{duration: 0.8, delay: 0.3}}
                 className="text-center mt-24"
             >
-                <p className="text-sm text-muted-foreground mb-6">
+                <p className="text-sm text-muted-foreground">
                     There is no need to rush, no need to shine, no need to be anyone else just be yourself
                 </p>
+                <p className="text-sm text-muted-foreground my-6">
+                    None of them are me, and none of them are me.
+                </p>
                 <div className="flex flex-wrap justify-center gap-8 px-4 grayscale opacity-70">
-                    {Array.from({length: 8}).map((_, index) => (
-                        <div key={index} className="w-24 h-8 bg-gray-800 rounded"></div>
+                    {['Document', 'Record', 'Learn', 'Explore', 'Life', 'Love'].map((value, index) => (
+                        <div key={index} className="w-24 h-8 bg-gray-800 rounded flex items-center justify-center">
+                            {value}
+                        </div>
                     ))}
                 </div>
             </motion.div>

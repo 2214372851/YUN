@@ -4,7 +4,7 @@ category: Linux
 excerpt: 使用 Beszel 快速构建轻量级的服务器监控
 lastEdited: 2025年4月10日
 tags: [Linux,监控,运维]
-imageUrl: https://minio-endpoint.bybxbwg.fun/docs/20250410112609007.png
+imageUrl: https://minio-endpoint.bybxbwg.fun/docs/image-20250410112704917.png
 ---
 
 ## 什么是 Beszel？

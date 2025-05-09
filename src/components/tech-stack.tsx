@@ -22,10 +22,10 @@ export function TechStack() {
                         { name: "Python", level: 90 },
                         { name: "Django", level: 85 },
                         { name: "Git", level: 80 },
-                        { name: "JavaScript/TypeScript", level: 75 },
+                        { name: "JavaScript / TypeScript", level: 75 },
                         { name: "Docker", level: 65 },
                         { name: "Rust", level: 40 },
-                        { name: "Drat", level: 40},
+                        { name: "Dart", level: 40},
                         { name: "Java", level: 25},
                     ].map((tech, index) => (
                         <motion.div
