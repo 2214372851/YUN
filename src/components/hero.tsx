@@ -53,6 +53,7 @@ function ProductDiagram() {
                         className={index ? "max-w-4xl mx-auto absolute bottom-13" : "max-w-4xl mx-auto"}
                     >
                         <Image
+                            loading="lazy"
                             className="rounded-md"
                             width={800}
                             height={200}
@@ -124,7 +125,7 @@ export function Hero() {
                 <p className="text-sm text-muted-foreground">
                     There is no need to rush, no need to shine, no need to be anyone else just be yourself
                 </p>
-                <p className="text-sm text-muted-foreground my-6">
+                <p className="text-sm text-muted-foreground my-8">
                     None of them are me, and none of them are me.
                 </p>
                 <div className="flex flex-wrap justify-center gap-8 px-4 grayscale opacity-70">

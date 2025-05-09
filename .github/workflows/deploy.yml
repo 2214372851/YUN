@@ -1,0 +1,40 @@
+name: Build and Deploy via FTP
+
+on:
+  push:
+    branches:
+      - main  # 你可以根据需要修改为其他分支
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 1.1.38
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build project
+        run: |
+          bunx next build
+          bunx next-sitemap
+
+      # 如果你使用 next export，则输出目录为 out/
+      # - name: Export static site
+      #   run: bunx next export
+
+      - name: Upload via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /          # 替换为你的部署目录
+          local-dir: out/                 # 或 out/，视你的项目输出而定
