@@ -6,16 +6,19 @@ interface Props {
     href: string
     className?: string
     children?: React.ReactNode
+    callback?: () => void
 }
 
-const TransitionLink = ({href, className, children}: Props) => {
+const TransitionLink = ({href, className, children, callback}: Props) => {
     const router = useRouter()
     const pathname = usePathname()
 
     const handleClick = () => {
-        console.log(pathname, href)
         if (pathname === href) {
             return
+        }
+        if (callback) {
+            callback()
         }
         animatePageOut(href, router)
     }

@@ -59,7 +59,7 @@ export default function Contact() {
                             <p className="text-muted-foreground text-lg mb-4">
                                 Feel free to reach out to me via email for any inquiries or collaboration opportunities.
                             </p>
-                            <Link href="mailto:yunhai@bybxbwg.com" className="text-blue-500 hover:underline"
+                            <Link href="mailto:yunhai@bybxbwg.fun" className="text-blue-500 hover:underline"
                                   target="_blank">
                                 Click Contact me by email
                             </Link>

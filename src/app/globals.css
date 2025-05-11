@@ -80,7 +80,8 @@
 
 @font-face {
     font-family: 'MapleMono-NF-CN-Light';
-    src: url('https://bybxbwg.fun/MapleMono-NF-CN-Light.ttf');
+    /*noinspection CssUnknownTarget*/
+    src: url('/MapleMono-NF-CN-Light.ttf');
     font-weight: normal;
     font-style: normal;
 }

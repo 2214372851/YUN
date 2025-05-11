@@ -20,15 +20,15 @@ export const mediaItems: MediaItem[] = [
   },
   {
     id: 'yl-qsx',
-    title: '牵丝戏',
+    title: '牵丝戏/Aki阿杰',
     imageUrl: 'https://minio-endpoint.bybxbwg.fun/docs/yl-qsx.jpg',
-    author: '银临',
+    author: '银临/',
     lyricsUrl: 'https://minio-endpoint.bybxbwg.fun/docs/yl-qsx.lrc',
     musicUrl: 'https://minio-endpoint.bybxbwg.fun/docs/yl-qsx.mp3',
   },
   {
     id: 'yl-jlc',
-    title: '锦鲤抄',
+    title: '锦鲤抄/云之泣',
     imageUrl: 'https://minio-endpoint.bybxbwg.fun/docs/yl-jlc.jpg',
     author: '银临',
     lyricsUrl: 'https://minio-endpoint.bybxbwg.fun/docs/yl-jlc.lrc',

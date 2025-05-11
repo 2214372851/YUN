@@ -191,7 +191,6 @@ function MobileControls({onToggleSidebar, onToggleTOC, isSidebarOpen, isTocOpen}
     return (
         <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 lg:hidden">
             <Button
-                variant="secondary"
                 size="icon"
                 onClick={onToggleTOC}
                 className="rounded-full shadow-lg"
@@ -200,7 +199,6 @@ function MobileControls({onToggleSidebar, onToggleTOC, isSidebarOpen, isTocOpen}
                 {isTocOpen ? <X className="h-5 w-5"/> : <List className="h-5 w-5"/>}
             </Button>
             <Button
-                variant="secondary"
                 size="icon"
                 onClick={onToggleSidebar}
                 className="rounded-full shadow-lg"

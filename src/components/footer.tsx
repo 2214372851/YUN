@@ -36,7 +36,7 @@ const footerLinks = [
         links: [
             {href: "https://github.com/2214372851", label: "GitHub"},
             {href: "https://gitee.com/yun2hai", label: "Gitee"},
-            {href: "mailto:bybxbwg@foxmail.com", label: "Email"},
+            {href: "mailto:yunhai@bybxbwg.fun", label: "Email"},
         ],
     },
     {
@@ -60,18 +60,19 @@ export function Footer() {
                                 {section.links.map((link) => (
                                     <li key={link.label}>
                                         {
-                                            link.href.startsWith("http") ? (
+                                            link.href.startsWith("/") ? (
+                                                <TransitionLink href={link.href}
+                                                                className="text-sm text-muted-foreground hover:text-white transition-colors">
+                                                    {link.label}
+                                                </TransitionLink>
+                                            ) : (
                                                 <Link
-                                                    target="_blank"
+                                                    target={link.href.startsWith('http') ? '_blank' : ''}
                                                     href={link.href}
                                                     className="text-sm text-muted-foreground hover:text-white transition-colors"
                                                 >
                                                     {link.label}
                                                 </Link>
-                                            ) : (
-                                               <TransitionLink href={link.href} className="text-sm text-muted-foreground hover:text-white transition-colors">
-                                                   {link.label}
-                                               </TransitionLink>
                                             )
                                         }
                                     </li>
@@ -83,7 +84,7 @@ export function Footer() {
 
                 <Separator className="bg-white/5 mb-8"/>
 
-                <div className="text-sm text-muted-foreground flex justify-between">
+                <div className="text-sm text-muted-foreground flex justify-between flex-col md:flex-row gap-3">
                     <p>© 2025 YunHai. All rights reserved.</p>
                     <p>Sharing Agreement&nbsp;
                         <Link

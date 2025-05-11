@@ -10,17 +10,21 @@ import TransitionLink from "@/components/TransitionLink";
 
 const navLinks = [
     {href: "/", text: ""},
-    {href: "/blog/", text: "博客"},
-    {href: "/docs/", text: "文档"},
-    {href: "/tools/", text: "工具"},
-    {href: "/media/", text: "音乐"},
-    {href: "/about/", text: "关于"},
-    {href: "/contact/", text: "联系"},
+    {href: "/blog/", text: "Blog"},
+    {href: "/docs/", text: "Document"},
+    {href: "/tools/", text: "Tools"},
+    {href: "/media/", text: "Music"},
+    {href: "/contact/", text: "Contact"},
+    {href: "/about/", text: "About"},
 ];
 
 export function Navbar() {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
+
+    const mobileHandleClick = () => {
+        setIsOpen(false);
+    };
 
     return (
         <header
@@ -59,7 +63,7 @@ export function Navbar() {
                         variant="ghost"
                         size="icon"
                         onClick={() => setIsOpen(!isOpen)}
-                        className="text-gray-400 hover:text-white"
+                        className="text-gray-400 hover:text-white hover:bg-[#393e46]"
                     >
                         {isOpen ? <X className="h-5 w-5"/> : <Menu className="h-5 w-5"/>}
                     </Button>
@@ -77,6 +81,7 @@ export function Navbar() {
                                         "py-2 text-sm transition-colors hover:text-white",
                                         pathname === link.href ? "text-white" : "text-gray-400"
                                     )}
+                                    callback={mobileHandleClick}
                                 >
                                     {link.text}
                                 </TransitionLink>
