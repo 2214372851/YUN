@@ -3,7 +3,7 @@ name: Build and Deploy via FTP
 on:
   push:
     branches:
-      - main  # 你可以根据需要修改为其他分支
+      - main # 你可以根据需要修改为其他分支
 
 jobs:
   build-and-deploy:
@@ -36,5 +36,6 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /          # 替换为你的部署目录
-          local-dir: out/                 # 或 out/，视你的项目输出而定
+          server-dir: / # 替换为你的部署目录
+          local-dir: out/ # 或 out/，视你的项目输出而定
+          timeout: 120000
