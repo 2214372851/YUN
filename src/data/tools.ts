@@ -24,7 +24,21 @@ const baseTools: Tool[] = [
         description: '从调色板或屏幕上选择颜色，并获取其代码 (HEX, RGB, HSL)。',
         href: '/tools/color-picker',
         category: '设计工具',
-    }
+    },
+    {
+        id: 'mermaid',
+        name: 'Mermaid 图表转换器',
+        description: '在线将 Mermaid 代码转换为 SVG 图表，支持流程图、时序图、甘特图等多种图表类型。',
+        href: '/tools/mermaid',
+        category: '开发工具',
+    },
+    {
+        id: 'tree-converter',
+        name: '文件树转换器',
+        description: '将缩进格式的文本转换为树形结构显示。',
+        href: '/tools/tree-converter',
+        category: '开发工具',
+    },
 ];
 
 // 从 ai.md 提取的新工具数据
@@ -312,6 +326,13 @@ const otherTools: Tool[] = [
         description: '利用 Rust 轻松构建轻量级多端桌面应用 (打包网页)。',
         href: 'https://github.com/tw93/Pake',
         category: '开发工具',
+    },
+    {
+        id: 'astexplorer',
+        name: 'AST Explorer',
+        description: 'AST 在线查看器',
+        href: 'https://astexplorer.net/',
+        category: '开发工具'
     },
     {
         id: 'fumadocs',
@@ -614,20 +635,7 @@ const otherTools: Tool[] = [
         href: 'https://tutu.to/upload',
         category: '图床',
     },
-    {
-        id: 'mermaid',
-        name: 'Mermaid 图表转换器',
-        description: '在线将 Mermaid 代码转换为 SVG 图表，支持流程图、时序图、甘特图等多种图表类型。',
-        href: '/tools/mermaid',
-        category: '开发工具',
-    },
-    {
-        id: 'tree-converter',
-        name: '文件树转换器',
-        description: '将缩进格式的文本转换为树形结构显示。',
-        href: '/tools/tree-converter',
-        category: '开发工具',
-    },
+
 ];
 
 const mcpTools: Tool[] = [
