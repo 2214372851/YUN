@@ -1,15 +1,5 @@
-// src/data/tools.ts
+import {Tool} from "@/types/tools";
 
-export interface Tool {
-    id: string;
-    name: string;
-    description: string;
-    imageUrl?: string;
-    href: string;
-    category?: string; // 添加分类属性
-}
-
-// 现有工具 + 从 ai.md 添加的工具
 const baseTools: Tool[] = [
     {
         id: 'json-formatter',
@@ -70,6 +60,20 @@ const otherAi: Tool[] = [
         description: '有免费额度适合学习。',
         href: 'https://bohrium.dp.tech',
         category: 'AI 社区',
+    },
+    {
+        id: 'scribe',
+        name: 'Scribe',
+        description: 'AI 根据操作生成产品文档。',
+        href: 'https://scribehow.com',
+        category: 'AI 衍生工具'
+    },
+    {
+        id: 'jan-ai',
+        name: 'Jan AI',
+        description: '本地大模型使用解决方案，界面美观，无中文语言支持。一个开源 ChatGPT 替代方案，100% 离线运行。',
+        href: 'https://jan.ai/',
+        category: 'AI 衍生工具',
     },
     {
         id: 'jan-ai',
@@ -437,7 +441,7 @@ const otherTools: Tool[] = [
         name: 'vtracer',
         description: '将 JPEG/PNG 等光栅图像转换为矢量图 SVG。',
         href: 'https://github.com/visioncortex/vtracer',
-        category: '图像处理',
+        category: '文件工具',
     },
     {
         id: 'witsy',
@@ -536,13 +540,6 @@ const otherTools: Tool[] = [
         description: '在线文件处理工具集 (PDF压缩等)。',
         href: 'https://docsmall.com/pdf-compress',
         category: '工具集',
-    },
-    {
-        id: 'xizhi',
-        name: '息知',
-        description: '通过 API 发送微信通知。',
-        href: 'https://xizhi.qqoq.net/',
-        category: 'API 服务',
     },
     {
         id: 'excalidraw',

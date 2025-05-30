@@ -16,7 +16,7 @@ function MediaCard({item}: MediaCardProps) {
 
     const cardContent = (
         <div
-            className="block rounded-lg border border-white/5 bg-card hover:bg-[hsl(var(--linear-gray))/0.1] group-hover:border-white/20 transition-colors overflow-hidden p-1 h-full w-full sm:w-64">
+            className="block rounded-lg border border-white/5 bg-card hover:bg-[hsl(var(--linear-gray))/0.1] group-hover:border-white/20 transition-colors overflow-hidden p-1 h-full w-full">
             <div
                 className="aspect-square rounded-md overflow-hidden flex items-center justify-center mb-4 bg-[hsl(var(--linear-gray))/0.1]">
                 <Image
@@ -49,7 +49,7 @@ const MediaPage = () => {
                 <h1 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 px-2 sm:px-0">音乐</h1>
 
                 <div
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center px-2 sm:px-0">
+                    className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4 justify-items-center px-2 sm:px-0">
                     {musicItems.length > 0 ? (
                         musicItems.map((item) => (
                             <div className="h-full w-full" key={item.id}>
