@@ -12,6 +12,7 @@ const navLinks = [
     {href: "/", text: ""},
     {href: "/blog/", text: "Blog"},
     {href: "/docs/", text: "Document"},
+    {href: "/prompt/", text: "Prompt"},
     {href: "/tools/", text: "Tools"},
     {href: "/media/", text: "Music"},
     {href: "/contact/", text: "Contact"},
