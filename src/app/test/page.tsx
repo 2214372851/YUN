@@ -9,7 +9,7 @@ function MenuItem() {
 
 function TestPage() {
     return (
-        <div className="container bg-red-300 pt-20 flex max-w-7xl mx-auto">
+        <div className="container pt-20 flex max-w-7xl mx-auto">
             <div
                 className=" w-60 gap-3 space-y-2 border border-transparent border-r-white/5 transition-colors overflow-hidden p-1 h-full">
 

@@ -7,7 +7,9 @@ import {animatePageIn} from "@/lib/utils";
 export default function Template({children}: { children: React.ReactNode }) {
     const pathname = usePathname()
     useEffect(() => {
-        animatePageIn()
+        if (!pathname.startsWith('/docs')){
+            animatePageIn()
+        }
     }, [pathname])
     return (
         <div>
