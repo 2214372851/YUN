@@ -4,6 +4,7 @@ module.exports = {
     siteUrl: 'https://bybxbwg.fun',
     generateRobotsTxt: true,
     outDir: './out',
+    generateIndexSitemap: false,
     robotsTxtOptions: {
         policies: [
             {
