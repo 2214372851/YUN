@@ -1,5 +1,5 @@
 // src/data/media.ts
-import { MediaItem } from '@/types/media';
+import {MediaItem} from '@/types/media';
 
 export const mediaItems: MediaItem[] = [
   {
@@ -65,6 +65,30 @@ export const mediaItems: MediaItem[] = [
     author: '银临',
     lyricsUrl: 'https://minio-endpoint.bybxbwg.fun/docs/yl-blm.lrc',
     musicUrl: 'https://minio-endpoint.bybxbwg.fun/docs/yl-blm.mp3',
+  },
+  {
+    id: 'yl-nbxcy',
+    title: '你奔向春野',
+    imageUrl: 'https://minio-endpoint.bybxbwg.fun/docs/yl-chfc.jpg',
+    author: '银临',
+    lyricsUrl: 'https://minio-endpoint.bybxbwg.fun/docs/yl-nbxcy.lrc',
+    musicUrl: 'https://minio-endpoint.bybxbwg.fun/docs/yl-nbxcy.mp3',
+  },
+  {
+    id: 'yd-wdygdgpy',
+    title: '我的一个道姑朋友',
+    imageUrl: 'https://minio-endpoint.bybxbwg.fun/docs/yd-wdygdgpy.jpg',
+    author: '以冬',
+    lyricsUrl: 'https://minio-endpoint.bybxbwg.fun/docs/yd-wdygdgpy.lrc',
+    musicUrl: 'https://minio-endpoint.bybxbwg.fun/docs/yd-wdygdgpy.mp3',
+  },
+  {
+    id: 'bc-ss',
+    title: '参商',
+    imageUrl: 'https://minio-endpoint.bybxbwg.fun/docs/bc-ss.jpg',
+    author: '不才',
+    musicUrl: 'https://minio-endpoint.bybxbwg.fun/docs/bc-ss.mp4',
+    lyricsUrl: 'https://minio-endpoint.bybxbwg.fun/docs/bc-ss.lrc',
   }
 ];
 

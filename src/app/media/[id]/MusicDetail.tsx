@@ -3,7 +3,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {notFound} from 'next/navigation';
 import {MediaItem} from '@/types/media';
-import Image from "next/image";
+import gsap from "gsap";
+import Image from 'next/image'
+import Forward from "@/components/icon/forward";
+import Backward from "@/components/icon/backward";
+import {getAllMediaItems} from "@/data/media";
+import TransitionLink from "@/components/TransitionLink";
 
 interface LyricLine {
     time: number;
@@ -48,10 +53,24 @@ const MusicDetail = ({musicItem}: Props) => {
     }
 
     const audioRef = useRef<HTMLAudioElement>(null);
-    const {title, imageUrl, author, musicUrl, lyricsUrl} = musicItem;
+    const {title, imageUrl, author, musicUrl, lyricsUrl, id} = musicItem;
     const [lyrics, setLyrics] = useState<LyricLine[]>([]);
     const [currentLine, setCurrentLine] = useState(0);
-    const lyricsContainerRef = useRef<HTMLDivElement>(null);
+    const musicItems = getAllMediaItems();
+    const selfIndex = musicItems.findIndex((item) => item.id === id);
+
+    const forward = () => {
+        if (selfIndex < musicItems.length - 1) {
+            return musicItems[selfIndex + 1].id;
+        }
+        return musicItems[0].id;
+    }
+    const backward = () => {
+        if (selfIndex > 0) {
+            return musicItems[selfIndex - 1].id;
+        }
+        return musicItems[musicItems.length - 1].id;
+    }
 
     useEffect(() => {
         if (lyricsUrl) {
@@ -100,9 +119,12 @@ const MusicDetail = ({musicItem}: Props) => {
         const audio = audioRef.current;
         if (!audio || lyrics.length === 0) return;
 
+
         const updateLyrics = () => {
             const currentTime = audio.currentTime;
             let lineIndex = -1;
+            const element = document.getElementById('lyrics')
+            const elementWord = document.getElementById('lyrics-word')
 
             // 精确查找当前时间对应的歌词行
             for (let i = 0; i < lyrics.length; i++) {
@@ -114,29 +136,51 @@ const MusicDetail = ({musicItem}: Props) => {
             }
 
             if (lineIndex !== -1 && lineIndex !== currentLine) {
-                setCurrentLine(lineIndex);
+                const rotate = lineIndex % 2 === 0 ? 12 : -12;
+                const tl = gsap.timeline();
+                tl.to(element, {
+                    duration: 0.2,                 // 增加动画时长
+                    scale: 0.6,                    // 缩小得更多
+                    color: "#999",                 // 颜色变得更浅
+                    opacity: 0,                    //
+                    ease: "power2.out"             // 使用更强的缓动函数
+                });
+                tl.call(() => setCurrentLine(lineIndex));
+                tl.set(element, {
+                    scale: 0.6,
+                    opacity: 0,
+                    filter: "blur(15px)",
+                    y: 20,
+                    rotation: rotate
+                });
+                tl.set(
+                    elementWord,
+                    {
+                        opacity: 0,
+                    },
+                )
 
-                if (lyricsContainerRef.current) {
-                    const lineElement = lyricsContainerRef.current.children[lineIndex] as HTMLElement;
-                    if (lineElement) {
-
-                        // 确保容器已渲染完成
-                        requestAnimationFrame(() => {
-                            if (lyricsContainerRef.current && lineElement) {
-                                // 重新获取最新位置信息
-                                const containerHeight = lyricsContainerRef.current.offsetHeight;
-                                const lineTop = lineElement.offsetTop;
-                                const lineHeight = lineElement.offsetHeight;
-
-                                // 更精确的滚动定位，使当前行保持在容器中间
-                                lyricsContainerRef.current.scrollTo({
-                                    top: lineTop - (containerHeight / 2) + (lineHeight / 2),
-                                    behavior: 'smooth'
-                                });
-                            }
-                        });
+                // 淡入动画
+                tl.to(element, {
+                    duration: 0.4,
+                    scale: 1,
+                    opacity: 1,
+                    filter: "blur(0px)",
+                    y: 0,
+                    rotation: 0,
+                    ease: "power2.out"
+                });
+                tl.to(
+                    elementWord,
+                    {
+                        duration: 0.4,
+                        scale: 1,
+                        opacity: 1
                     }
-                }
+                )
+
+                tl.play();
+
             }
         };
 
@@ -152,39 +196,39 @@ const MusicDetail = ({musicItem}: Props) => {
 
     return (
         <main className="min-h-screen flex flex-col items-center">
-            <div className="flex-1 pt-32 pb-24 px-4 container max-w-6xl mx-auto">
+            <div className="flex-1 pt-32 pb-24 container max-w-6xl mx-auto">
                 {/* 图片和歌词容器 */}
-                <div className="flex flex-col md:flex-row gap-8">
-                    {/* 左侧 - 图片 */}
-                    <div className="md:w-1/2 flex flex-col items-center justify-center">
-                        <Image
-                            src={imageUrl}
-                            alt={title}
-                            width={100}
-                            height={100}
-                            className="rounded-md shadow-lg w-64 h-64 object-cover"
-                        />
-                    </div>
+                <div className="gap-8 h-[60vh]">
+
 
                     {/* 右侧 - 歌名、作者和歌词 */}
-                    <div className="md:w-1/2">
-                        <h1 className="text-4xl font-bold mb-8 text-center">{title} - {author}</h1>
+                    <div className="md:w-full h-3/4 flex justify-center items-center">
 
                         {lyrics.length > 0 ? (
                             <div
-                                ref={lyricsContainerRef}
-                                className="mt-8 h-96 overflow-y-auto text-center p-4 relative"
+                                id="lyrics"
+                                className="text-center relative justify-center space-y-6"
                             >
-                                {lyrics.map((line, index) => (
+                                {lyrics[currentLine].text.split('  ').map((line, index) => (
                                     <p
                                         key={index}
-                                        className={`py-2 px-4 transition-all duration-300 ${index === currentLine ?
-                                            'text-blue-500 font-bold text-lg' :
-                                            'text-white'}`}
+                                        className='ransition-all text-white/90 font-bold text-5xl tracking-widest z-20'
                                     >
-                                        {line.text}
+                                        {line}
                                     </p>
                                 ))}
+                                <span
+                                    id='lyrics-word'
+                                    className="absolute px-4 py-1 text-9xl font-bold z-10 text-white/50"
+                                    style={{
+                                        top: "50%",
+                                        left: "50%",
+                                        filter: "blur(4px)",
+                                        transform: "translate(-50%, -50%)"
+                                    }}
+                                >
+                                    {lyrics[currentLine].text[0]}
+                                </span>
                             </div>
                         ) : lyricsUrl && (
                             <div className="text-center mt-8">
@@ -198,16 +242,33 @@ const MusicDetail = ({musicItem}: Props) => {
                                 </a>
                             </div>
                         )}
+
                     </div>
+                </div>
+                <div className="flex items-center">
+                    {/*左侧 - 图片 */}
+                    <div className="md:w-1/2 flex flex-col items-center justify-center">
+                        <Image
+                            src={imageUrl}
+                            alt={title}
+                            width={30}
+                            height={30}
+                            className="rounded-md shadow-lg w-36 h-36 object-cover"
+                        />
+                    </div>
+                    <AudioPlayer
+                        forward={forward()}
+                        backward={backward()}
+                        src={musicUrl}
+                        author={author}
+                        title={title}
+                        ref={audioRef}/>
                 </div>
 
                 {/* 播放器 - 放在整个flex容器下方 */}
                 {musicUrl && (
                     <div className="w-full mt-8 flex justify-center">
                         <div className="relative w-full max-w-2xl">
-                            {/* 毛玻璃背景层 */}
-                            <div className="absolute inset-0 bg-white/10 backdrop-blur-lg rounded-xl -z-10"/>
-                            <AudioPlayer src={musicUrl} ref={audioRef}/>
                         </div>
                     </div>
                 )}
@@ -216,7 +277,13 @@ const MusicDetail = ({musicItem}: Props) => {
     );
 };
 
-const AudioPlayer = React.forwardRef<HTMLAudioElement, { src: string }>(({src}, forwardedRef) => {
+const AudioPlayer = React.forwardRef<HTMLAudioElement, {
+    src: string,
+    author: string,
+    title: string,
+    forward: string,
+    backward: string,
+}>(({src, author, title, backward, forward}, forwardedRef) => {
     const audioRef = useRef<HTMLAudioElement>(null);
     // 合并ref处理
     React.useImperativeHandle(forwardedRef, () => audioRef.current as HTMLAudioElement);
@@ -295,6 +362,7 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, { src: string }>(({src}, 
 
     return (
         <div className="p-4 w-full">
+
             <audio
                 src={src}
                 ref={audioRef}
@@ -302,12 +370,15 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, { src: string }>(({src}, 
             >
                 Your browser does not support the audio element.
             </audio>
-
+            <h1 className="text-2xl font-bold mb-8 text-center">{title} - {author}</h1>
             <div className="flex items-center gap-4">
-                {/* 播放按钮 */}
+                <TransitionLink
+                    className="text-white hover:text-blue-400 transition-colors" href={`/media/${forward}/`}>
+                    <Backward/>
+                </TransitionLink>
                 <button
                     onClick={togglePlay}
-                    className="p-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+                    className="text-white hover:text-blue-400 transition-colors"
                 >
                     {isPlaying ? (
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -325,6 +396,10 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, { src: string }>(({src}, 
                         </svg>
                     )}
                 </button>
+                <TransitionLink
+                    className="text-white hover:text-blue-400 transition-colors" href={`/media/${forward}/`}>
+                    <Forward/>
+                </TransitionLink>
 
                 {/* 进度条和时间显示 */}
                 <div className="flex-1 flex flex-col justify-center gap-1">
@@ -334,15 +409,11 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, { src: string }>(({src}, 
                         max="100"
                         value={progress}
                         onChange={handleSeek}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-500 transition-all duration-100"
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-500"
                         style={{
                             background: `linear-gradient(to right, #3b82f6 ${progress}%, #e5e7eb ${progress}%)`
                         }}
                     />
-                    <div className="flex justify-between text-sm text-gray-400">
-                        <span>{new Date(currentTime * 1000).toISOString().substr(14, 5)}</span>
-                        <span>{new Date(duration * 1000).toISOString().substr(14, 5)}</span>
-                    </div>
                 </div>
             </div>
         </div>
