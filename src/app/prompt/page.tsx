@@ -1,7 +1,7 @@
 "use client"
 import {Button} from "@/components/ui/button";
 import {useToast} from "@/hooks/use-toast";
-import {ClipboardDocument} from "@/components/icon/clipboard-document"
+import ClipboardDocument from "@/components/icon/clipboard-document"
 
 function PromptCard({title, content, model}:  { title: string; content: string; model: string }) {
     const {toast} = useToast();
