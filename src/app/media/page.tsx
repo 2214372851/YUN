@@ -16,7 +16,7 @@ function MediaCard({item}: MediaCardProps) {
 
     const cardContent = (
         <div
-            className="block rounded-lg border border-white/5 bg-card hover:bg-[hsl(var(--linear-gray))/0.1] group-hover:border-white/20 transition-colors overflow-hidden p-1 h-full w-full sm:w-64">
+            className="block rounded-lg border border-white/5 bg-card hover:bg-[hsl(var(--linear-gray))/0.1] group-hover:border-white/20 transition-colors overflow-hidden p-1 h-full w-full">
             <div
                 className="aspect-square rounded-md overflow-hidden flex items-center justify-center mb-4 bg-[hsl(var(--linear-gray))/0.1]">
                 <Image

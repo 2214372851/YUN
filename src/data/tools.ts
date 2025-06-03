@@ -1,15 +1,5 @@
-// src/data/tools.ts
+import {Tool} from "@/types/tools";
 
-export interface Tool {
-    id: string;
-    name: string;
-    description: string;
-    imageUrl?: string;
-    href: string;
-    category?: string; // 添加分类属性
-}
-
-// 现有工具 + 从 ai.md 添加的工具
 const baseTools: Tool[] = [
     {
         id: 'json-formatter',
@@ -44,6 +34,20 @@ const baseTools: Tool[] = [
 // 从 ai.md 提取的新工具数据
 const otherAi: Tool[] = [
     {
+        id: 'allinssl',
+        name: 'AllinSSL',
+        description: '一个用于自动申请和部署 HTTPS 证书的开源工具集，支持多种平台和服务器环境。',
+        href: 'https://github.com/allinssl/allinssl',
+        category: '开发工具'
+    },
+    {
+        id: "yaml-resume",
+        name: "YAMLResume",
+        description: "一个允许用户使用 YAML 编写简历并生成专业 PDF 的开源工具。",
+        href: "https://github.com/yamlresume/yamlresume",
+        category: "开发工具"
+    },
+    {
         id: 'regex-tester',
         name: '正则表达式测试器',
         description: '在线测试和调试正则表达式。',
@@ -70,6 +74,27 @@ const otherAi: Tool[] = [
         description: '有免费额度适合学习。',
         href: 'https://bohrium.dp.tech',
         category: 'AI 社区',
+    },
+    {
+        id: 'mathmodelagent',
+        name: 'MathModelAgent',
+        description: '一个专注于数学建模的AI智能体，提供模型构建、求解和分析的一站式服务。',
+        href: 'https://github.com/jihe520/MathModelAgent',
+        category: 'AI 衍生工具'
+    },
+    {
+        id: 'scribe',
+        name: 'Scribe',
+        description: 'AI 根据操作生成产品文档。',
+        href: 'https://scribehow.com',
+        category: 'AI 衍生工具'
+    },
+    {
+        id: 'jan-ai',
+        name: 'Jan AI',
+        description: '本地大模型使用解决方案，界面美观，无中文语言支持。一个开源 ChatGPT 替代方案，100% 离线运行。',
+        href: 'https://jan.ai/',
+        category: 'AI 衍生工具',
     },
     {
         id: 'jan-ai',
@@ -153,21 +178,21 @@ const otherAi: Tool[] = [
         name: 'TTS-Old',
         description: '文本转语音工具 (旧版)。',
         href: 'https://old.ttson.cn/',
-        category: 'AI 工具'
+        category: 'AI 衍生工具'
     },
     {
         id: 'ttson-new',
         name: 'TTS-New',
         description: '文本转语音工具 (新版)。',
         href: 'https://www.ttson.cn/',
-        category: 'AI 工具'
+        category: 'AI 衍生工具'
     },
     {
         id: 'ttsmaker',
         name: 'TTSMAKER',
         description: '文本转语音工具。',
         href: 'https://ttsmaker.cn/',
-        category: 'AI 工具'
+        category: 'AI 衍生工具'
     },
     {
         id: 'jimeng',
@@ -181,14 +206,14 @@ const otherAi: Tool[] = [
         name: 'AILogoMaker',
         description: '免费 AI LOGO 生成。',
         href: 'https://ailogomaker.io/zh-CN/app',
-        category: 'AI 工具',
+        category: 'AI 绘图',
     },
     {
         id: 'lmarena',
         name: 'Lmarena',
         description: '免费的大模型竞技场，可以体验国内外主流大模型。',
         href: 'https://lmarena.ai/',
-        category: 'AI 工具'
+        category: 'AI 社区'
     },
     {
         id: 'ocoolai',
@@ -215,6 +240,41 @@ const otherAi: Tool[] = [
 
 // 从 tools.md 提取的新工具数据
 const otherTools: Tool[] = [
+    {
+        id: 'chatlog',
+        name: 'chatlog',
+        description: '微信聊天记录管理工具',
+        href: 'https://github.com/sjzar/chatlog',
+        category: '开发工具',
+    },
+    {
+        id: 'better-auth',
+        name: 'Better Auth',
+        description: '一个用于简化前端认证和授权过程的工具或框架，旨在提供更安全、更便捷的身份验证解决方案。',
+        href: 'https://github.com/better-auth/better-auth',
+        category: '开发工具'
+    },
+    {
+        id: 'myocr',
+        name: 'MyOCR',
+        description: '一个高度可扩展和自定义的OCR系统构建框架。工程师可以轻松地训练、集成深度学习模型到针对实际应用的自定义OCR管道中。',
+        href: 'https://github.com/robbyzhaox/myocr',
+        category: '开发工具'
+    },
+    {
+        id: 'barcode-maker',
+        name: '条形码生成器',
+        description: '一个开源在线工具，用于快速创建各种类型的条形码，支持多种格式导出，适用于产品管理、库存控制等。',
+        href: 'https://barcode-maker.com/zh',
+        category: '工具集'
+    },
+    {
+        id: 'bongo-cat',
+        name: 'Bongo Cat',
+        description: '可爱的“打击乐猫”桌面宠物。',
+        href: 'https://github.com/ayangweb/BongoCat',
+        category: '趣味工具'
+    },
     {
         id: 'heroicons',
         name: 'Heroicons',
@@ -437,7 +497,14 @@ const otherTools: Tool[] = [
         name: 'vtracer',
         description: '将 JPEG/PNG 等光栅图像转换为矢量图 SVG。',
         href: 'https://github.com/visioncortex/vtracer',
-        category: '图像处理',
+        category: '文件工具',
+    },
+    {
+        id: 'next-bconvert',
+        name: 'Next BConvert',
+        description: '一个免费、快速的在线文件转换工具，支持在浏览器中进行图像、音频和文档格式的批量转换与编辑，注重用户隐私保护。',
+        href: 'https://nextbconvert.com/',
+        category: '文件工具'
     },
     {
         id: 'witsy',
@@ -510,6 +577,13 @@ const otherTools: Tool[] = [
         category: '网络工具',
     },
     {
+        id: 'ipinfo-lite',
+        name: 'IPinfo Lite',
+        description: '一个轻量级的 IP 地址查询工具，提供快速、简洁的 IP 地理位置和元数据查询服务。',
+        href: 'https://ipinfo.io/lite',
+        category: '网络工具'
+    },
+    {
         id: 'it-tools',
         name: 'IT Tools',
         description: '在线开发工具集。',
@@ -536,13 +610,6 @@ const otherTools: Tool[] = [
         description: '在线文件处理工具集 (PDF压缩等)。',
         href: 'https://docsmall.com/pdf-compress',
         category: '工具集',
-    },
-    {
-        id: 'xizhi',
-        name: '息知',
-        description: '通过 API 发送微信通知。',
-        href: 'https://xizhi.qqoq.net/',
-        category: 'API 服务',
     },
     {
         id: 'excalidraw',
