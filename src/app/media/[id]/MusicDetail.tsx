@@ -72,6 +72,17 @@ const MusicDetail = ({musicItem}: Props) => {
         return musicItems[musicItems.length - 1].id;
     }
 
+    const splitWord = (text:  string) => {
+        try {
+            const segmenter = new Intl.Segmenter("zh", { granularity: "word" })
+            const segments = [...segmenter.segment(text)];
+            segments.sort((a, b) => b.segment.length - a.segment.length);
+            return segments[0].segment;
+        } catch (error) {
+            return text[0];
+        }
+    }
+
     useEffect(() => {
         if (lyricsUrl) {
             console.log('Fetching lyrics from:', lyricsUrl);
@@ -136,7 +147,7 @@ const MusicDetail = ({musicItem}: Props) => {
             }
 
             if (lineIndex !== -1 && lineIndex !== currentLine) {
-                const rotate = lineIndex % 2 === 0 ? 12 : -12;
+                const rotate = lineIndex % 2 === 0 ? 8 : -8;
                 const tl = gsap.timeline();
                 tl.to(element, {
                     duration: 0.2,                 // 增加动画时长
@@ -147,9 +158,9 @@ const MusicDetail = ({musicItem}: Props) => {
                 });
                 tl.call(() => setCurrentLine(lineIndex));
                 tl.set(element, {
-                    scale: 0.6,
                     opacity: 0,
-                    filter: "blur(15px)",
+                    letterSpacing: "4em",
+                    filter: "blur(5px)",
                     y: 20,
                     rotation: rotate
                 });
@@ -159,12 +170,11 @@ const MusicDetail = ({musicItem}: Props) => {
                         opacity: 0,
                     },
                 )
-
                 // 淡入动画
                 tl.to(element, {
-                    duration: 0.4,
-                    scale: 1,
+                    duration: 0.6,
                     opacity: 1,
+                    letterSpacing: ".3em",
                     filter: "blur(0px)",
                     y: 0,
                     rotation: 0,
@@ -202,33 +212,32 @@ const MusicDetail = ({musicItem}: Props) => {
 
 
                     {/* 右侧 - 歌名、作者和歌词 */}
-                    <div className="md:w-full h-3/4 flex justify-center items-center">
+                    <div className="relative md:w-full h-3/4 flex justify-center items-center">
 
                         {lyrics.length > 0 ? (
-                            <div
-                                id="lyrics"
-                                className="text-center relative justify-center space-y-6"
-                            >
-                                {lyrics[currentLine].text.split('  ').map((line, index) => (
-                                    <p
-                                        key={index}
-                                        className='ransition-all text-white/90 font-bold text-5xl tracking-widest z-20'
-                                    >
-                                        {line}
-                                    </p>
-                                ))}
-                                <span
-                                    id='lyrics-word'
-                                    className="absolute px-4 py-1 text-9xl font-bold z-10 text-white/50"
-                                    style={{
-                                        top: "50%",
-                                        left: "50%",
-                                        filter: "blur(4px)",
-                                        transform: "translate(-50%, -50%)"
-                                    }}
+                            <div>
+                                <div
+                                    id="lyrics"
+                                    className="text-center justify-center space-y-6 tracking-[.3em]"
                                 >
-                                    {lyrics[currentLine].text[0]}
-                                </span>
+                                    {lyrics[currentLine].text.split(' ').map((line, index) => (
+                                        <p
+                                            key={index}
+                                            className='ransition-all text-white/90 font-bold text-5xl z-20'
+                                        >
+                                            {line}
+                                        </p>
+                                    ))}
+                                </div>
+                                <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
+                                    <div
+                                        id='lyrics-word'
+                                        className="text-[10rem] font-bold z-10 text-white/30 text-center blur-[3px]"
+
+                                    >
+                                    {splitWord(lyrics[currentLine].text)}
+                                </div>
+                                </div>
                             </div>
                         ) : lyricsUrl && (
                             <div className="text-center mt-8">
@@ -242,6 +251,7 @@ const MusicDetail = ({musicItem}: Props) => {
                                 </a>
                             </div>
                         )}
+
 
                     </div>
                 </div>
@@ -314,12 +324,7 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                 requestAnimationFrame(() => {
                     const newProgress = (newCurrentTime / newDuration) * 100;
                     setCurrentTime(newCurrentTime);
-                    setProgress(prev => {
-                        // 限制最大变化幅度为5%，避免跳跃
-                        const maxChange = 5;
-                        const diff = newProgress - prev;
-                        return prev + Math.sign(diff) * Math.min(Math.abs(diff), maxChange);
-                    });
+                    setProgress(newProgress);
                     setDuration(newDuration);
                 });
             }
@@ -373,7 +378,7 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
             <h1 className="text-2xl font-bold mb-8 text-center">{title} - {author}</h1>
             <div className="flex items-center gap-4">
                 <TransitionLink
-                    className="text-white hover:text-blue-400 transition-colors" href={`/media/${forward}/`}>
+                    className="text-white hover:text-blue-400 transition-colors" href={`/media/${backward}/`}>
                     <Backward/>
                 </TransitionLink>
                 <button
