@@ -707,6 +707,13 @@ const otherTools: Tool[] = [
 
 const mcpTools: Tool[] = [
     {
+        id: 'yun-music',
+        name: 'YUN Music',
+        description: 'YUN MCP 音乐工具',
+        href: '/blog/yun-music',
+        category: 'MCP',
+    },
+    {
         id: 'smithery',
         name: 'Smithery',
         description: 'MCP 服务集合',

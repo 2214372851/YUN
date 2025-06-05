@@ -72,9 +72,9 @@ const MusicDetail = ({musicItem}: Props) => {
         return musicItems[musicItems.length - 1].id;
     }
 
-    const splitWord = (text:  string) => {
+    const splitWord = (text: string) => {
         try {
-            const segmenter = new Intl.Segmenter("zh", { granularity: "word" })
+            const segmenter = new Intl.Segmenter("zh", {granularity: "word"})
             const segments = [...segmenter.segment(text)];
             segments.sort((a, b) => b.segment.length - a.segment.length);
             return segments[0].segment;
@@ -205,7 +205,7 @@ const MusicDetail = ({musicItem}: Props) => {
     }, [currentLine, lyrics]);
 
     return (
-        <main className="min-h-screen flex flex-col items-center">
+        <main className="min-h-screen flex flex-col items-center overflow-hidden">
             <div className="flex-1 pt-32 pb-24 container max-w-6xl mx-auto">
                 {/* 图片和歌词容器 */}
                 <div className="gap-8 h-[60vh]">
@@ -223,7 +223,7 @@ const MusicDetail = ({musicItem}: Props) => {
                                     {lyrics[currentLine].text.split(' ').map((line, index) => (
                                         <p
                                             key={index}
-                                            className='ransition-all text-white/90 font-bold text-5xl z-20'
+                                            className='ransition-all text-white/90 font-bold text-5xl z-20 whitespace-nowrap'
                                         >
                                             {line}
                                         </p>
@@ -232,11 +232,10 @@ const MusicDetail = ({musicItem}: Props) => {
                                 <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
                                     <div
                                         id='lyrics-word'
-                                        className="text-[10rem] font-bold z-10 text-white/30 text-center blur-[3px]"
-
+                                        className="text-[10rem] font-bold text-white/30 text-center blur-[3px] pointer-events-none"
                                     >
-                                    {splitWord(lyrics[currentLine].text)}
-                                </div>
+                                        {splitWord(lyrics[currentLine].text)}
+                                    </div>
                                 </div>
                             </div>
                         ) : lyricsUrl && (
@@ -376,35 +375,37 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                 Your browser does not support the audio element.
             </audio>
             <h1 className="text-2xl font-bold mb-8 text-center">{title} - {author}</h1>
-            <div className="flex items-center gap-4">
-                <TransitionLink
-                    className="text-white hover:text-blue-400 transition-colors" href={`/media/${backward}/`}>
-                    <Backward/>
-                </TransitionLink>
-                <button
-                    onClick={togglePlay}
-                    className="text-white hover:text-blue-400 transition-colors"
-                >
-                    {isPlaying ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                  d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                    ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                  d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                    )}
-                </button>
-                <TransitionLink
-                    className="text-white hover:text-blue-400 transition-colors" href={`/media/${forward}/`}>
-                    <Forward/>
-                </TransitionLink>
+            <div className="flex items-center gap-4 flex-col md:flex-row">
+                <div className="flex gap-3">
+                    <TransitionLink
+                        className="text-white hover:text-blue-400 transition-colors" href={`/media/${backward}/`}>
+                        <Backward/>
+                    </TransitionLink>
+                    <button
+                        onClick={togglePlay}
+                        className="text-white hover:text-blue-400 transition-colors"
+                    >
+                        {isPlaying ? (
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                      d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                      d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                      d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        )}
+                    </button>
+                    <TransitionLink
+                        className="text-white hover:text-blue-400 transition-colors" href={`/media/${forward}/`}>
+                        <Forward/>
+                    </TransitionLink>
+                </div>
 
                 {/* 进度条和时间显示 */}
                 <div className="flex-1 flex flex-col justify-center gap-1">

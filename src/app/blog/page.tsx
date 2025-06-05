@@ -17,7 +17,7 @@ function FeaturedPost({slug, category, title, imageUrl, excerpt}: BlogPostProps)
             className="block rounded-lg border border-white/5 hover:border-white/20  bg-card  transition-colors overflow-hidden p-1 h-full"
         >
             <div
-                className="h-48 rounded-md overflow-hidden flex items-center justify-center mb-4">
+                className="h-64 rounded-md overflow-hidden flex items-center justify-center mb-4">
                 {imageUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={imageUrl} alt={title} width={0} height={0} className="w-full h-full object-cover"
@@ -443,7 +443,15 @@ function FeaturedPost({slug, category, title, imageUrl, excerpt}: BlogPostProps)
                 )}
             </div>
             <div className="p-4">
-                <div className="text-sm text-muted-foreground mb-2">{category}</div>
+                <div className="text-sm text-muted-foreground mb-2">
+                    {
+                        category.split(',').map(item => (
+                            <span key={item} className="inline-block border px-1 backdrop-blur-xs text-[hsl(var(--linear-gray))] rounded-sm py-1 text-xs font-semibold mr-2">
+                                {item}
+                            </span>
+                        ))
+                    }
+                </div>
                 <h3 className="text-xl font-semibold mb-2">{title}</h3>
                 {excerpt && (
                     <p className="text-sm text-muted-foreground line-clamp-2">{excerpt}</p>
