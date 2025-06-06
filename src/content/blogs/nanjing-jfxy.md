@@ -1,7 +1,7 @@
 ---
 title: "于万人中万幸得以相逢"
 category: "游记"
-excerpt: "山色有无中，不如就春风"
+excerpt: "山色有无中，不如就春风。"
 lastEdited: "2025年5月5日"
 tags: ["游记", "南京", "夫子庙", "云锦", "银临", "李常超"]
 imageUrl: "https://minio-endpoint.bybxbwg.fun/docs/IMG_20250501_211701.jpg"

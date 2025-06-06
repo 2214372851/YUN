@@ -327,6 +327,9 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                     setDuration(newDuration);
                 });
             }
+            if (newCurrentTime >= newDuration) {
+                setIsPlaying(false);
+            }
         }
     };
 

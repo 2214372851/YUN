@@ -1,7 +1,7 @@
 ---
 title: 模型调用 MCP
 category: AI
-excerpt: 目前模型调用 MCP 的两种做法
+excerpt: 目前模型调用 MCP 的两种做法。
 lastEdited: 2025年3月31日
 tags: [AI, MCP,Prompt,FuntionCall]
 imageUrl: http://minio-endpoint.bybxbwg.fun/docs/mcp.jpg
@@ -51,7 +51,7 @@ Model Context Protocol (MCP) 是一个开放协议，它使 LLM 应用与外部�
         "github.com/modelcontextprotocol/servers/tree/main/src/github": {
             "command": "cmd",
             "args": [
-                "/c"
+                "/c",
                 "npx",
                 "-y",
                 "@modelcontextprotocol/server-github"
@@ -189,7 +189,7 @@ Fucntion calling 是将 LLM 链接外部工具的一种方式。在 `openai` 中
 
 注意事项：
 1. 必须使用上述 XML 格式，不接受 function_call 格式
-2. 确保 <name> 标签中的工具名称准确无误
+2. 确保 <name/> 标签中的工具名称准确无误
 3. 参数必须使用有效的 JSON 格式
 4. 等待工具执行完成后再继续对话
 5. 验证参数符合工具的要求规范

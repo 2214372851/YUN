@@ -118,7 +118,7 @@ export const mediaItems: MediaItem[] = [
         id: 'djx-hz',
         title: '盗将行',
         imageUrl: 'https://minio-endpoint.bybxbwg.fun/docs/djx-hz.jpg',
-        author: '花粥&马雨阳',
+        author: '花粥/马雨阳',
         musicUrl: 'https://minio-endpoint.bybxbwg.fun/docs/djx-hz.mp3',
         lyricsUrl: 'https://minio-endpoint.bybxbwg.fun/docs/djx-hz.lrc',
     },
