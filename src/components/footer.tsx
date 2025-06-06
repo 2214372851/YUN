@@ -8,7 +8,7 @@ const footerLinks = [
     {
         title: "Service",
         links: [
-            {href: "https://ai.bybxbwg.fun", label: "Open WebUI"},
+            {href: "https://ai.bybxbwg.fun", label: "Lobe Chat"},
             {href: "https://minio-console.bybxbwg.fun/", label: "OSS"},
             {href: "https://uptime.bybxbwg.fun/status/aliyun", label: "Service Status"},
             {href: "https://status.bybxbwg.fun/", label: "Server Status"},

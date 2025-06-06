@@ -1,6 +1,7 @@
 "use client";
 
 import React, {useEffect, useRef, useState} from 'react';
+import {useHotkeys} from "react-hotkeys-hook";
 import {notFound} from 'next/navigation';
 import {MediaItem} from '@/types/media';
 import gsap from "gsap";
@@ -9,6 +10,11 @@ import Forward from "@/components/icon/forward";
 import Backward from "@/components/icon/backward";
 import {getAllMediaItems} from "@/data/media";
 import TransitionLink from "@/components/TransitionLink";
+import NumberedList from "@/components/icon/numbered-list";
+import extractThemeColors from "@/lib/getImgColor";
+import {useToast} from "@/hooks/use-toast";
+import {darkenIfNearWhite} from "@/lib/utils";
+
 
 interface LyricLine {
     time: number;
@@ -58,6 +64,9 @@ const MusicDetail = ({musicItem}: Props) => {
     const [currentLine, setCurrentLine] = useState(0);
     const musicItems = getAllMediaItems();
     const selfIndex = musicItems.findIndex((item) => item.id === id);
+    const {toast} = useToast();
+    const imgRef = useRef<HTMLImageElement>(null);
+    const mediaBgRef = useRef<HTMLDivElement>(null);
 
     const forward = () => {
         if (selfIndex < musicItems.length - 1) {
@@ -85,7 +94,6 @@ const MusicDetail = ({musicItem}: Props) => {
 
     useEffect(() => {
         if (lyricsUrl) {
-            console.log('Fetching lyrics from:', lyricsUrl);
             const fetchLyrics = async (retryCount = 0) => {
                 try {
                     const response = await fetch(lyricsUrl, {
@@ -174,7 +182,7 @@ const MusicDetail = ({musicItem}: Props) => {
                 tl.to(element, {
                     duration: 0.6,
                     opacity: 1,
-                    letterSpacing: ".3em",
+                    letterSpacing: ".5em",
                     filter: "blur(0px)",
                     y: 0,
                     rotation: 0,
@@ -196,91 +204,127 @@ const MusicDetail = ({musicItem}: Props) => {
 
         // 提高更新频率以获得更流畅的效果
         audio.addEventListener('timeupdate', updateLyrics);
+        audio.onerror = () => {
+            console.error('Audio playback error:', audio.error);
+            toast({
+                title: "播放失败",
+                description: audio.error?.message,
+                variant: "destructive"
+            })
+        };
         const interval = setInterval(updateLyrics, 100);
 
         return () => {
             audio.removeEventListener('timeupdate', updateLyrics);
             clearInterval(interval);
         };
-    }, [currentLine, lyrics]);
+    }, [currentLine, lyrics, toast]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const img = imgRef.current;
+            if (img && img.complete) {
+                extractThemeColors(3, img, 0).then(colors => {
+                    const mediaBg = mediaBgRef.current;
+                    if (mediaBg) {
+                        const darkerColors = colors.map(c => darkenIfNearWhite(c, 0.5));
+                        mediaBg.style.background = `
+                          radial-gradient(circle at 30% 30%, ${darkerColors[0]} 0%, transparent 60%),
+                          radial-gradient(circle at 70% 40%, ${darkerColors[1]} 0%, transparent 60%),
+                          radial-gradient(circle at 50% 70%, ${darkerColors[2]} 0%, transparent 60%)
+                        `;
+                        mediaBg.style.backgroundRepeat = 'no-repeat';
+                        mediaBg.style.backgroundSize = 'cover';            // 模糊滤镜
+                    }
+                })
+                clearInterval(interval);
+            }
+        })
+    }, [mediaBgRef]);
 
     return (
-        <main className="min-h-screen flex flex-col items-center overflow-hidden">
-            <div className="flex-1 pt-32 pb-24 container max-w-6xl mx-auto">
-                {/* 图片和歌词容器 */}
-                <div className="gap-8 h-[60vh]">
+        <main className="min-h-screen flex flex-col items-center overflow-hidden ">
+            <div className="w-full" ref={mediaBgRef}>
+                <div className="max-w-6xl mx-auto container flex-1 pt-32">
+                    {/* 图片和歌词容器 */}
+                    <div className="gap-8 h-[60vh]">
 
 
-                    {/* 右侧 - 歌名、作者和歌词 */}
-                    <div className="relative md:w-full h-3/4 flex justify-center items-center">
+                        {/* 右侧 - 歌名、作者和歌词 */}
+                        <div className="relative md:w-full h-3/4 flex justify-center items-center">
 
-                        {lyrics.length > 0 ? (
-                            <div>
-                                <div
-                                    id="lyrics"
-                                    className="text-center justify-center space-y-6 tracking-[.3em]"
-                                >
-                                    {lyrics[currentLine].text.split(' ').map((line, index) => (
-                                        <p
-                                            key={index}
-                                            className='ransition-all text-white/90 font-bold text-5xl z-20 whitespace-nowrap'
-                                        >
-                                            {line}
-                                        </p>
-                                    ))}
-                                </div>
-                                <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
+                            {lyrics.length > 0 ? (
+                                <div>
                                     <div
-                                        id='lyrics-word'
-                                        className="text-[10rem] font-bold text-white/30 text-center blur-[3px] pointer-events-none"
+                                        id="lyrics"
+                                        className="text-center justify-center space-y-6 tracking-[.3em]"
                                     >
-                                        {splitWord(lyrics[currentLine].text)}
+                                        {lyrics[currentLine].text.split(' ').map((line, index) => (
+                                            <p
+                                                key={index}
+                                                className='ransition-all text-white font-bold text-5xl z-20 whitespace-nowrap'
+                                            >
+                                                {line}
+                                            </p>
+                                        ))}
+                                    </div>
+                                    <div
+                                        className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
+                                        <div
+                                            id='lyrics-word'
+                                            className="text-[6rem] font-bold text-white/50 text-center blur-[3px] pointer-events-none"
+                                        >
+                                            {currentLine == 0 ? lyrics[currentLine].text.split(' ')[0] : splitWord(lyrics[currentLine].text)}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ) : lyricsUrl && (
-                            <div className="text-center mt-8">
-                                <a
-                                    href={lyricsUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-block text-blue-500 hover:text-blue-400 transition-colors"
-                                >
-                                    查看歌词
-                                </a>
-                            </div>
-                        )}
+                            ) : lyricsUrl && (
+                                <div className="text-center mt-8">
+                                    <a
+                                        href={lyricsUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-block text-blue-500 hover:text-blue-400 transition-colors"
+                                    >
+                                        查看歌词
+                                    </a>
+                                </div>
+                            )}
 
 
-                    </div>
-                </div>
-                <div className="flex items-center">
-                    {/*左侧 - 图片 */}
-                    <div className="md:w-1/2 flex flex-col items-center justify-center">
-                        <Image
-                            src={imageUrl}
-                            alt={title}
-                            width={30}
-                            height={30}
-                            className="rounded-md shadow-lg w-36 h-36 object-cover"
-                        />
-                    </div>
-                    <AudioPlayer
-                        forward={forward()}
-                        backward={backward()}
-                        src={musicUrl}
-                        author={author}
-                        title={title}
-                        ref={audioRef}/>
-                </div>
-
-                {/* 播放器 - 放在整个flex容器下方 */}
-                {musicUrl && (
-                    <div className="w-full mt-8 flex justify-center">
-                        <div className="relative w-full max-w-2xl">
                         </div>
                     </div>
-                )}
+                    <div className="flex items-center">
+                        {/*左侧 - 图片 */}
+                        <div className="md:w-1/2 flex flex-col items-center justify-center">
+                            <Image
+                                crossOrigin={"anonymous"}
+                                ref={imgRef}
+                                src={imageUrl}
+                                alt={title}
+                                width={30}
+                                height={30}
+                                className="rounded-md shadow-lg w-36 h-36 object-cover"
+                            />
+                        </div>
+                        <AudioPlayer
+                            forward={forward()}
+                            backward={backward()}
+                            src={musicUrl}
+                            author={author}
+                            title={title}
+                            imageUrl={imageUrl}
+                            ref={audioRef}/>
+                    </div>
+
+                    {/* 播放器 - 放在整个flex容器下方 */}
+                    {musicUrl && (
+                        <div className="w-full mt-8 flex justify-center">
+                            <div className="relative w-full max-w-2xl">
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
         </main>
     );
@@ -292,7 +336,8 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
     title: string,
     forward: string,
     backward: string,
-}>(({src, author, title, backward, forward}, forwardedRef) => {
+    imageUrl: string
+}>(({src, author, title, backward, forward, imageUrl}, forwardedRef) => {
     const audioRef = useRef<HTMLAudioElement>(null);
     // 合并ref处理
     React.useImperativeHandle(forwardedRef, () => audioRef.current as HTMLAudioElement);
@@ -300,38 +345,24 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
     const [progress, setProgress] = useState(0);
     const [duration, setDuration] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
+    const [autoPlay, setAutoPlay] = useState(false);
+    const {toast} = useToast();
+
 
     const togglePlay = () => {
         const audio = audioRef.current;
         if (audio) {
-            if (isPlaying) {
+            if (!audio.paused && !audio.ended && audio.readyState > 2) {
                 audio.pause();
+                navigator.mediaSession.playbackState = 'paused';
             } else {
                 audio.play();
+                navigator.mediaSession.playbackState = 'playing';
             }
-            setIsPlaying(!isPlaying);
+            setIsPlaying(isPlaying => !isPlaying);
         }
     };
 
-    const handleTimeUpdate = () => {
-        const audio = audioRef.current;
-        if (audio) {
-            const newCurrentTime = audio.currentTime;
-            const newDuration = audio.duration || duration;
-            if (newDuration > 0) {
-                // 使用requestAnimationFrame实现平滑过渡
-                requestAnimationFrame(() => {
-                    const newProgress = (newCurrentTime / newDuration) * 100;
-                    setCurrentTime(newCurrentTime);
-                    setProgress(newProgress);
-                    setDuration(newDuration);
-                });
-            }
-            if (newCurrentTime >= newDuration) {
-                setIsPlaying(false);
-            }
-        }
-    };
 
     const handleLoadedMetadata = () => {
         const audio = audioRef.current;
@@ -355,21 +386,107 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
         }
     };
 
+    const autoPlayCallback = () => {
+        setAutoPlay(autoPlay => {
+            window.localStorage.setItem('autoPlay', (!autoPlay).toString())
+            return !autoPlay
+        })
+        toast({
+            title: autoPlay ? '已开启自动播放' : '已关闭自动播放',
+            duration: 3000,
+        })
+    }
+
+
     useEffect(() => {
         const audio = audioRef.current;
         if (audio) {
+            const handleTimeUpdate = () => {
+                const audio = audioRef.current;
+                if (audio) {
+                    const newCurrentTime = audio.currentTime;
+                    const newDuration = audio.duration || duration;
+                    if (newDuration > 0) {
+                        const newProgress = (newCurrentTime / newDuration) * 100;
+                        setCurrentTime(newCurrentTime);
+                        setProgress(newProgress);
+                        setDuration(newDuration);
+                    }
+                    if (newCurrentTime >= newDuration) {
+                        setIsPlaying(false);
+                        claerState()
+
+                    }
+                }
+            };
+
+            const nexttrackCallback = () => {
+                claerState()
+                document.getElementById('forward')?.click();
+            }
+
+            const previoustrackCallback = () => {
+                claerState()
+                document.getElementById('backward')?.click();
+            }
+
             audio.addEventListener('timeupdate', handleTimeUpdate);
             audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+            if (navigator.mediaSession) {
+                console.log('[Debug] MediaSession support')
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: title,
+                    artist: author,
+                    album: title,
+                    artwork: [
+                        {
+                            src: imageUrl,
+                            sizes: '512x512',
+                            type: 'image/png',
+                        },
+                    ],
+                });
+
+                navigator.mediaSession.setActionHandler('play', togglePlay);
+                navigator.mediaSession.setActionHandler('pause', togglePlay);
+                navigator.mediaSession.setActionHandler('previoustrack', previoustrackCallback);
+                navigator.mediaSession.setActionHandler('nexttrack', nexttrackCallback);
+            }
+            setIsPlaying(!audio.paused && !audio.ended && audio.readyState > 2)
             return () => {
                 audio.removeEventListener('timeupdate', handleTimeUpdate);
                 audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
             };
         }
-    });
+    }, [author, duration, imageUrl, title]);
+
+    useEffect(() => {
+        const autoPlayConfig = window.localStorage.getItem('autoPlay')
+        if (autoPlayConfig && autoPlayConfig === 'true') {
+            setAutoPlay(true);
+            togglePlay()
+        } else {
+            setAutoPlay(false);
+        }
+    }, []);
+
+    useEffect(() => {
+
+    }, []);
+
+    const claerState = () => {
+        const audio = audioRef.current;
+        navigator.mediaSession.playbackState = 'paused';
+        if (audio) {
+            audio.currentTime = 0
+            audio.pause()
+        }
+    }
+
+    useHotkeys("space", togglePlay, {preventDefault: true})
 
     return (
         <div className="p-4 w-full">
-
             <audio
                 src={src}
                 ref={audioRef}
@@ -381,6 +498,8 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
             <div className="flex items-center gap-4 flex-col md:flex-row">
                 <div className="flex gap-3">
                     <TransitionLink
+                        id="backward"
+                        callback={() => claerState()}
                         className="text-white hover:text-blue-400 transition-colors" href={`/media/${backward}/`}>
                         <Backward/>
                     </TransitionLink>
@@ -405,9 +524,19 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                         )}
                     </button>
                     <TransitionLink
+                        id="forward"
+                        callback={() => claerState()}
                         className="text-white hover:text-blue-400 transition-colors" href={`/media/${forward}/`}>
                         <Forward/>
                     </TransitionLink>
+
+                    <button
+                        onClick={autoPlayCallback}
+                        className={`hover:bg-blue-600 rounded-sm transition-colors ${autoPlay ? 'bg-blue-400' : 'text-white bg-transparent'}`}
+                    >
+                        <NumberedList/>
+                    </button>
+
                 </div>
 
                 {/* 进度条和时间显示 */}
