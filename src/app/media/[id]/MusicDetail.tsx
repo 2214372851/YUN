@@ -355,11 +355,14 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
             if (!audio.paused && !audio.ended && audio.readyState > 2) {
                 audio.pause();
                 navigator.mediaSession.playbackState = 'paused';
+                setIsPlaying(false)
             } else {
-                audio.play();
-                navigator.mediaSession.playbackState = 'playing';
+                audio.play().then(() => {
+                    navigator.mediaSession.playbackState = 'playing';
+                    setIsPlaying(true)
+                });
+
             }
-            setIsPlaying(isPlaying => !isPlaying);
         }
     };
 
@@ -392,7 +395,7 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
             return !autoPlay
         })
         toast({
-            title: autoPlay ? '已开启自动播放' : '已关闭自动播放',
+            title: !autoPlay ? '已开启自动播放' : '已关闭自动播放',
             duration: 3000,
         })
     }

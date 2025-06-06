@@ -34,6 +34,13 @@ const baseTools: Tool[] = [
 // 从 ai.md 提取的新工具数据
 const otherAi: Tool[] = [
     {
+        id: 'shadcn-ui',
+        name: 'shadcn/ui',
+        description: 'shadcn/ui 提供设计精美、易于访问的组件以及一个与各种框架兼容的代码分发平台。',
+        href: 'https://ui.shadcn.com/',
+        category: '开发工具',
+    },
+    {
         id: 'allinssl',
         name: 'AllinSSL',
         description: '一个用于自动申请和部署 HTTPS 证书的开源工具集，支持多种平台和服务器环境。',
