@@ -2,7 +2,8 @@
 "use client"; // 添加 use client 指令
 
 import React, {useEffect, useMemo, useState} from 'react'; // 引入 useState, useEffect, useMemo
-import {getAllTools, Tool} from '@/data/tools';
+import {getAllTools} from '@/data/tools';
+import {Tool} from "@/types/tools";
 import {Button} from "@/components/ui/button"; // 引入 Button 用于筛选器
 import {cn} from "@/lib/utils";
 import TransitionLink from "@/components/TransitionLink"; // 引入 cn 用于条件样式

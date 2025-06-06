@@ -4,12 +4,13 @@ import {animatePageOut} from "@/lib/utils";
 
 interface Props {
     href: string
+    id?: string
     className?: string
     children?: React.ReactNode
     callback?: () => void
 }
 
-const TransitionLink = ({href, className, children, callback}: Props) => {
+const TransitionLink = ({id, href, className, children, callback}: Props) => {
     const router = useRouter()
     const pathname = usePathname()
 
@@ -25,6 +26,7 @@ const TransitionLink = ({href, className, children, callback}: Props) => {
 
     return (
         <div
+            id={id}
             className={`${className} hover:cursor-pointer`}
             onClick={handleClick}
         >

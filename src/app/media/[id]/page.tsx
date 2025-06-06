@@ -1,8 +1,8 @@
-import { getMediaItemById, getAllMediaItems } from '@/data/media';
-import { MediaItem } from '@/types/media';
-import { default as MusicDetail } from './MusicDetail';
+import {getAllMediaItems, getMediaItemById} from '@/data/media';
+import {MediaItem} from '@/types/media';
+import {default as MusicDetail} from './MusicDetail';
 import Script from "next/script";
-import { Metadata } from "next";
+import {Metadata} from "next";
 
 export async function generateStaticParams() {
   const mediaItems = getAllMediaItems();
@@ -11,8 +11,8 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const musicItem = getMediaItemById(params.id) as MediaItem;
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const musicItem = getMediaItemById((await params).id) as MediaItem;
   
   return {
     title: `${musicItem.title} - YunHai的音乐`,
@@ -37,8 +37,9 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   };
 }
 
-export default function Page({ params }: { params: { id: string } }) {
-  const musicItem = getMediaItemById(params.id) as MediaItem;
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+  const pageParams = await params;
+  const musicItem = getMediaItemById(pageParams.id) as MediaItem;
   
   // 生成结构化数据
   const structuredData = {
@@ -47,7 +48,7 @@ export default function Page({ params }: { params: { id: string } }) {
     "name": musicItem.title,
     "description": `欣赏${musicItem.title}的音乐作品`,
     "image": musicItem.imageUrl ? [musicItem.imageUrl] : undefined,
-    "url": `https://bybxbwg.fun/media/${params.id}`,
+    "url": `https://bybxbwg.fun/media/${pageParams.id}`,
     "byArtist": {
       "@type": "MusicGroup",
       "name": "YunHai"
