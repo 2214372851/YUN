@@ -48,7 +48,7 @@ function PromptPage() {
             id: "tools",
             title: "工具项 Prompt",
             model:  "Gemini",
-            content: "请根据提供的URL，分析其内容并生成一个不含注释的JavaScript对象。\n\n**JavaScript 对象结构示例:**\n```js\n{\n    id: 'json-formatter',\n    name: 'JSON 格式化工具',\n    description: '在线格式化、校验和美化 JSON 数据。',\n    href: '/tools/json-formatter',\n    category: '开发工具',\n}\n```\n字段生成规则:\n\nid: 原始名称小写，空格替换为连字符。\nname: 网页内容的原始名称。\ndescription: 基于网页内容的简洁描述（若特定语言工具需注明）。\nhref: 提供的URL。\ncategory: 从以下列表中选择最匹配的分类，请勿扩充： 开发工具,设计工具,AI 社区,AI 衍生工具,AI 模型,AI 绘图,系统工具,网络工具,命令行工具,文件工具,绘图工具,下载工具,云存储,开发环境,工具集,趣味工具,影音娱乐,CDN 服务,API 服务,数据集,图床,监控,设计资源,MCP。"
+            content: "请根据提供的URL，分析其内容并生成一个不含注释的JavaScript对象。\n\n**JavaScript 对象结构示例:**\n```js\n{\n    id: 'json-formatter',\n    name: 'JSON 格式化工具',\n    description: '在线格式化、校验和美化 JSON 数据。',\n    href: '/tools/json-formatter',\n    category: '开发工具',\n}\n```\n字段生成规则:\n\nid: 原始名称小写，空格替换为连字符。\nname: 网页的标题（注意去除描述）。\ndescription: 基于网页内容的简洁描述（若特定语言工具需注明）。\nhref: 提供的URL。\ncategory: 从以下列表中选择最匹配的分类，请勿扩充： 开发工具,设计工具,AI 社区,AI 衍生工具,AI 模型,AI 绘图,系统工具,网络工具,命令行工具,文件工具,绘图工具,下载工具,云存储,开发环境,工具集,趣味工具,影音娱乐,CDN 服务,API 服务,数据集,图床,监控,设计资源,MCP。"
         },
         {
             id: "travels",

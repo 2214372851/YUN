@@ -68,7 +68,7 @@ function ProductDiagram() {
 
 export function Hero() {
     return (
-        <section className="min-h-screen flex flex-col items-center justify-center text-center px-4 pt-32 pb-24">
+        <section className="min-h-screen flex flex-col items-center justify-center text-center px-4 pt-10 pb-24">
             <motion.div
                 initial={{opacity: 0, y: -100}}
                 animate={{opacity: 1, y: 0}}

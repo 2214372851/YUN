@@ -507,6 +507,27 @@ const otherTools: Tool[] = [
         category: '文件工具'
     },
     {
+        id: 'cherry-studio',
+        name: 'Cherry Studio',
+        description: '一个多模型对话、知识库管理、AI绘图和翻译于一体的AI助手平台。',
+        href: 'https://docs.cherry-ai.com/',
+        category: 'AI 衍生工具',
+    },
+    {
+        id: 'chatwise',
+        name: 'ChatWise',
+        description: '最快的AI聊天机器人，支持多种LLM模型，并提供多模态聊天、本地数据存储和网页搜索等功能。',
+        href: 'https://chatwise.app/',
+        category: 'AI 衍生工具',
+    },
+    {
+        id: '5ire-ai-zhushou',
+        name: '5ire AI 助手',
+        description: '免费开源的桌面 AI 助手和模型上下文协议（MCP）客户端。',
+        href: 'https://5ire.app/#supported-providers',
+        category: 'AI 衍生工具',
+    },
+    {
         id: 'witsy',
         name: 'Witsy',
         description: '一个包含多种功能的桌面端GPT助手 (聊天, 草稿板, 智能指令等)。',
@@ -706,6 +727,34 @@ const otherTools: Tool[] = [
 ];
 
 const mcpTools: Tool[] = [
+    {
+        id: 'yun-music',
+        name: 'YUN Music',
+        description: 'YUN MCP 音乐工具',
+        href: '/blog/yun-music',
+        category: 'MCP',
+    },
+    {
+        id: 'pydantic-python-mcp',
+        name: 'mcp-run-python',
+        description: 'Pydantic 官方出品，在安全的沙盒环境中运行 Python 代码，适合开发编程代理。',
+        href: 'https://github.com/pydantic/pydantic-ai/tree/main/mcp-run-python',
+        category: '开发工具',
+    },
+    {
+        id: 'jetbrains-mcp',
+        name: 'JetBrains MCP',
+        description: 'JetBrains 出品，为 JetBrains IDE 提供模型上下文协议（MCP）服务器功能。',
+        href: 'https://github.com/JetBrains/mcp-jetbrains',
+        category: 'MCP',
+    },
+    {
+        id: 'playwright-mcp',
+        name: 'Playwright MCP',
+        description: '微软的Playwright MCP服务器，为大型语言模型提供浏览器自动化能力，通过结构化可访问性快照与网页交互。',
+        href: 'https://github.com/microsoft/playwright-mcp',
+        category: 'MCP',
+    },
     {
         id: 'smithery',
         name: 'Smithery',

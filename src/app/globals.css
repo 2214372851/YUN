@@ -165,6 +165,7 @@ input[type="color"]::-moz-color-swatch {
     code {
         padding: 5px 10px;
     }
+
     code::before,
     code::after {
         content: none;
@@ -202,6 +203,43 @@ input[type="color"]::-moz-color-swatch {
 .prompt-copy-btn {
     opacity: 0;
 }
+
 .prompt-card:hover .prompt-copy-btn {
     opacity: 1;
+}
+
+@keyframes buttonBorderSpin {
+    0% {
+        --border-gradient-angle: 0deg;
+    }
+    100% {
+        --border-gradient-angle: 360deg;
+    }
+}
+
+@property --border-gradient-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+}
+
+.announcement {
+    position: relative;
+    background-image: conic-gradient(
+            from var(--border-gradient-angle) at 50% 50%,
+            transparent,
+            #ffffff 5%,
+            transparent 10%
+    );
+    background-size: contain;
+    padding: 1px;
+    animation: buttonBorderSpin 8s linear infinite;
+
+
+    .announcement-content {
+        background-color: hsla(var(--background));
+        color: white;
+    }
+
+
 }

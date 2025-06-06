@@ -1,7 +1,7 @@
 ---
 title: 消除异步传染性
 category: JavaScript
-excerpt: JavaScript 中消除异步函数的传染性
+excerpt: JavaScript 中消除异步函数的传染性。
 lastEdited: 2025年4月23日
 tags: [JavaScript,Promise]
 ---

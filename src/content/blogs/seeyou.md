@@ -1,7 +1,7 @@
 ---
 title: "别离是为了更好的相遇"
 category: "记录"
-excerpt: 所有的相遇都会别离，但别离又是为了下次更好的相遇
+excerpt: 所有的相遇都会别离，但别离又是为了下次更好的相遇。
 lastEdited: 2025年4月17日
 tags: [感想,记录]
 imageUrl: https://minio-endpoint.bybxbwg.fun/docs/IMG_20250416_114840.jpg
