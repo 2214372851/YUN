@@ -182,7 +182,7 @@ const MusicDetail = ({musicItem}: Props) => {
                 tl.to(element, {
                     duration: 0.6,
                     opacity: 1,
-                    letterSpacing: ".5em",
+                    letterSpacing: ".3em",
                     filter: "blur(0px)",
                     y: 0,
                     rotation: 0,
@@ -244,20 +244,18 @@ const MusicDetail = ({musicItem}: Props) => {
 
     return (
         <main className="min-h-screen flex flex-col items-center overflow-hidden ">
-            <div className="w-full" ref={mediaBgRef}>
-                <div className="max-w-6xl mx-auto container flex-1 pt-32">
-                    {/* 图片和歌词容器 */}
-                    <div className="gap-8 h-[60vh]">
-
+            <div className="w-full h-screen" ref={mediaBgRef}>
+                <div className="max-w-6xl mx-auto container flex-1 pt-32 flex flex-col justify-between h-full">
+                    <div className="gap-8 h-full flex items-center justify-center">
 
                         {/* 右侧 - 歌名、作者和歌词 */}
-                        <div className="relative md:w-full h-3/4 flex justify-center items-center">
+                        <div className="relative md:w-full h-auto flex justify-center items-center">
 
                             {lyrics.length > 0 ? (
                                 <div>
                                     <div
                                         id="lyrics"
-                                        className="text-center justify-center space-y-6 tracking-[.3em]"
+                                        className="text-center justify-center space-y-16 tracking-[.3em]"
                                     >
                                         {lyrics[currentLine].text.split(' ').map((line, index) => (
                                             <p
@@ -272,7 +270,7 @@ const MusicDetail = ({musicItem}: Props) => {
                                         className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
                                         <div
                                             id='lyrics-word'
-                                            className="text-[6rem] font-bold text-white/50 text-center blur-[3px] pointer-events-none"
+                                            className="text-8xl font-bold text-white/50 text-center blur-[3px] pointer-events-none"
                                         >
                                             {currentLine == 0 ? lyrics[currentLine].text.split(' ')[0] : splitWord(lyrics[currentLine].text)}
                                         </div>
@@ -294,7 +292,7 @@ const MusicDetail = ({musicItem}: Props) => {
 
                         </div>
                     </div>
-                    <div className="flex items-center">
+                    <div className="flex items-center mb-10">
                         {/*左侧 - 图片 */}
                         <div className="md:w-1/2 flex flex-col items-center justify-center">
                             <Image
@@ -316,14 +314,6 @@ const MusicDetail = ({musicItem}: Props) => {
                             imageUrl={imageUrl}
                             ref={audioRef}/>
                     </div>
-
-                    {/* 播放器 - 放在整个flex容器下方 */}
-                    {musicUrl && (
-                        <div className="w-full mt-8 flex justify-center">
-                            <div className="relative w-full max-w-2xl">
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
         </main>
@@ -347,6 +337,7 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
     const [currentTime, setCurrentTime] = useState(0);
     const [autoPlay, setAutoPlay] = useState(false);
     const {toast} = useToast();
+    const nextToast = useRef(false)
 
 
     const togglePlay = () => {
@@ -361,7 +352,6 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                     navigator.mediaSession.playbackState = 'playing';
                     setIsPlaying(true)
                 });
-
             }
         }
     };
@@ -415,10 +405,17 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                         setProgress(newProgress);
                         setDuration(newDuration);
                     }
-                    if (newCurrentTime >= newDuration) {
-                        setIsPlaying(false);
-                        claerState()
-
+                    if (autoPlay) {
+                        if (!nextToast.current && newDuration - newCurrentTime <= 10) {
+                            setIsPlaying(false);
+                            toast({
+                                title: '即将播放下一首',
+                                duration: 3000,
+                            })
+                            nextToast.current = true
+                        } else if (newCurrentTime >= newDuration) {
+                            nexttrackCallback()
+                        }
                     }
                 }
             };
@@ -440,7 +437,6 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                 navigator.mediaSession.metadata = new MediaMetadata({
                     title: title,
                     artist: author,
-                    album: title,
                     artwork: [
                         {
                             src: imageUrl,
@@ -461,7 +457,7 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                 audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
             };
         }
-    }, [author, duration, imageUrl, title]);
+    }, [author, autoPlay, duration, imageUrl, title, toast]);
 
     useEffect(() => {
         const autoPlayConfig = window.localStorage.getItem('autoPlay')
@@ -543,7 +539,7 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                 </div>
 
                 {/* 进度条和时间显示 */}
-                <div className="flex-1 flex flex-col justify-center gap-1">
+                <div className="flex-1 flex flex-col justify-center gap-1 w-full">
                     <input
                         type="range"
                         min="0"
