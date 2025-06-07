@@ -245,13 +245,11 @@ const MusicDetail = ({musicItem}: Props) => {
     return (
         <main className="min-h-screen flex flex-col items-center overflow-hidden ">
             <div className="w-full h-screen" ref={mediaBgRef}>
-                <div className="max-w-6xl mx-auto container flex-1 pt-32">
-                    {/* 图片和歌词容器 */}
-                    <div className="gap-8 h-[60vh]">
-
+                <div className="max-w-6xl mx-auto container flex-1 pt-32 flex flex-col justify-between h-full">
+                    <div className="gap-8 h-full flex items-center justify-center">
 
                         {/* 右侧 - 歌名、作者和歌词 */}
-                        <div className="relative md:w-full h-3/4 flex justify-center items-center">
+                        <div className="relative md:w-full h-auto flex justify-center items-center">
 
                             {lyrics.length > 0 ? (
                                 <div>
@@ -294,7 +292,7 @@ const MusicDetail = ({musicItem}: Props) => {
 
                         </div>
                     </div>
-                    <div className="flex items-center">
+                    <div className="flex items-center mb-10">
                         {/*左侧 - 图片 */}
                         <div className="md:w-1/2 flex flex-col items-center justify-center">
                             <Image
@@ -439,7 +437,6 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                 navigator.mediaSession.metadata = new MediaMetadata({
                     title: title,
                     artist: author,
-                    album: title,
                     artwork: [
                         {
                             src: imageUrl,
@@ -542,7 +539,7 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                 </div>
 
                 {/* 进度条和时间显示 */}
-                <div className="flex-1 flex flex-col justify-center gap-1">
+                <div className="flex-1 flex flex-col justify-center gap-1 w-full">
                     <input
                         type="range"
                         min="0"
