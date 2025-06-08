@@ -81,6 +81,15 @@ const MusicDetail = ({musicItem}: Props) => {
         return musicItems[musicItems.length - 1].id;
     }
 
+    function enterFullscreen() {
+        const element = mediaBgRef.current;
+        if (element?.requestFullscreen) {
+            element?.requestFullscreen();
+        }
+    }
+
+    useHotkeys("f11", enterFullscreen, {preventDefault: true})
+
     const splitWord = (text: string) => {
         try {
             const segmenter = new Intl.Segmenter("zh", {granularity: "word"})
