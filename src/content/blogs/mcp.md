@@ -1,6 +1,6 @@
 ---
 title: 模型调用 MCP
-category: AI
+category: "AI, MCP"
 excerpt: 目前模型调用 MCP 的两种做法。
 lastEdited: 2025年3月31日
 tags: [AI, MCP,Prompt,FuntionCall]

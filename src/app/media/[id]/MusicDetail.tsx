@@ -14,6 +14,7 @@ import NumberedList from "@/components/icon/numbered-list";
 import extractThemeColors from "@/lib/getImgColor";
 import {useToast} from "@/hooks/use-toast";
 import {darkenIfNearWhite} from "@/lib/utils";
+import {ArrowsPointingOut} from "@/components/icon/arrows-pointing-out";
 
 
 interface LyricLine {
@@ -236,14 +237,14 @@ const MusicDetail = ({musicItem}: Props) => {
                 extractThemeColors(3, img, 0).then(colors => {
                     const mediaBg = mediaBgRef.current;
                     if (mediaBg) {
-                        const darkerColors = colors.map(c => darkenIfNearWhite(c, 0.5));
+                        const darkerColors = colors.map(c => darkenIfNearWhite(c, 0.7));
                         mediaBg.style.background = `
                           radial-gradient(circle at 30% 30%, ${darkerColors[0]} 0%, transparent 60%),
                           radial-gradient(circle at 70% 40%, ${darkerColors[1]} 0%, transparent 60%),
                           radial-gradient(circle at 50% 70%, ${darkerColors[2]} 0%, transparent 60%)
                         `;
                         mediaBg.style.backgroundRepeat = 'no-repeat';
-                        mediaBg.style.backgroundSize = 'cover';            // 模糊滤镜
+                        mediaBg.style.backgroundSize = 'cover';
                     }
                 })
                 clearInterval(interval);
@@ -304,15 +305,22 @@ const MusicDetail = ({musicItem}: Props) => {
                     <div className="flex items-center mb-10">
                         {/*左侧 - 图片 */}
                         <div className="md:w-1/2 flex flex-col items-center justify-center">
-                            <Image
-                                crossOrigin={"anonymous"}
-                                ref={imgRef}
-                                src={imageUrl}
-                                alt={title}
-                                width={30}
-                                height={30}
-                                className="rounded-md shadow-lg w-36 h-36 object-cover"
-                            />
+                            <div className="relative">
+                                <div
+                                    onClick={enterFullscreen}
+                                    className="absolute text-sky-50 cursor-pointer size-full top-0 hover:opacity-100 opacity-0 transition">
+                                    <ArrowsPointingOut/>
+                                </div>
+                                <Image
+                                    crossOrigin={"anonymous"}
+                                    ref={imgRef}
+                                    src={imageUrl}
+                                    alt={title}
+                                    width={30}
+                                    height={30}
+                                    className="rounded-md shadow-lg w-36 h-36 object-cover hover:blur-sm"
+                                />
+                            </div>
                         </div>
                         <AudioPlayer
                             forward={forward()}
