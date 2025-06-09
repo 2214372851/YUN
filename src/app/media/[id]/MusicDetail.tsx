@@ -15,6 +15,7 @@ import extractThemeColors from "@/lib/getImgColor";
 import {useToast} from "@/hooks/use-toast";
 import {darkenIfNearWhite} from "@/lib/utils";
 import {ArrowsPointingOut} from "@/components/icon/arrows-pointing-out";
+import {createBubbles} from "@/lib/bubbles";
 
 
 interface LyricLine {
@@ -245,6 +246,41 @@ const MusicDetail = ({musicItem}: Props) => {
                         `;
                         mediaBg.style.backgroundRepeat = 'no-repeat';
                         mediaBg.style.backgroundSize = 'cover';
+                        
+                        // 创建一个canvas元素
+                        const canvas = document.createElement('canvas');
+                        canvas.style.position = 'absolute';
+                        canvas.style.top = '0';
+                        canvas.style.left = '0';
+                        canvas.style.width = '100%';
+                        canvas.style.height = '100%';
+                        canvas.style.pointerEvents = 'none';
+                        canvas.style.zIndex = '0';
+                        
+                        // 移除之前的canvas（如果有）
+                        const oldCanvas = mediaBg.querySelector('canvas');
+                        if (oldCanvas) {
+                            mediaBg.removeChild(oldCanvas);
+                        }
+                        
+                        // 添加新的canvas
+                        mediaBg.appendChild(canvas);
+                        
+                        // 使用自定义的气泡效果
+                        createBubbles({
+                            canvas: canvas,
+                            bubbles: 80,
+                            shadowColor: darkerColors[0],
+                            shadowBlur: 6,
+                            fillFunc: () => {
+                                // 随机使用提取的颜色
+                                const color = darkerColors[Math.floor(Math.random() * darkerColors.length)];
+                                return `hsla(${color.replace(/[^\d,]/g, '').split(',')[0]}, 100%, 70%, ${Math.random() * 0.2 + 0.1})`;
+                            },
+                            radiusFunc: () => 2 + Math.random() * 15,
+                            velocityFunc: () => 0.15 + Math.random() * 0.3,
+                            angleFunc: () => Math.random() * Math.PI * 6
+                        });
                     }
                 })
                 clearInterval(interval);
@@ -254,8 +290,8 @@ const MusicDetail = ({musicItem}: Props) => {
 
     return (
         <main className="min-h-screen flex flex-col items-center overflow-hidden ">
-            <div className="w-full h-screen" ref={mediaBgRef}>
-                <div className="max-w-6xl mx-auto container flex-1 pt-32 flex flex-col justify-between h-full">
+            <div className="w-full h-screen relative" ref={mediaBgRef}>
+                <div className="max-w-6xl mx-auto container flex-1 pt-32 flex flex-col justify-between h-full relative z-10">
                     <div className="gap-8 h-full flex items-center justify-center">
 
                         {/* 右侧 - 歌名、作者和歌词 */}
