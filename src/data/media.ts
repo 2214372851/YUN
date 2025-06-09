@@ -249,6 +249,14 @@ export const mediaItems: MediaItem[] = [
         author: '陈粒',
         musicUrl: 'https://minio-endpoint.bybxbwg.fun/docs/zm-cl.mp3',
         lyricsUrl: 'https://minio-endpoint.bybxbwg.fun/docs/zm-cl.lrc',
+    },
+    {
+        id: 'nzbz-hmw',
+        title: '你在不在',
+        imageUrl: 'https://minio-endpoint.bybxbwg.fun/docs/nzbz-hmw.jpg',
+        author: '很美味',
+        musicUrl: 'https://minio-endpoint.bybxbwg.fun/docs/nzbz-hmw.mp3',
+        lyricsUrl: 'https://minio-endpoint.bybxbwg.fun/docs/nzbz-hmw.lrc',
     }
 
 ];

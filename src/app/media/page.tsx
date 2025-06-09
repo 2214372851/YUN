@@ -47,7 +47,6 @@ const MediaPage = () => {
         <main className="min-h-screen flex flex-col">
             <div className="flex-1 pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 container max-w-7xl mx-auto">
                 <h1 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 px-2 sm:px-0">音乐</h1>
-
                 <div
                     className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center px-2 sm:px-0">
                     {musicItems.length > 0 ? (
@@ -59,6 +58,17 @@ const MediaPage = () => {
                     ) : (
                         <p className="col-span-full text-center text-muted-foreground">暂无音乐内容。</p>
                     )}
+                </div>
+                <div className="text-center text-muted-foreground text-sm sm:text-base px-2 sm:px-0 mt-8">
+                    <div>
+                        🚫 严禁任何商业用途！本站仅供个人学习娱乐。
+                    </div>
+                    <div>
+                        🚫 用户行为与本站无关，作者不承担任何法律责任。
+                    </div>
+                    <div>
+                        💬 如有版权问题，可以联系上方本站作者。
+                    </div>
                 </div>
             </div>
         </main>

@@ -14,6 +14,8 @@ import NumberedList from "@/components/icon/numbered-list";
 import extractThemeColors from "@/lib/getImgColor";
 import {useToast} from "@/hooks/use-toast";
 import {darkenIfNearWhite} from "@/lib/utils";
+import {ArrowsPointingOut} from "@/components/icon/arrows-pointing-out";
+import {createBubbles} from "@/lib/bubbles";
 
 
 interface LyricLine {
@@ -236,14 +238,49 @@ const MusicDetail = ({musicItem}: Props) => {
                 extractThemeColors(3, img, 0).then(colors => {
                     const mediaBg = mediaBgRef.current;
                     if (mediaBg) {
-                        const darkerColors = colors.map(c => darkenIfNearWhite(c, 0.5));
+                        const darkerColors = colors.map(c => darkenIfNearWhite(c, 0.7));
                         mediaBg.style.background = `
                           radial-gradient(circle at 30% 30%, ${darkerColors[0]} 0%, transparent 60%),
                           radial-gradient(circle at 70% 40%, ${darkerColors[1]} 0%, transparent 60%),
                           radial-gradient(circle at 50% 70%, ${darkerColors[2]} 0%, transparent 60%)
                         `;
                         mediaBg.style.backgroundRepeat = 'no-repeat';
-                        mediaBg.style.backgroundSize = 'cover';            // 模糊滤镜
+                        mediaBg.style.backgroundSize = 'cover';
+                        
+                        // 创建一个canvas元素
+                        const canvas = document.createElement('canvas');
+                        canvas.style.position = 'absolute';
+                        canvas.style.top = '0';
+                        canvas.style.left = '0';
+                        canvas.style.width = '100%';
+                        canvas.style.height = '100%';
+                        canvas.style.pointerEvents = 'none';
+                        canvas.style.zIndex = '0';
+                        
+                        // 移除之前的canvas（如果有）
+                        const oldCanvas = mediaBg.querySelector('canvas');
+                        if (oldCanvas) {
+                            mediaBg.removeChild(oldCanvas);
+                        }
+                        
+                        // 添加新的canvas
+                        mediaBg.appendChild(canvas);
+                        
+                        // 使用自定义的气泡效果
+                        createBubbles({
+                            canvas: canvas,
+                            bubbles: 80,
+                            shadowColor: darkerColors[0],
+                            shadowBlur: 6,
+                            fillFunc: () => {
+                                // 随机使用提取的颜色
+                                const color = darkerColors[Math.floor(Math.random() * darkerColors.length)];
+                                return `hsla(${color.replace(/[^\d,]/g, '').split(',')[0]}, 100%, 70%, ${Math.random() * 0.2 + 0.1})`;
+                            },
+                            radiusFunc: () => 2 + Math.random() * 15,
+                            velocityFunc: () => 0.15 + Math.random() * 0.3,
+                            angleFunc: () => Math.random() * Math.PI * 6
+                        });
                     }
                 })
                 clearInterval(interval);
@@ -253,8 +290,8 @@ const MusicDetail = ({musicItem}: Props) => {
 
     return (
         <main className="min-h-screen flex flex-col items-center overflow-hidden ">
-            <div className="w-full h-screen" ref={mediaBgRef}>
-                <div className="max-w-6xl mx-auto container flex-1 pt-32 flex flex-col justify-between h-full">
+            <div className="w-full h-screen relative" ref={mediaBgRef}>
+                <div className="max-w-6xl mx-auto container flex-1 pt-32 flex flex-col justify-between h-full relative z-10">
                     <div className="gap-8 h-full flex items-center justify-center">
 
                         {/* 右侧 - 歌名、作者和歌词 */}
@@ -304,15 +341,22 @@ const MusicDetail = ({musicItem}: Props) => {
                     <div className="flex items-center mb-10">
                         {/*左侧 - 图片 */}
                         <div className="md:w-1/2 flex flex-col items-center justify-center">
-                            <Image
-                                crossOrigin={"anonymous"}
-                                ref={imgRef}
-                                src={imageUrl}
-                                alt={title}
-                                width={30}
-                                height={30}
-                                className="rounded-md shadow-lg w-36 h-36 object-cover"
-                            />
+                            <div className="relative">
+                                <div
+                                    onClick={enterFullscreen}
+                                    className="absolute text-sky-50 cursor-pointer size-full top-0 hover:opacity-100 opacity-0 transition">
+                                    <ArrowsPointingOut/>
+                                </div>
+                                <Image
+                                    crossOrigin={"anonymous"}
+                                    ref={imgRef}
+                                    src={imageUrl}
+                                    alt={title}
+                                    width={30}
+                                    height={30}
+                                    className="rounded-md shadow-lg w-36 h-36 object-cover hover:blur-sm"
+                                />
+                            </div>
                         </div>
                         <AudioPlayer
                             forward={forward()}

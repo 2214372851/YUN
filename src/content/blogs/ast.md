@@ -1,6 +1,6 @@
 ---
 title: "AST解混淆技术"
-category: "技术"
+category: "技术, AST, OB混淆"
 excerpt: "使用抽象语法树来还原被混淆的代码。"
 lastEdited: "2025年5月17日"
 tags: ["AST", "解混淆", "代码分析", "逆向工程"]

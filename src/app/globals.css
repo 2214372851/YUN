@@ -240,6 +240,16 @@ input[type="color"]::-moz-color-swatch {
         background-color: hsla(var(--background));
         color: white;
     }
-
-
+}
+@keyframes moveLight {
+    0% {
+        --x1: 30%; --y1: 30%;
+        --x2: 70%; --y2: 40%;
+        --x3: 50%; --y3: 70%;
+    }
+    100% {
+        --x1: 40%; --y1: 35%;
+        --x2: 60%; --y2: 45%;
+        --x3: 55%; --y3: 60%;
+    }
 }
