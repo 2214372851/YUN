@@ -30,12 +30,12 @@ jobs:
       # - name: Export static site
       #   run: bunx next export
 
-      - name: Upload via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: Upload via SFTP
+        uses: appleboy/scp-action@master
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: / # 替换为你的部署目录
-          local-dir: out/ # 或 out/，视你的项目输出而定
-          timeout: 600000
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          key: ${{ secrets.SFTP_PRIVATE_KEY }}
+          port: 22
+          source: "out/*"
+          target: ${{ secrets.SFTP_TARGET_PATH}}

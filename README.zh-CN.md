@@ -1,13 +1,13 @@
-# Linear Clone
+# 云海
 
-我心随我，这就是我，参考了 Linear 的设计理念和用户体验。
+基于Next.js构建的个人网站，用于分享技术文章、项目经验和生活点滴。
 
 ## 技术栈
 
-- **框架**: Next.js 15.2.4 (App Router)
+- **框架**: Next.js 15.3.3 (App Router)
 - **UI 组件**: Radix UI
 - **样式**: Tailwind CSS
-- **动画**: Framer Motion
+- **动画**: Framer Motion, GSAP
 - **Markdown 处理**: Marked, Remark
 - **代码高亮**: Highlight.js
 - **图表**: Mermaid
@@ -23,6 +23,7 @@ src/
 │   ├── contact/   # 联系页面
 │   ├── docs/      # 文档页面
 │   ├── media/     # 媒体资源
+│   ├── prompt/    # 提示相关
 │   ├── test/      # 测试相关
 │   ├── tools/     # 工具页面
 │   ├── layout.tsx # 根布局
@@ -30,9 +31,15 @@ src/
 │   ├── globals.css # 全局样式
 │   └── ClientBody.tsx # 客户端组件
 │
-└── content/       # 内容管理目录
-    ├── blogs/     # 博客文章内容
-    └── docs/      # 文档内容
+├── components/    # 可复用组件
+├── config/        # 配置文件
+├── content/       # 内容管理目录
+│   ├── blogs/     # 博客文章内容
+│   └── docs/      # 文档内容
+├── data/          # 数据文件
+├── hooks/         # 自定义React钩子
+├── lib/           # 工具函数
+└── types/         # TypeScript类型定义
 ```
 
 ## 开始使用
@@ -110,6 +117,14 @@ bun run start
 
 ## 主要功能
 
+- 个人博客系统
+  - 技术文章
+  - 项目经验
+  - 生活随笔
+- 综合性文档
+  - 多种编程语言（Python、Rust、JavaScript等）
+  - 框架和工具（Django、Vue、React等）
+  - 开发运维（Docker、Git等）
 - 响应式设计
 - Markdown 支持
   - 自定义容器支持（info | warning | tip | danger）
@@ -118,18 +133,18 @@ bun run start
 - 代码高亮
 - 图表渲染
 - 动画效果
-- 主题支持
+- SEO优化
 
 ## 开发指南
 
 1. 项目使用 TypeScript 进行开发，确保类型安全
 2. 使用 Tailwind CSS 进行样式开发
-3. 遵循 Next.js 13+ 的 App Router 规范
+3. 遵循 Next.js 的 App Router 规范
 4. 使用 ESLint 进行代码规范检查
 
 ## 部署
 
-项目可以轻松部署到 Vercel 平台：
+项目可以部署到 Vercel 平台：
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/YUN)
 
@@ -154,4 +169,4 @@ bun run start
 
 ## 许可证
 
-MIT 
+GNU GPL v3 

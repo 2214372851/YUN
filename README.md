@@ -1,13 +1,13 @@
-# Linear Clone
+# YunHai
 
-A Next.js project that references Linear's design philosophy and user experience.
+A personal website built with Next.js to share technical articles, project experiences, and life stories.
 
 ## Tech Stack
 
-- **Framework**: Next.js 15.2.4 (App Router)
+- **Framework**: Next.js 15.3.3 (App Router)
 - **UI Components**: Radix UI
 - **Styling**: Tailwind CSS
-- **Animation**: Framer Motion
+- **Animation**: Framer Motion, GSAP
 - **Markdown Processing**: Marked, Remark
 - **Code Highlighting**: Highlight.js
 - **Charts**: Mermaid
@@ -23,6 +23,7 @@ src/
 │   ├── contact/   # Contact page
 │   ├── docs/      # Documentation pages
 │   ├── media/     # Media resources
+│   ├── prompt/    # Prompt related
 │   ├── test/      # Testing related
 │   ├── tools/     # Tools pages
 │   ├── layout.tsx # Root layout
@@ -30,9 +31,15 @@ src/
 │   ├── globals.css # Global styles
 │   └── ClientBody.tsx # Client component
 │
-└── content/       # Content management
-    ├── blogs/     # Blog content
-    └── docs/      # Documentation content
+├── components/    # Reusable components
+├── config/        # Configuration files
+├── content/       # Content management
+│   ├── blogs/     # Blog content
+│   └── docs/      # Documentation content
+├── data/          # Data files
+├── hooks/         # Custom React hooks
+├── lib/           # Utility functions
+└── types/         # TypeScript type definitions
 ```
 
 ## Getting Started
@@ -110,6 +117,14 @@ bun run start
 
 ## Key Features
 
+- Personal Blog System
+  - Technical articles
+  - Project experiences
+  - Life stories
+- Comprehensive Documentation
+  - Various programming languages (Python, Rust, JavaScript, etc.)
+  - Frameworks and tools (Django, Vue, React, etc.)
+  - DevOps (Docker, Git, etc.)
 - Responsive Design
 - Markdown Support
   - Custom container support (`info` | `warning` | `tip` | `danger`)
@@ -118,18 +133,18 @@ bun run start
 - Code Highlighting
 - Chart Rendering
 - Animation Effects
-- Theme Support
+- SEO Optimized
 
 ## Development Guidelines
 
 1. Use TypeScript for type safety
 2. Style with Tailwind CSS
-3. Follow Next.js 13+ App Router conventions
+3. Follow Next.js App Router conventions
 4. Use ESLint for code quality
 
 ## Deployment
 
-The project can be easily deployed to Vercel:
+The project can be deployed to Vercel:
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/YUN)
 
@@ -154,4 +169,4 @@ Issues and Pull Requests are welcome to help improve the project.
 
 ## License
 
-MIT
+GNU GPL v3
