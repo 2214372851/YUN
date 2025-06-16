@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import 'highlight.js/styles/github-dark.css';
 
 // 导入图标组件
@@ -238,11 +238,9 @@ console.log(greeting("World"));
     // 当Markdown文本变化时更新预览
     useEffect(() => {
         try {
-            const html = markdownToHtml(markdownText);
-            // 确保html是字符串类型
-            if (typeof html === 'string') {
-                setHtmlPreview(html);
-            }
+            markdownToHtml(markdownText).then(({content}) => {
+                setHtmlPreview(content)
+            })
         } catch (error) {
             console.error('Markdown解析错误:', error);
             setHtmlPreview('<p>预览出错</p>');
@@ -252,7 +250,7 @@ console.log(greeting("World"));
     // 组件挂载时加载示例Markdown
     useEffect(() => {
         setMarkdownText(defaultMarkdown);
-    }, []);
+    }, [defaultMarkdown]);
 
     // 组件卸载时移除事件监听器
     useEffect(() => {
