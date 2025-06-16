@@ -2,7 +2,87 @@
 title:  Python 技巧与库
 ---
 
-# Python 技巧与库
+## 多线程进度任务执行器类
+
+- 控制最多并发任务数（即线程池大小）。
+- 每个任务有自己的 tqdm 进度条。
+- 同时最多只显示固定数量的进度条（即当前并发任务数）。
+- 任务完成后自动释放进度条槽位，供后续任务复用。
+
+```python
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from tqdm import tqdm
+import threading
+import time
+
+class ProgressThreadPoolExecutor:
+    def __init__(self, max_workers):
+        self.max_workers = max_workers
+        self.slot_pool = list(range(max_workers))
+        self.slot_lock = threading.Lock()
+        self.executor = ThreadPoolExecutor(max_workers=max_workers)
+        self.futures = []
+
+    def submit(self, func, *args, **kwargs):
+        # 等待槽位可用
+        while True:
+            with self.slot_lock:
+                if self.slot_pool:
+                    slot_id = self.slot_pool.pop(0)
+                    break
+            time.sleep(0.1)
+
+        # 包装任务，加入进度条控制
+        def wrapper(*args, **kwargs):
+            try:
+                return func(slot_id, *args, **kwargs)
+            finally:
+                # 任务完成后释放槽位
+                with self.slot_lock:
+                    self.slot_pool.append(slot_id)
+
+        future = self.executor.submit(wrapper, *args, **kwargs)
+        self.futures.append(future)
+
+    def wait_for_completion(self):
+        for future in as_completed(self.futures):
+            future.result()
+
+    def shutdown(self):
+        self.executor.shutdown(wait=True)
+```
+
+使用示例
+
+```python
+def example_task(slot_id, task_id):
+    for i in tqdm(range(10), desc=f"Task {task_id}", position=slot_id, leave=False):
+        time.sleep(0.2)
+    return f"Task {task_id} done"
+
+if __name__ == '__main__':
+    executor = ProgressThreadPoolExecutor(max_workers=5)
+
+    for i in range(20):
+        executor.submit(example_task, task_id=i)
+
+    executor.wait_for_completion()
+    executor.shutdown()
+```
+
+### **🔧 功能说明：**
+
+- submit(func, *args, **kwargs)：提交你的任务函数。函数会自动接收一个 slot_id 参数（就是它的 tqdm position）。
+- wait_for_completion()：阻塞等待所有任务完成。
+- shutdown()：关闭线程池。
+
+### **📝 注意事项：**
+
+1. 你的任务函数**必须接收 slot_id 作为第一个参数**，用于创建 tqdm 进度条。
+2. tqdm(..., position=slot_id) 是关键，确保不同行之间不互相干扰。
+3. leave=False 是为了让槽位可复用，防止进度条残留。
+
+
 
 ## PyQuery 极简的爬虫解析
 

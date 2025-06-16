@@ -29,6 +29,13 @@ const baseTools: Tool[] = [
         href: '/tools/tree-converter',
         category: '开发工具',
     },
+    {
+        id: 'markdown-editor',
+        name: 'Markdown 编辑器',
+        description: '在线编辑和预览 Markdown 文档，支持实时预览、语法高亮和常用格式工具栏。',
+        href: '/tools/markdown-editor',
+        category: '开发工具',
+    },
 ];
 
 // 从 ai.md 提取的新工具数据
@@ -278,7 +285,7 @@ const otherTools: Tool[] = [
     {
         id: 'bongo-cat',
         name: 'Bongo Cat',
-        description: '可爱的“打击乐猫”桌面宠物。',
+        description: '可爱的"打击乐猫"桌面宠物。',
         href: 'https://github.com/ayangweb/BongoCat',
         category: '趣味工具'
     },
