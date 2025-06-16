@@ -253,3 +253,32 @@ input[type="color"]::-moz-color-swatch {
         --x3: 55%; --y3: 60%;
     }
 }
+
+.marked-table {
+    th, td {
+        @apply px-4;
+        @apply py-2;
+    }
+
+    thead {
+        border-color: hsla(var(--border));
+        
+        tr:hover {
+            background-color: hsla(var(--muted) / 0.5);
+            th {
+                background-color: hsla(var(--muted) / 0.5);
+            }
+        }
+    }
+    
+
+    tbody {
+        tr {
+            border-color: hsla(var(--border));
+        }
+        tr:hover {
+            background-color: hsla(var(--muted));
+        }
+    }
+
+}

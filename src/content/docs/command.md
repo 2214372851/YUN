@@ -2,6 +2,133 @@
 title: 常用命令
 ---
 
+## 内网穿透（云服务器）
+
+#### **🎯 目标**
+
+将本地机器的 22 端口（SSH 服务端口）通过 SSH 隧道映射到远程服务器的 3000 端口，实现内网穿透访问本地的 SSH 服务。
+
+### **一、命令说明**
+
+#### **1. 命令格式**
+
+```bash
+ssh -N -R [远程端口]:[本地地址]:[本地端口] user@remote_host
+```
+
+#### **2. 示例**
+
+将本地 22 端口转发到远程服务器的 3000 端口：
+
+```bash
+ssh -fN -R 3000:localhost:22 user@remote_host
+```
+
+#### **3. 参数解释**
+
+- -f：后台运行 SSH 连接
+- -N：不执行远程命令，仅用于端口转发
+- -R 3000:localhost:22：远程服务器监听 3000 端口，转发连接到本地的 22 端口
+- user@remote_host：远程服务器的用户名和地址
+
+### **二、远程服务器配置要求**
+
+远程服务器需要允许远程端口转发。
+
+#### **1. 修改 SSH 配置文件**
+
+```bash
+sudo vim /etc/ssh/sshd_config
+```
+
+添加或修改以下内容：
+
+```bash
+AllowTcpForwarding yes
+GatewayPorts yes
+```
+
+#### **2. 重启 SSH 服务**
+
+```bash
+sudo systemctl restart sshd
+```
+
+### **三、连接测试**
+
+在远程服务器上测试连接：
+
+```bash
+ssh -p 3000 localhost
+```
+
+如果一切设置正确，这条命令将登录本地机器的 SSH 服务。
+
+### **四、关闭后台运行的 SSH 隧道**
+
+#### **方法一：使用 ps + kill**
+
+1. 查找 SSH 转发进程：
+
+```bash
+ps aux | grep 'ssh -fN -R'
+```
+
+1. 杀掉对应进程：
+
+```bash
+kill [PID]
+```
+
+示例：
+
+```bash
+kill 12345
+```
+
+#### **方法二：使用 pkill 快速关闭**
+
+```bash
+pkill -f 'ssh -fN -R'
+```
+
+注意：这将关闭所有使用该命令格式启动的 SSH 转发进程。
+
+### **五、使用 autossh 实现自动重连（可选）**
+
+#### **1. 安装 autossh**
+
+```bash
+sudo apt install autossh
+```
+
+#### **2. 启动命令**
+
+```bash
+autossh -fN -R 3000:localhost:22 user@remote_host
+```
+
+也可以配合 systemd 或 supervisor 等工具长期运行。
+
+## SSH 免密登录
+
+1. 在本地机器生成密钥对
+   `ssh-keygen -t rsa -b 4096 -C "your_email@example.com"`
+
+   连续按几次回车，默认生成在 ~/.ssh/id_rsa 和 ~/.ssh/id_rsa.pub
+
+2. 将公钥复制到被连接主机
+
+   - 使用 ssh-copy-id 自动拷贝
+
+     `ssh-copy-id username@remotehost`
+
+   - 手动复制
+
+     `cat ~/.ssh/id_rsa.pub | ssh username@remotehost 'mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys && chmod 700 ~/.ssh'`
+
+     将`~/.ssh/id_rsa.pub`里的文本放到远程主机 `~/.ssh/authorized_keys`
+
 ## fd 的安装及使用
 
 [fd](https://github.com/cha0ran/fd-zh)
@@ -12,8 +139,7 @@ title: 常用命令
 
 `sudo apt install fd-find`
 
-> [!TIP]
->
+
 > 安装好后命令为 `fdfind`，因为另一个软件包已经使用了 `fd` 这个名称。通过执行 `ln -s $(which fdfind) ~/.local/bin/fd` 命令来添加 `fd` 的链接，以便以与本文档相同的方式使用 `fd`。请确保 `$HOME/.local/bin` 在你的 `$PATH` 中。或者通过 `alias fd=fdfind`。
 
 ### 使用

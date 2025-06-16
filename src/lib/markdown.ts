@@ -68,7 +68,7 @@ export async function markdownToHtml(markdown: string): Promise<{ content: strin
     });
 
     $("table").each((_, element) => {
-        $(element).wrap('<div class="overflow-x-auto">');
+        $(element).wrap('<div class="overflow-x-auto marked-table">');
     });
     const htmlContent = $.html().replace(/::: (info|warning|tip|danger)([\s\S]*?):::/g, (match, type, content) => {
         return `<div class="whitespace-pre-wrap rounded-md p-4 text-black alert ${type}">${marked.parseInline(content.trim())}</div>`;
