@@ -280,5 +280,13 @@ input[type="color"]::-moz-color-swatch {
             background-color: hsla(var(--muted));
         }
     }
+}
 
+#loading-top {
+    -webkit-clip-path: polygon(100% 0, 100% 100%, 59% 100%, 50% 93%, 0% 93%, 0 0);
+    clip-path: polygon(100% 0, 100% 100%, 59% 100%, 50% 93%, 0% 93%, 0 0);
+}
+#loading-bottom {
+    -webkit-clip-path: polygon(100% 7%, 100% 100%, 0 100%, 0 0, 50% 0, 59% 7%);
+    clip-path: polygon(100% 7%, 100% 100%, 0 100%, 0 0, 50% 0, 59% 7%);
 }

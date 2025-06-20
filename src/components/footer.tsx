@@ -27,7 +27,7 @@ const footerLinks = [
     {
         title: "Resource",
         links: [
-            {href: "/404", label: "API"},
+            {href: "/api/", label: "API"},
         ],
     },
     {
@@ -41,7 +41,7 @@ const footerLinks = [
     {
         title: "Help",
         links: [
-            {href: "/contact", label: "Support"},
+            {href: "/contact/", label: "Support"},
         ]
     },
 ];
