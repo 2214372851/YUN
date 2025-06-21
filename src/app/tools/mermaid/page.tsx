@@ -4,6 +4,9 @@ import React, {useState, useEffect} from 'react';
 import {Button} from "@/components/ui/button";
 import type {Mermaid} from "mermaid";
 import mermaid from "mermaid";
+import {Expand} from "@/components/icon/expand";
+import {Collapse} from "@/components/icon/collapse";
+import {Reset} from "@/components/icon/reset";
 
 const MermaidPage = () => {
     const [inputCode, setInputCode] = useState('');
@@ -11,6 +14,13 @@ const MermaidPage = () => {
     const [error, setError] = useState<string | null>(null);
     const [theme, setTheme] = useState<'default' | 'dark' | 'forest' | 'neutral'>('default');
     const [mermaidApi, setMermaidApi] = useState<Mermaid | null>(null);
+    const [isFullScreen, setIsFullScreen] = useState(false);
+    const [scale, setScale] = useState(1);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+    const previewRef = React.useRef<HTMLDivElement>(null);
+    const contentRef = React.useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const loadMermaid = async () => {
@@ -27,6 +37,47 @@ const MermaidPage = () => {
         };
         loadMermaid().then();
     }, [theme]);
+    
+    useEffect(() => {
+        const handleFullscreenChange = () => {
+            const newFullscreenState = !!document.fullscreenElement;
+            setIsFullScreen(newFullscreenState);
+            
+            // 如果退出全屏，重置缩放和位置
+            if (!newFullscreenState) {
+                setScale(1);
+                setPosition({ x: 0, y: 0 });
+            }
+        };
+        
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        return () => {
+            document.removeEventListener('fullscreenchange', handleFullscreenChange);
+        };
+    }, []);
+    
+    // 处理键盘快捷键
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            // 空格键重置视图 - 只在全屏模式下有效
+            if (e.code === 'Space' && isFullScreen) {
+                resetView();
+            }
+            
+            // 阻止键盘缩放快捷键在预览区域聚焦时的默认行为
+            if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '=')) {
+                if (document.activeElement === previewRef.current || 
+                    previewRef.current?.contains(document.activeElement as Node)) {
+                    e.preventDefault();
+                }
+            }
+        };
+        
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isFullScreen]); // 添加 isFullScreen 作为依赖项
 
     const handleRender = async () => {
         if (!mermaidApi) {
@@ -70,6 +121,73 @@ const MermaidPage = () => {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     };
+    
+    const toggleFullScreen = async () => {
+        if (!previewRef.current) return;
+        
+        try {
+            if (!document.fullscreenElement) {
+                await previewRef.current.requestFullscreen();
+            } else {
+                await document.exitFullscreen();
+            }
+        } catch (err) {
+            setError(`全屏模式错误: ${err}`);
+        }
+    };
+    
+    const handleWheel = (e: React.WheelEvent) => {
+        // 只有在全屏模式下才启用缩放功能
+        if (!isFullScreen) return;
+        
+        // 阻止默认行为，防止页面滚动
+        e.preventDefault();
+        
+        let delta = 0;
+        
+        // 检测触控板手势缩放 (通过 ctrlKey 识别)
+        if (e.ctrlKey) {
+            delta = e.deltaY * -0.01;
+        } else {
+            // 普通鼠标滚轮缩放
+            delta = e.deltaY * -0.005; // 减小灵敏度
+        }
+        
+        const newScale = Math.min(Math.max(0.1, scale + delta), 5);
+        setScale(newScale);
+    };
+    
+    const handleMouseDown = (e: React.MouseEvent) => {
+        // 只有在全屏模式下才启用拖拽功能
+        if (!isFullScreen) return;
+        
+        if (e.button === 0) { // 左键点击
+            setIsDragging(true);
+            setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+        }
+    };
+    
+    const handleMouseMove = (e: React.MouseEvent) => {
+        // 只有在全屏模式下才启用拖拽功能
+        if (!isFullScreen) return;
+        
+        if (isDragging) {
+            setPosition({
+                x: e.clientX - dragStart.x,
+                y: e.clientY - dragStart.y
+            });
+        }
+    };
+    
+    const handleMouseUp = () => {
+        // 即使不在全屏模式，也需要重置拖拽状态
+        setIsDragging(false);
+    };
+    
+    const resetView = () => {
+        setScale(1);
+        setPosition({ x: 0, y: 0 });
+    };
 
     return (
         <main className="min-h-screen flex flex-col">
@@ -102,13 +220,47 @@ const MermaidPage = () => {
                         <label className="block text-sm font-medium text-muted-foreground mb-2">
                             预览:
                         </label>
-                        <div className="relative w-full h-96 p-2 border border-input rounded-md bg-muted/30">
-                            <div className="absolute inset-2 overflow-auto">
+                        <div 
+                            ref={previewRef}
+                            className="relative w-full h-96 p-2 border border-input rounded-md bg-muted/30 select-none focus:outline-none focus:ring-1 focus:ring-ring overflow-hidden"
+                            onWheel={handleWheel}
+                            onMouseDown={handleMouseDown}
+                            onMouseMove={handleMouseMove}
+                            onMouseUp={handleMouseUp}
+                            onMouseLeave={handleMouseUp}
+                            tabIndex={0}
+                        >
+                            <div className="absolute top-2 right-2 flex gap-2 z-10">
+                                {isFullScreen && (
+                                    <button 
+                                        onClick={resetView}
+                                        className="p-1.5 bg-background/80 hover:bg-background border border-input rounded-md"
+                                        title="重置视图 (空格键)"
+                                    >
+                                        <Reset />
+                                    </button>
+                                )}
+                                <button 
+                                    onClick={toggleFullScreen}
+                                    className="p-1.5 bg-background/80 hover:bg-background border border-input rounded-md"
+                                    title={isFullScreen ? "退出全屏" : "全屏显示"}
+                                >
+                                    {isFullScreen ? <Collapse /> : <Expand />}
+                                </button>
+                            </div>
+                            <div className="absolute inset-2 overflow-hidden">
                                 {svgOutput ? (
-                                    <div className="w-full h-full flex items-center justify-center">
+                                    <div 
+                                        className="w-full h-full flex items-center justify-center"
+                                        style={{
+                                            cursor: isFullScreen ? (isDragging ? 'grabbing' : 'grab') : 'default'
+                                        }}
+                                    >
                                         <div
-                                            className="transform-gpu"
+                                            ref={contentRef}
+                                            className="transform-gpu transition-transform duration-75"
                                             style={{
+                                                transform: isFullScreen ? `translate(${position.x}px, ${position.y}px) scale(${scale})` : 'none',
                                                 width: '100%',
                                                 height: '100%',
                                                 display: 'flex',
@@ -125,6 +277,11 @@ const MermaidPage = () => {
                                     </div>
                                 )}
                             </div>
+                            {isFullScreen && (
+                                <div className="absolute bottom-2 left-2 px-2 py-1 bg-background/80 rounded-md text-xs text-muted-foreground">
+                                    {scale.toFixed(1)}x | 滚轮缩放 | 拖拽移动 | 空格重置
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

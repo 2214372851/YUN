@@ -2,6 +2,7 @@ import {getAllBlogPosts} from "@/data/blog-posts";
 import TransitionLink from "@/components/TransitionLink";
 
 interface BlogPostProps {
+    index?: number;
     slug: string;
     category: string;
     title: string;
@@ -10,17 +11,16 @@ interface BlogPostProps {
     excerpt?: string;
 }
 
-function FeaturedPost({slug, category, title, imageUrl, excerpt}: BlogPostProps) {
+function FeaturedPost({index, slug, category, title, imageUrl, excerpt}: BlogPostProps) {
     return (
         <TransitionLink
             href={`/blog/${slug}`}
-            className="block rounded-lg border border-white/5 hover:border-white/20  bg-card  transition-colors overflow-hidden p-1 h-full"
+            className="brightness-[0.8] hover:brightness-[1] block rounded-lg border border-white/5 hover:border-white/20  bg-card  transition-colors overflow-hidden p-1 h-full"
         >
             <div
                 className="h-64 rounded-md overflow-hidden flex items-center justify-center mb-4">
-                
-                <img src={imageUrl || '/bg.jpg'} alt={title} width={0} height={0} className="w-full h-full object-cover brightness-[0.8]"
-                         loading="lazy"/>
+                <img src={imageUrl || `https://minio-endpoint.bybxbwg.fun/docs/YUN Blog bg ${index}.svg`} alt={title} width={0} height={0} className="w-full h-full object-cover"
+                     loading="lazy"/>
             </div>
             <div className="p-4">
                 <div className="text-sm text-muted-foreground mb-2">
@@ -85,6 +85,7 @@ export default async function BlogPage() {
                         {featuredPosts.slice(0, 2).map((post, idx) => (
                             <div className="h-full" key={`featured-top-${post.slug}-${idx}`}>
                                 <FeaturedPost
+                                    index={idx + 1 }
                                     slug={post.slug}
                                     category={post.category}
                                     title={post.title}
@@ -103,6 +104,7 @@ export default async function BlogPage() {
                                 key={`featured-bottom-${post.slug}-${idx}`}
                             >
                                 <FeaturedPost
+                                    index={ idx + 3 }
                                     slug={post.slug}
                                     category={post.category}
                                     title={post.title}

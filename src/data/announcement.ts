@@ -6,8 +6,13 @@ type Announcement = {
 
 const announcements:  Announcement[] = [
     {
+        content: "🎉 The Yun API documentation feature is launched 🎉",
+        link: "/api/",
+        createdAt: new Date("2025-6-21")
+    },
+    {
         content: "🎉 Yun Music MCP Officially Launched 🎉",
-        link: "/blog/yun-music",
+        link: "/blog/yun-music/",
         createdAt: new Date("2025-6-5")
     }
 ]

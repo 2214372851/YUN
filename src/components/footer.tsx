@@ -8,7 +8,6 @@ const footerLinks = [
     {
         title: "Service",
         links: [
-            {href: "https://ai.bybxbwg.fun", label: "Lobe Chat"},
             {href: "https://minio-console.bybxbwg.fun/", label: "OSS"},
             {href: "https://uptime.bybxbwg.fun/status/aliyun", label: "Service Status"},
             {href: "https://status.bybxbwg.fun/", label: "Server Status"},
@@ -28,7 +27,7 @@ const footerLinks = [
     {
         title: "Resource",
         links: [
-            {href: "/404", label: "API"},
+            {href: "/api/", label: "API"},
         ],
     },
     {
@@ -42,7 +41,7 @@ const footerLinks = [
     {
         title: "Help",
         links: [
-            {href: "/contact", label: "Support"},
+            {href: "/contact/", label: "Support"},
         ]
     },
 ];
