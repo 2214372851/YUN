@@ -4,7 +4,6 @@ category: "Docker"
 excerpt: 探索最优Dockerfile构建镜像方法。
 lastEdited: 2025年6月18日
 tags: [容器, 虚拟化, Docker]
-imageUrl: http://minio-endpoint.bybxbwg.fun/docs/mcp.jpg
 ---
 
 ## 三种构建方式核心维度
