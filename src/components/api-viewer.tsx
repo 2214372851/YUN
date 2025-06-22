@@ -1,24 +1,24 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
-import { 
-  OpenAPIDocument, 
-  SchemaObject,
-  ReferenceObject,
-  ParameterObject,
+import {useEffect, useMemo, useState} from "react";
+import {
   MediaTypeObject,
+  OpenAPIDocument,
   OperationObject,
+  ParameterObject,
   PathItemObject,
+  ReferenceObject,
   RequestBodyObject,
-  ResponseObject
+  ResponseObject,
+  SchemaObject
 } from "@/types/api";
-import { Button } from "./ui/button";
-import { cn } from "@/lib/utils";
-import { ChevronRight, ChevronDown } from "lucide-react";
+import {Button} from "./ui/button";
+import {cn} from "@/lib/utils";
+import {ChevronDown, ChevronRight} from "lucide-react";
 
 // 类型守卫：判断是否为引用对象
 function isReferenceObject(obj: unknown): obj is ReferenceObject {
-  return typeof obj === 'object' && obj !== null && '$ref' in obj;
+  return typeof obj === 'object' && obj !== null && '$ref' in obj && true;
 }
 
 interface PathNode {
@@ -56,12 +56,23 @@ export function APIViewer({ document }: APIViewerProps) {
   
   // 使用useMemo缓存methods数组
   const methods = useMemo(() => {
-    return currentPathItem ? Object.keys(currentPathItem).filter(m => m !== "parameters") : [];
+    if (!currentPathItem) return [];
+    
+    // 定义标准HTTP方法
+    const httpMethods = ['get', 'post', 'put', 'delete', 'options', 'head', 'patch', 'trace'];
+    
+    // 筛选出当前路径项中存在的HTTP方法
+    return Object.keys(currentPathItem).filter(key =>
+        httpMethods.includes(key.toLowerCase())
+    );
   }, [currentPathItem]);
   
   // 如果有方法但没有选中方法，自动选择第一个
   useEffect(() => {
     if (methods.length > 0 && !activeMethod) {
+      setActiveMethod(methods[0]);
+    } else if (methods.length > 0 && !methods.includes(activeMethod)) {
+      // 如果当前选中的方法不在可用方法列表中，重置为第一个方法
       setActiveMethod(methods[0]);
     }
   }, [methods, activeMethod]);
@@ -168,11 +179,11 @@ export function APIViewer({ document }: APIViewerProps) {
                           {/* 联合类型直接显示内容，不显示anyOf/oneOf/allOf本身 */}
                           {prop.anyOf && (
                             <div className="flex flex-wrap gap-1">
-                              {prop.anyOf.map((item, idx: number) => {
+                              {prop.anyOf.map((item, idx) => {
                                 const isRef = isReferenceObject(item);
                                 return (
                                   <span key={idx} className="px-1.5 py-0.5 rounded text-xs bg-gray-700 text-gray-200">
-                                    {isRef ? item.$ref.split("/").pop() : (item as SchemaObject).type || "unknown"}
+                                    {isRef ? item.$ref.split("/").pop() : (item as SchemaObject).type || "未指定类型"}
                                   </span>
                                 );
                               })}
@@ -180,11 +191,11 @@ export function APIViewer({ document }: APIViewerProps) {
                           )}
                           {prop.oneOf && (
                             <div className="flex flex-wrap gap-1">
-                              {prop.oneOf.map((item, idx: number) => {
+                              {prop.oneOf.map((item, idx) => {
                                 const isRef = isReferenceObject(item);
                                 return (
                                   <span key={idx} className="px-1.5 py-0.5 rounded text-xs bg-gray-700 text-gray-200">
-                                    {isRef ? item.$ref.split("/").pop() : (item as SchemaObject).type || "unknown"}
+                                    {isRef ? item.$ref.split("/").pop() : (item as SchemaObject).type || "未指定类型"}
                                   </span>
                                 );
                               })}
@@ -192,21 +203,21 @@ export function APIViewer({ document }: APIViewerProps) {
                           )}
                           {prop.allOf && (
                             <div className="flex flex-wrap gap-1">
-                              {prop.allOf.map((item, idx: number) => {
+                              {prop.allOf.map((item, idx) => {
                                 const isRef = isReferenceObject(item);
                                 return (
                                   <span key={idx} className="px-1.5 py-0.5 rounded text-xs bg-gray-700 text-gray-200">
-                                    {isRef ? item.$ref.split("/").pop() : (item as SchemaObject).type || "unknown"}
+                                    {isRef ? item.$ref.split("/").pop() : (item as SchemaObject).type || "未指定类型"}
                                   </span>
                                 );
                               })}
                             </div>
                           )}
                           
-                          {/* 如果没有任何类型信息，显示"unknown" */}
+                          {/* 如果没有任何类型信息，显示"未指定类型" */}
                           {!prop.type && !isReferenceObject(propRef) && !prop.anyOf && !prop.oneOf && !prop.allOf && (
                             <span className="inline-block px-2 py-0.5 rounded-md text-xs bg-gray-700 text-gray-200">
-                              unknown
+                              未指定类型
                             </span>
                           )}
                         </td>
@@ -234,7 +245,7 @@ export function APIViewer({ document }: APIViewerProps) {
               <span className="font-mono text-blue-400">
                 {isReferenceObject(schema.items) ? 
                   schema.items.$ref.split("/").pop() : 
-                  (schema.items as SchemaObject).type || "unknown"}
+                  (schema.items as SchemaObject).type || "未指定类型"}
               </span>
               
               {!isReferenceObject(schema.items) && (schema.items as SchemaObject).description && (
@@ -269,7 +280,7 @@ export function APIViewer({ document }: APIViewerProps) {
         {nodeEntries.map(([name, childNode]) => {
           const hasChildren = Object.keys(childNode.children).length > 0;
           const isExpanded = expandedPaths[childNode.path]; // 默认展开
-          const fullPath = childNode.path;
+          const fullPath = Object.keys(childNode.children).length > 0 ? childNode.path + '/' : childNode.path;
           const isActive = activeEndpoint === fullPath;
           
           return (
@@ -389,7 +400,7 @@ export function APIViewer({ document }: APIViewerProps) {
                         <h4 className="font-medium">参数</h4>
                       </div>
                       <div className="p-4 space-y-3">
-                        {currentOperation.parameters.map((paramRef, i: number) => {
+                        {currentOperation.parameters.map((paramRef, i) => {
                           // 处理可能是引用或直接参数对象的情况
                           if (isReferenceObject(paramRef)) {
                             // 处理引用对象
@@ -437,7 +448,7 @@ export function APIViewer({ document }: APIViewerProps) {
                                   <span className="font-mono text-blue-400">
                                     {isReferenceObject(param.schema) ? 
                                       param.schema.$ref.split('/').pop() :
-                                      param.schema.type || "unknown"}
+                                      param.schema.type || "未指定类型"}
                                   </span>
                                 </div>
                               )}
@@ -512,18 +523,18 @@ export function APIViewer({ document }: APIViewerProps) {
                   )}
                   
                   {/* 响应 */}
-                  {currentOperation.responses && (
+                  {currentOperation?.responses && (
                     <div className="rounded-md border border-white/5 overflow-hidden">
                       <div className="bg-white/5 px-4 py-2">
                         <h4 className="font-medium">响应</h4>
                       </div>
                       <div className="divide-y divide-white/5">
-                        {Object.keys(currentOperation.responses).map((code) => {
-                          const responseObj = currentOperation.responses[code];
+                        {Object.keys(currentOperation.responses || {}).map((code) => {
+                          const responseObj = currentOperation.responses?.[code];
                           // 处理引用对象或直接响应对象
-                          const response = isReferenceObject(responseObj) ? 
+                          const response = responseObj && isReferenceObject(responseObj) ? 
                             { description: `引用: ${responseObj.$ref}` } as ResponseObject : 
-                            responseObj;
+                            responseObj as ResponseObject;
                           
                           return (
                             <div key={code} className="p-4">
