@@ -14,8 +14,9 @@ import NumberedList from "@/components/icon/numbered-list";
 import extractThemeColors from "@/lib/getImgColor";
 import {useToast} from "@/hooks/use-toast";
 import {darkenIfNearWhite} from "@/lib/utils";
-import {ArrowsPointingOut} from "@/components/icon/arrows-pointing-out";
 import {createBubbles} from "@/lib/bubbles";
+import {useFullscreen} from "@/hooks/use-fullscreen";
+import {Maximize, Minimize} from "lucide-react";
 
 
 interface LyricLine {
@@ -69,6 +70,9 @@ const MusicDetail = ({musicItem}: Props) => {
     const {toast} = useToast();
     const imgRef = useRef<HTMLImageElement>(null);
     const mediaBgRef = useRef<HTMLDivElement>(null);
+    
+    // 使用自定义的 useFullscreen hook，获取全屏状态和控制方法
+    const { isFullscreen, toggleFullscreen, exitFullscreen } = useFullscreen(mediaBgRef);
 
     const forward = () => {
         if (selfIndex < musicItems.length - 1) {
@@ -83,14 +87,8 @@ const MusicDetail = ({musicItem}: Props) => {
         return musicItems[musicItems.length - 1].id;
     }
 
-    function enterFullscreen() {
-        const element = mediaBgRef.current;
-        if (element?.requestFullscreen) {
-            element?.requestFullscreen();
-        }
-    }
-
-    useHotkeys("f11", enterFullscreen, {preventDefault: true})
+    // 使用 F11 键切换全屏状态
+    useHotkeys("f11", toggleFullscreen, {preventDefault: true})
 
     const splitWord = (text: string) => {
         try {
@@ -291,6 +289,17 @@ const MusicDetail = ({musicItem}: Props) => {
     return (
         <main className="min-h-screen flex flex-col items-center overflow-hidden ">
             <div className="w-full h-screen relative" ref={mediaBgRef}>
+                {/* 全屏控制按钮 */}
+                {isFullscreen && (
+                    <button
+                        onClick={exitFullscreen}
+                        className="absolute top-4 right-4 z-50 p-2 bg-black/30 hover:bg-black/50 rounded-full text-white flex items-center justify-center"
+                        title="退出全屏"
+                    >
+                        <Minimize className="w-5 h-5" strokeWidth={2.5} />
+                    </button>
+                )}
+                
                 <div className="max-w-6xl mx-auto container flex-1 pt-32 flex flex-col justify-between h-full relative z-10">
                     <div className="gap-8 h-full flex items-center justify-center">
 
@@ -343,9 +352,14 @@ const MusicDetail = ({musicItem}: Props) => {
                         <div className="md:w-1/2 flex flex-col items-center justify-center">
                             <div className="relative">
                                 <div
-                                    onClick={enterFullscreen}
-                                    className="absolute text-sky-50 cursor-pointer size-full top-0 hover:opacity-100 opacity-0 transition">
-                                    <ArrowsPointingOut/>
+                                    onClick={toggleFullscreen}
+                                    className="absolute text-sky-50 cursor-pointer size-full top-0 hover:opacity-100 opacity-0 transition flex items-center justify-center"
+                                    title={isFullscreen ? "退出全屏" : "全屏显示"}
+                                >
+                                    {isFullscreen ? 
+                                        <Minimize className="w-8 h-8" strokeWidth={2.5} /> : 
+                                        <Maximize className="w-8 h-8" strokeWidth={2.5} />
+                                    }
                                 </div>
                                 <Image
                                     crossOrigin={"anonymous"}

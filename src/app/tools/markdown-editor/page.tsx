@@ -24,16 +24,19 @@ import {Download} from "@/components/icon/download";
 import {Expand} from "@/components/icon/expand";
 import {Collapse} from "@/components/icon/collapse";
 import {markdownToHtml} from "@/lib/markdown";
+import {useFullscreen} from "@/hooks/use-fullscreen";
 
 
 const MarkdownEditorPage = () => {
     const [markdownText, setMarkdownText] = useState<string>('');
     const [htmlPreview, setHtmlPreview] = useState<string>('');
     const [leftPaneWidth, setLeftPaneWidth] = useState<number>(50); // 左侧宽度百分比，默认50%
-    const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const editorContainerRef = useRef<HTMLDivElement>(null);
     const isDraggingRef = useRef<boolean>(false);
+    
+    // 使用自定义的 useFullscreen hook
+    const { isFullscreen, toggleFullscreen } = useFullscreen(editorContainerRef);
 
     // 示例Markdown文本
     const defaultMarkdown = `# Markdown 编辑器示例
@@ -163,36 +166,6 @@ console.log(greeting("World"));
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
     };
-
-    // 切换全屏模式
-    const toggleFullscreen = () => {
-        if (!editorContainerRef.current) return;
-
-        if (!isFullscreen) {
-            // 进入全屏模式
-            if (editorContainerRef.current.requestFullscreen) {
-                editorContainerRef.current.requestFullscreen();
-            }
-        } else {
-            // 退出全屏模式
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            }
-        }
-    };
-
-    // 监听全屏状态变化
-    useEffect(() => {
-        const handleFullscreenChange = () => {
-            setIsFullscreen(!!document.fullscreenElement);
-        };
-
-        document.addEventListener('fullscreenchange', handleFullscreenChange);
-
-        return () => {
-            document.removeEventListener('fullscreenchange', handleFullscreenChange);
-        };
-    }, []);
 
     // 插入格式化文本
     const insertFormat = (prefix: string, suffix: string) => {

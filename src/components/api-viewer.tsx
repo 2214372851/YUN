@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import {
   MediaTypeObject,
   OpenAPIDocument,
@@ -14,18 +14,26 @@ import {
 } from "@/types/api";
 import {Button} from "./ui/button";
 import {cn} from "@/lib/utils";
-import {ChevronDown, ChevronRight} from "lucide-react";
+import {ChevronDown, ChevronRight, Maximize, Minimize} from "lucide-react";
+import { useFullscreen } from "@/hooks/use-fullscreen";
 
 // 类型守卫：判断是否为引用对象
 function isReferenceObject(obj: unknown): obj is ReferenceObject {
   return typeof obj === 'object' && obj !== null && '$ref' in obj && true;
 }
 
-interface PathNode {
+// 定义标签节点接口
+interface TagNode {
   name: string;
+  description?: string;
+  operations: OperationInfo[];
+}
+
+// 定义操作信息接口
+interface OperationInfo {
   path: string;
-  isEndpoint: boolean;
-  children: Record<string, PathNode>;
+  method: string;
+  operation: OperationObject;
 }
 
 interface APIViewerProps {
@@ -33,49 +41,122 @@ interface APIViewerProps {
 }
 
 export function APIViewer({ document }: APIViewerProps) {
-  // 使用useMemo来缓存paths数组，避免每次渲染时都重新计算
-  const paths = useMemo(() => {
-    return document.paths ? Object.keys(document.paths) : [];
-  }, [document.paths]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { isFullscreen, toggleFullscreen } = useFullscreen(containerRef);
   
   const [activeEndpoint, setActiveEndpoint] = useState("");
   const [activeMethod, setActiveMethod] = useState("");
-  const [expandedPaths, setExpandedPaths] = useState<Record<string, boolean>>({});
+  const [expandedTags, setExpandedTags] = useState<Record<string, boolean>>({});
   
-  // 当paths变化时，设置初始activeEndpoint
-  useEffect(() => {
-    if (paths.length > 0 && !activeEndpoint) {
-      setActiveEndpoint(paths[0]);
+  // 构建基于标签的菜单树
+  const tagTree = useMemo(() => {
+    const tags: Record<string, TagNode> = {};
+    
+    // 初始化标签
+    if (document.tags) {
+      document.tags.forEach(tag => {
+        tags[tag.name] = {
+          name: tag.name,
+          description: tag.description,
+          operations: []
+        };
+      });
     }
-  }, [paths, activeEndpoint]);
+    
+    // 如果没有定义标签，创建一个默认标签
+    if (Object.keys(tags).length === 0) {
+      tags["默认"] = {
+        name: "默认",
+        operations: []
+      };
+    }
+    
+    // 遍历所有路径和方法，按标签分组
+    if (document.paths) {
+      Object.entries(document.paths).forEach(([path, pathItem]) => {
+        if (!pathItem) return;
+        
+        // 标准HTTP方法
+        const httpMethods = ['get', 'post', 'put', 'delete', 'options', 'head', 'patch', 'trace'];
+        
+        httpMethods.forEach(method => {
+          const operation = pathItem[method as keyof PathItemObject] as OperationObject | undefined;
+          
+          if (operation) {
+            const operationTags = operation.tags && operation.tags.length > 0
+              ? operation.tags
+              : ["默认"];
+            
+            operationTags.forEach(tagName => {
+              // 确保标签存在
+              if (!tags[tagName]) {
+                tags[tagName] = {
+                  name: tagName,
+                  operations: []
+                };
+              }
+              
+              // 添加操作到标签
+              tags[tagName].operations.push({
+                path,
+                method,
+                operation
+              });
+            });
+          }
+        });
+      });
+    }
+    
+    // 对每个标签下的操作按HTTP方法排序
+    const methodOrder: Record<string, number> = {
+      'get': 1,
+      'post': 2,
+      'put': 3,
+      'delete': 4,
+      'patch': 5,
+      'options': 6,
+      'head': 7,
+      'trace': 8
+    };
+    
+    Object.values(tags).forEach(tag => {
+      tag.operations.sort((a, b) => {
+        // 首先按HTTP方法排序
+        const methodA = methodOrder[a.method] || 100;
+        const methodB = methodOrder[b.method] || 100;
+        
+        if (methodA !== methodB) {
+          return methodA - methodB;
+        }
+        
+        // 如果HTTP方法相同，则按路径排序
+        return a.path.localeCompare(b.path);
+      });
+    });
+    
+    return Object.values(tags);
+  }, [document.paths, document.tags]);
+  
+  // 当标签树变化时，设置初始activeEndpoint和activeMethod
+  useEffect(() => {
+    if (tagTree.length > 0 && tagTree[0].operations.length > 0) {
+      const firstOperation = tagTree[0].operations[0];
+      setActiveEndpoint(firstOperation.path);
+      setActiveMethod(firstOperation.method);
+      
+      // 默认展开第一个标签
+      setExpandedTags(prev => ({
+        ...prev,
+        [tagTree[0].name]: true
+      }));
+    }
+  }, [tagTree]);
   
   // 获取当前选中端点的信息
   const currentPathItem = useMemo(() => {
     return activeEndpoint && document.paths ? document.paths[activeEndpoint] : null;
   }, [activeEndpoint, document.paths]);
-  
-  // 使用useMemo缓存methods数组
-  const methods = useMemo(() => {
-    if (!currentPathItem) return [];
-    
-    // 定义标准HTTP方法
-    const httpMethods = ['get', 'post', 'put', 'delete', 'options', 'head', 'patch', 'trace'];
-    
-    // 筛选出当前路径项中存在的HTTP方法
-    return Object.keys(currentPathItem).filter(key =>
-        httpMethods.includes(key.toLowerCase())
-    );
-  }, [currentPathItem]);
-  
-  // 如果有方法但没有选中方法，自动选择第一个
-  useEffect(() => {
-    if (methods.length > 0 && !activeMethod) {
-      setActiveMethod(methods[0]);
-    } else if (methods.length > 0 && !methods.includes(activeMethod)) {
-      // 如果当前选中的方法不在可用方法列表中，重置为第一个方法
-      setActiveMethod(methods[0]);
-    }
-  }, [methods, activeMethod]);
   
   // 获取当前选中方法的操作信息
   const currentOperation = useMemo(() => {
@@ -84,43 +165,11 @@ export function APIViewer({ document }: APIViewerProps) {
       undefined;
   }, [currentPathItem, activeMethod]);
   
-  // 构建路径树结构
-  const pathTree = useMemo(() => {
-    const root: PathNode = { name: '', path: '', isEndpoint: false, children: {} };
-    
-    paths.forEach(path => {
-      const segments = path.split('/').filter(Boolean);
-      
-      let current = root;
-      let currentPath = '';
-      
-      segments.forEach((segment, index) => {
-        currentPath += '/' + segment;
-        
-        if (!current.children[segment]) {
-          current.children[segment] = {
-            name: segment,
-            path: currentPath,
-            isEndpoint: index === segments.length - 1,
-            children: {}
-          };
-        } else if (index === segments.length - 1) {
-          // 如果是最后一段，标记为端点
-          current.children[segment].isEndpoint = true;
-        }
-        
-        current = current.children[segment];
-      });
-    });
-    
-    return root;
-  }, [paths]);
-  
-  // 切换路径展开/折叠状态
-  const togglePathExpanded = (path: string) => {
-    setExpandedPaths(prev => ({
+  // 切换标签展开/折叠状态
+  const toggleTagExpanded = (tagName: string) => {
+    setExpandedTags(prev => ({
       ...prev,
-      [path]: !prev[path]
+      [tagName]: !prev[tagName]
     }));
   };
   
@@ -270,52 +319,77 @@ export function APIViewer({ document }: APIViewerProps) {
     );
   };
 
-  // 递归渲染路径树节点
-  const renderPathTree = (node: PathNode, parent: string = '') => {
-    const nodeEntries = Object.entries(node.children);
-    if (nodeEntries.length === 0) return null;
+  // 渲染基于标签的菜单树
+  const renderTagTree = () => {
+    if (tagTree.length === 0) {
+      return (
+        <div className="px-3 py-2 text-sm text-muted-foreground">
+          无可用API
+        </div>
+      );
+    }
     
     return (
-      <div className={cn("pl-3", parent ? "border-l border-white/5" : "")}>
-        {nodeEntries.map(([name, childNode]) => {
-          const hasChildren = Object.keys(childNode.children).length > 0;
-          const isExpanded = expandedPaths[childNode.path]; // 默认展开
-          const fullPath = Object.keys(childNode.children).length > 0 ? childNode.path + '/' : childNode.path;
-          const isActive = activeEndpoint === fullPath;
+      <div className="pl-3">
+        {tagTree.map((tag) => {
+          const isExpanded = expandedTags[tag.name];
           
           return (
-            <div key={childNode.path}>
+            <div key={tag.name}>
               <div 
                 className={cn(
                   "flex items-center py-1 px-1 rounded text-sm hover:bg-white/5 cursor-pointer",
-                  childNode.isEndpoint && isActive ? "bg-primary/10 text-primary" : "text-muted-foreground"
+                  "text-muted-foreground"
                 )}
-                onClick={() => {
-                  if (hasChildren) {
-                    togglePathExpanded(childNode.path);
-                  }
-                  if (childNode.isEndpoint) {
-                    setActiveEndpoint(fullPath);
-                    setActiveMethod(''); // 重置选中的方法
-                  }
-                }}
+                onClick={() => toggleTagExpanded(tag.name)}
               >
-                {hasChildren && (
-                  <button className="mr-1 w-4 h-4 flex items-center justify-center">
-                    {isExpanded ? (
-                      <ChevronDown className="w-3 h-3" />
-                    ) : (
-                      <ChevronRight className="w-3 h-3" />
-                    )}
-                  </button>
-                )}
-                {!hasChildren && <div className="w-4" />}
-                <span className={cn("truncate", childNode.isEndpoint && "font-medium")}>
-                  {name}
+                <button className="mr-1 w-4 h-4 flex items-center justify-center">
+                  {isExpanded ? (
+                    <ChevronDown className="w-3 h-3" />
+                  ) : (
+                    <ChevronRight className="w-3 h-3" />
+                  )}
+                </button>
+                <span className="font-medium">
+                  {tag.name}
                 </span>
               </div>
               
-              {hasChildren && isExpanded && renderPathTree(childNode, childNode.path)}
+              {isExpanded && (
+                <div className="pl-4 border-l border-white/5">
+                  {tag.operations.map((op) => {
+                    const isActive = activeEndpoint === op.path && activeMethod === op.method;
+                    const methodColor = 
+                      op.method === "get" ? "text-blue-500" : 
+                      op.method === "post" ? "text-green-500" : 
+                      op.method === "put" ? "text-yellow-500" : 
+                      op.method === "delete" ? "text-red-500" : 
+                      "text-gray-500";
+                    
+                    return (
+                      <div 
+                        key={`${op.path}-${op.method}`}
+                        className={cn(
+                          "flex items-center py-1 px-1 rounded text-sm hover:bg-white/5 cursor-pointer",
+                          isActive ? "bg-primary/10 text-primary" : "text-muted-foreground"
+                        )}
+                        onClick={() => {
+                          setActiveEndpoint(op.path);
+                          setActiveMethod(op.method);
+                        }}
+                      >
+                        <div className="w-4" />
+                        <span className={cn("uppercase font-mono mr-2", methodColor)}>
+                          {op.method}
+                        </span>
+                        <span className="truncate">
+                          {op.operation.summary || op.path}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           );
         })}
@@ -324,20 +398,32 @@ export function APIViewer({ document }: APIViewerProps) {
   };
   
   return (
-    <div className="flex flex-col md:flex-row rounded-lg border border-white/10 overflow-hidden h-[calc(100vh-64px)]">
+    <div 
+      ref={containerRef} 
+      className={cn(
+        "flex flex-col md:flex-row rounded-lg border border-white/10 overflow-hidden h-[calc(100vh-64px)]",
+        isFullscreen && "fixed inset-0 z-50 h-screen rounded-none"
+      )}
+    >
       {/* 左侧菜单栏 - 独立滚动区域 */}
       <div className="w-full md:w-1/4 lg:w-1/5 bg-card/50 border-r border-white/5 flex flex-col h-full max-h-full">
-        <div className="p-4 border-b border-white/5">
-          <h2 className="font-medium text-sm">端点列表</h2>
+        <div className="p-4 border-b border-white/5 flex justify-between items-center">
+          <h2 className="font-medium text-sm">API 分组</h2>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="p-1 h-auto"
+            onClick={toggleFullscreen}
+          >
+            {isFullscreen ? (
+              <Minimize className="h-4 w-4" />
+            ) : (
+              <Maximize className="h-4 w-4" />
+            )}
+          </Button>
         </div>
         <div className="overflow-y-auto flex-1 p-2">
-          {paths.length > 0 ? (
-            renderPathTree(pathTree)
-          ) : (
-            <div className="px-3 py-2 text-sm text-muted-foreground">
-              无可用端点
-            </div>
-          )}
+          {renderTagTree()}
         </div>
       </div>
       
@@ -351,6 +437,16 @@ export function APIViewer({ document }: APIViewerProps) {
                 {currentOperation?.summary || currentOperation?.operationId || "API端点"}
               </h2>
               <div className="font-mono text-sm mb-2 flex items-center">
+                <span className={cn(
+                  "uppercase px-2 py-1 rounded font-semibold text-xs mr-2",
+                  activeMethod === "get" ? "bg-blue-500/20 text-blue-500" : 
+                  activeMethod === "post" ? "bg-green-500/20 text-green-500" : 
+                  activeMethod === "put" ? "bg-yellow-500/20 text-yellow-500" : 
+                  activeMethod === "delete" ? "bg-red-500/20 text-red-500" : 
+                  "bg-gray-500/20 text-gray-500"
+                )}>
+                  {activeMethod}
+                </span>
                 <span className="text-gray-400">{'{base_url}'}</span>
                 <span className="text-primary">{activeEndpoint}</span>
               </div>
@@ -359,34 +455,6 @@ export function APIViewer({ document }: APIViewerProps) {
                   {currentOperation.description}
                 </p>
               )}
-            </div>
-            
-            {/* 方法选项卡 - 固定不滚动 */}
-            <div className="border-b border-white/5 flex overflow-x-auto flex-shrink-0">
-              {methods.map((method) => (
-                <Button
-                  key={method}
-                  variant="ghost"
-                  className={cn(
-                    "px-4 py-2 rounded-none text-sm",
-                    activeMethod === method
-                      ? "bg-white/5 border-b-2 border-primary"
-                      : ""
-                  )}
-                  onClick={() => setActiveMethod(method)}
-                >
-                  <span className={cn(
-                    "uppercase px-2 py-1 rounded font-semibold text-xs",
-                    method === "get" ? "bg-blue-500/20 text-blue-500" : 
-                    method === "post" ? "bg-green-500/20 text-green-500" : 
-                    method === "put" ? "bg-yellow-500/20 text-yellow-500" : 
-                    method === "delete" ? "bg-red-500/20 text-red-500" : 
-                    "bg-gray-500/20 text-gray-500"
-                  )}>
-                    {method}
-                  </span>
-                </Button>
-              ))}
             </div>
             
             {/* 操作详情 - 可滚动区域 */}
@@ -591,14 +659,14 @@ export function APIViewer({ document }: APIViewerProps) {
                 </div>
               ) : (
                 <div className="flex items-center justify-center h-full text-muted-foreground">
-                  {methods.length > 0 ? "请选择一个方法" : "此端点没有定义方法"}
+                  无可用操作
                 </div>
               )}
             </div>
           </div>
         ) : (
           <div className="flex items-center justify-center h-full text-muted-foreground">
-            {paths.length > 0 ? "请选择一个端点" : "此API文档未定义端点"}
+            请选择一个API端点
           </div>
         )}
       </div>

@@ -245,12 +245,6 @@ export interface OpenAPIDocument {
     [key: string]: string[];
   }
   
-  export interface TagObject {
-    name: string;
-    description?: string;
-    externalDocs?: ExternalDocumentationObject;
-  }
-  
   export interface ReferenceObject {
     $ref: string;
   }
