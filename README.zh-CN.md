@@ -12,6 +12,7 @@
 - **代码高亮**: Highlight.js
 - **图表**: Mermaid
 - **类型系统**: TypeScript
+- **API文档**: OpenAPI 查看器
 
 ## 项目结构
 
@@ -19,6 +20,7 @@
 src/
 ├── app/           # Next.js 应用主目录
 │   ├── about/     # 关于页面
+│   ├── api/       # API文档页面
 │   ├── blog/      # 博客相关页面
 │   ├── contact/   # 联系页面
 │   ├── docs/      # 文档页面
@@ -32,8 +34,11 @@ src/
 │   └── ClientBody.tsx # 客户端组件
 │
 ├── components/    # 可复用组件
+│   ├── api-viewer.tsx # OpenAPI文档查看器
+│   └── ui/        # UI组件
 ├── config/        # 配置文件
 ├── content/       # 内容管理目录
+│   ├── apis/      # API规范文件(OpenAPI)
 │   ├── blogs/     # 博客文章内容
 │   └── docs/      # 文档内容
 ├── data/          # 数据文件
@@ -125,6 +130,12 @@ bun run start
   - 多种编程语言（Python、Rust、JavaScript等）
   - 框架和工具（Django、Vue、React等）
   - 开发运维（Docker、Git等）
+- API文档查看器
+  - 支持OpenAPI规范
+  - 交互式API端点浏览器
+  - 请求/响应模式可视化
+  - 支持GET、POST、PUT、DELETE等HTTP方法
+  - 层级式端点导航
 - 响应式设计
 - Markdown 支持
   - 自定义容器支持（info | warning | tip | danger）

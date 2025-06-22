@@ -1,12 +1,13 @@
 "use client";
 
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {Button} from "@/components/ui/button";
 import type {Mermaid} from "mermaid";
 import mermaid from "mermaid";
 import {Expand} from "@/components/icon/expand";
 import {Collapse} from "@/components/icon/collapse";
 import {Reset} from "@/components/icon/reset";
+import {useFullscreen} from "@/hooks/use-fullscreen";
 
 const MermaidPage = () => {
     const [inputCode, setInputCode] = useState('');
@@ -14,13 +15,15 @@ const MermaidPage = () => {
     const [error, setError] = useState<string | null>(null);
     const [theme, setTheme] = useState<'default' | 'dark' | 'forest' | 'neutral'>('default');
     const [mermaidApi, setMermaidApi] = useState<Mermaid | null>(null);
-    const [isFullScreen, setIsFullScreen] = useState(false);
     const [scale, setScale] = useState(1);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [isDragging, setIsDragging] = useState(false);
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-    const previewRef = React.useRef<HTMLDivElement>(null);
-    const contentRef = React.useRef<HTMLDivElement>(null);
+    const previewRef = useRef<HTMLDivElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
+    
+    // 使用自定义的 useFullscreen hook
+    const { isFullscreen, toggleFullscreen } = useFullscreen(previewRef);
 
     useEffect(() => {
         const loadMermaid = async () => {
@@ -38,29 +41,20 @@ const MermaidPage = () => {
         loadMermaid().then();
     }, [theme]);
     
+    // 监听全屏状态变化，重置缩放和位置
     useEffect(() => {
-        const handleFullscreenChange = () => {
-            const newFullscreenState = !!document.fullscreenElement;
-            setIsFullScreen(newFullscreenState);
-            
-            // 如果退出全屏，重置缩放和位置
-            if (!newFullscreenState) {
-                setScale(1);
-                setPosition({ x: 0, y: 0 });
-            }
-        };
-        
-        document.addEventListener('fullscreenchange', handleFullscreenChange);
-        return () => {
-            document.removeEventListener('fullscreenchange', handleFullscreenChange);
-        };
-    }, []);
+        // 如果退出全屏，重置缩放和位置
+        if (!isFullscreen) {
+            setScale(1);
+            setPosition({ x: 0, y: 0 });
+        }
+    }, [isFullscreen]);
     
     // 处理键盘快捷键
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             // 空格键重置视图 - 只在全屏模式下有效
-            if (e.code === 'Space' && isFullScreen) {
+            if (e.code === 'Space' && isFullscreen) {
                 resetView();
             }
             
@@ -77,7 +71,7 @@ const MermaidPage = () => {
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         };
-    }, [isFullScreen]); // 添加 isFullScreen 作为依赖项
+    }, [isFullscreen]); // 添加 isFullscreen 作为依赖项
 
     const handleRender = async () => {
         if (!mermaidApi) {
@@ -122,28 +116,14 @@ const MermaidPage = () => {
         URL.revokeObjectURL(url);
     };
     
-    const toggleFullScreen = async () => {
-        if (!previewRef.current) return;
-        
-        try {
-            if (!document.fullscreenElement) {
-                await previewRef.current.requestFullscreen();
-            } else {
-                await document.exitFullscreen();
-            }
-        } catch (err) {
-            setError(`全屏模式错误: ${err}`);
-        }
-    };
-    
     const handleWheel = (e: React.WheelEvent) => {
         // 只有在全屏模式下才启用缩放功能
-        if (!isFullScreen) return;
+        if (!isFullscreen) return;
         
         // 阻止默认行为，防止页面滚动
         e.preventDefault();
         
-        let delta = 0;
+        let delta: number;
         
         // 检测触控板手势缩放 (通过 ctrlKey 识别)
         if (e.ctrlKey) {
@@ -159,7 +139,7 @@ const MermaidPage = () => {
     
     const handleMouseDown = (e: React.MouseEvent) => {
         // 只有在全屏模式下才启用拖拽功能
-        if (!isFullScreen) return;
+        if (!isFullscreen) return;
         
         if (e.button === 0) { // 左键点击
             setIsDragging(true);
@@ -169,7 +149,7 @@ const MermaidPage = () => {
     
     const handleMouseMove = (e: React.MouseEvent) => {
         // 只有在全屏模式下才启用拖拽功能
-        if (!isFullScreen) return;
+        if (!isFullscreen) return;
         
         if (isDragging) {
             setPosition({
@@ -231,7 +211,7 @@ const MermaidPage = () => {
                             tabIndex={0}
                         >
                             <div className="absolute top-2 right-2 flex gap-2 z-10">
-                                {isFullScreen && (
+                                {isFullscreen && (
                                     <button 
                                         onClick={resetView}
                                         className="p-1.5 bg-background/80 hover:bg-background border border-input rounded-md"
@@ -241,11 +221,11 @@ const MermaidPage = () => {
                                     </button>
                                 )}
                                 <button 
-                                    onClick={toggleFullScreen}
+                                    onClick={toggleFullscreen}
                                     className="p-1.5 bg-background/80 hover:bg-background border border-input rounded-md"
-                                    title={isFullScreen ? "退出全屏" : "全屏显示"}
+                                    title={isFullscreen ? "退出全屏" : "全屏显示"}
                                 >
-                                    {isFullScreen ? <Collapse /> : <Expand />}
+                                    {isFullscreen ? <Collapse /> : <Expand />}
                                 </button>
                             </div>
                             <div className="absolute inset-2 overflow-hidden">
@@ -253,14 +233,14 @@ const MermaidPage = () => {
                                     <div 
                                         className="w-full h-full flex items-center justify-center"
                                         style={{
-                                            cursor: isFullScreen ? (isDragging ? 'grabbing' : 'grab') : 'default'
+                                            cursor: isFullscreen ? (isDragging ? 'grabbing' : 'grab') : 'default'
                                         }}
                                     >
                                         <div
                                             ref={contentRef}
                                             className="transform-gpu transition-transform duration-75"
                                             style={{
-                                                transform: isFullScreen ? `translate(${position.x}px, ${position.y}px) scale(${scale})` : 'none',
+                                                transform: isFullscreen ? `translate(${position.x}px, ${position.y}px) scale(${scale})` : 'none',
                                                 width: '100%',
                                                 height: '100%',
                                                 display: 'flex',
@@ -277,7 +257,7 @@ const MermaidPage = () => {
                                     </div>
                                 )}
                             </div>
-                            {isFullScreen && (
+                            {isFullscreen && (
                                 <div className="absolute bottom-2 left-2 px-2 py-1 bg-background/80 rounded-md text-xs text-muted-foreground">
                                     {scale.toFixed(1)}x | 滚轮缩放 | 拖拽移动 | 空格重置
                                 </div>

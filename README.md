@@ -12,6 +12,7 @@ A personal website built with Next.js to share technical articles, project exper
 - **Code Highlighting**: Highlight.js
 - **Charts**: Mermaid
 - **Type System**: TypeScript
+- **API Documentation**: OpenAPI Viewer
 
 ## Project Structure
 
@@ -19,6 +20,7 @@ A personal website built with Next.js to share technical articles, project exper
 src/
 ├── app/           # Next.js app directory
 │   ├── about/     # About page
+│   ├── api/       # API documentation pages
 │   ├── blog/      # Blog pages
 │   ├── contact/   # Contact page
 │   ├── docs/      # Documentation pages
@@ -32,8 +34,11 @@ src/
 │   └── ClientBody.tsx # Client component
 │
 ├── components/    # Reusable components
+│   ├── api-viewer.tsx # OpenAPI documentation viewer
+│   └── ui/        # UI components
 ├── config/        # Configuration files
 ├── content/       # Content management
+│   ├── apis/      # API specifications (OpenAPI)
 │   ├── blogs/     # Blog content
 │   └── docs/      # Documentation content
 ├── data/          # Data files
@@ -125,6 +130,12 @@ bun run start
   - Various programming languages (Python, Rust, JavaScript, etc.)
   - Frameworks and tools (Django, Vue, React, etc.)
   - DevOps (Docker, Git, etc.)
+- API Documentation Viewer
+  - OpenAPI specification support
+  - Interactive API endpoint explorer
+  - Request/response schema visualization
+  - Support for GET, POST, PUT, DELETE and other HTTP methods
+  - Hierarchical endpoint navigation
 - Responsive Design
 - Markdown Support
   - Custom container support (`info` | `warning` | `tip` | `danger`)

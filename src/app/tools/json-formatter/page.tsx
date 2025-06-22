@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-// import { Terminal } from "lucide-react"; // 不再需要 Alert 图标
+
 
 const JsonFormatterPage = () => {
   const [inputJson, setInputJson] = useState('');
