@@ -13,9 +13,7 @@ export default function Template({children}: { children: React.ReactNode }) {
     }, [pathname])
     return (
         <div>
-            <div id='loading-top' className='w-full h-[51vh] bg-white fixed z-50 top-0' style={{ transform: 'translateY(0)' }}></div>
-            <div id='loading-fill' className='w-full bg-sky-400 fixed z-40 top-1/4 bottom-1/4' style={{ opacity: 1, transform: 'translateY(0)' }}></div>
-            <div id='loading-bottom' className='w-full h-[51vh] bg-white fixed z-50 bottom-0' style={{ transform: 'translateY(0)' }}></div>
+            <div id='loading-progress' className='w-full h-[2px] bg-blue-400 fixed z-50 bottom-0'></div>
             {children}
         </div>
     )

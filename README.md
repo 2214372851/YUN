@@ -157,7 +157,7 @@ bun run start
 
 The project can be deployed to Vercel:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/YUN)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/2214372851/YUN)
 
 ### Vercel Deployment Guide
 
