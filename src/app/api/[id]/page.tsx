@@ -38,11 +38,12 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
   }
 
   return (
-    <div className="flex-1 pt-24 pb-24">
-      <div className="container max-w-7xl mx-auto px-4">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">{apiDocument.title}</h1>
-          <div className="flex items-center gap-3">
+    <div className="flex-1 w-full">
+      {/* 页面标题区域 - 在小屏幕上使用更小的padding */}
+      <div className="pt-24 pb-4 px-4 sm:px-6 md:px-8 container max-w-7xl mx-auto">
+        <div className="mb-4 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">{apiDocument.title}</h1>
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             <div className="bg-primary/10 text-primary px-3 py-1 rounded text-sm">
               版本: {apiDocument.version}
             </div>
@@ -53,7 +54,10 @@ export default async function APIDetailPage({ params }: { params: Promise<{ id: 
             )}
           </div>
         </div>
-        
+      </div>
+      
+      {/* API查看器组件 - 占满剩余空间 */}
+      <div className="px-0 sm:px-4 md:px-8 container max-w-7xl mx-auto pb-4 sm:pb-8">
         {/* 使用API查看器组件显示API文档内容 */}
         <APIViewer document={apiDocument.content} />
       </div>

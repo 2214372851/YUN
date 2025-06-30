@@ -21,7 +21,7 @@ export async function generateMetadata({params}: { params: Promise<{ id: string 
     return {
         title: post.title,
         description: post.excerpt,
-        keywords: post.tags,
+        keywords: post.tags.join(', '),
         authors: [{name: post.author}],
         openGraph: {
             title: post.title,
@@ -29,14 +29,7 @@ export async function generateMetadata({params}: { params: Promise<{ id: string 
             type: 'article',
             publishedTime: post.lastEdited,
             authors: [post.author],
-            images: post.imageUrl ? [
-                {
-                    url: post.imageUrl,
-                    width: 1200,
-                    height: 630,
-                    alt: post.title,
-                }
-            ] : undefined,
+            images: post.imageUrl ? post.imageUrl : "https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp"
         },
         twitter: {
             card: 'summary_large_image',
@@ -48,6 +41,19 @@ export async function generateMetadata({params}: { params: Promise<{ id: string 
             canonical: `/blog/${id}`,
         },
     };
+}
+
+// 将中文日期格式转换为ISO 8601格式
+function formatDateToISO(dateStr: string): string {
+    // 匹配中文日期格式，例如"2025年6月18日"
+    const match = dateStr.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
+    if (match) {
+        const year = match[1];
+        const month = match[2].padStart(2, '0');
+        const day = match[3].padStart(2, '0');
+        return `${year}-${month}-${day}T00:00:00+08:00`;
+    }
+    return dateStr; // 如果不是中文格式，则返回原始字符串
 }
 
 // 博客文章页面组件
@@ -62,6 +68,13 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
     // 将 Markdown 转换为 HTML，并提取标题
     const {content} = await markdownToHtml(post.content);
 
+    // 格式化日期为ISO 8601格式
+    const isoDate = formatDateToISO(post.lastEdited);
+    
+    // 网站域名
+    const siteUrl = "https://bybxbwg.fun";
+    const articleUrl = `${siteUrl}/blog/${id}`;
+    
     // 生成结构化数据
     const structuredData = {
         "@context": "https://schema.org",
@@ -72,7 +85,8 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
         "author": {
             "@type": "Person",
             "name": post.author,
-            "jobTitle": post.authorRole
+            "jobTitle": post.authorRole,
+            "url": `${siteUrl}/about` // 添加作者URL，指向关于页面
         },
         "publisher": {
             "@type": "Organization",
@@ -82,12 +96,15 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
                 "url": "https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp"
             }
         },
-        "datePublished": post.lastEdited,
-        "dateModified": post.lastEdited,
+        "datePublished": isoDate,
+        "dateModified": isoDate,
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": `https://bybxbwg.fun/blog/${id}`
-        }
+            "@id": articleUrl
+        },
+        "url": articleUrl,
+        "articleSection": post.category,
+        "keywords": post.tags.join(', ')
     };
 
     return (
@@ -117,7 +134,7 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
                                             )}
                                         </div>
                                         <span>·</span>
-                                        <time dateTime={post.lastEdited}>
+                                        <time dateTime={isoDate}>
                                             {post.lastEdited}
                                         </time>
                                         <span>·</span>

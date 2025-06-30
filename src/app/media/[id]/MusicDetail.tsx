@@ -233,7 +233,7 @@ const MusicDetail = ({musicItem}: Props) => {
         const interval = setInterval(() => {
             const img = imgRef.current;
             if (img && img.complete) {
-                extractThemeColors(3, img, 0).then(colors => {
+                extractThemeColors(10, img, 0).then(colors => {
                     const mediaBg = mediaBgRef.current;
                     if (mediaBg) {
                         const darkerColors = colors.map(c => darkenIfNearWhite(c, 0.7));
