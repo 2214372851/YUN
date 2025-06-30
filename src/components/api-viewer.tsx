@@ -47,6 +47,7 @@ export function APIViewer({ document }: APIViewerProps) {
   const [activeEndpoint, setActiveEndpoint] = useState("");
   const [activeMethod, setActiveMethod] = useState("");
   const [expandedTags, setExpandedTags] = useState<Record<string, boolean>>({});
+  const [showMenu, setShowMenu] = useState(false); // 控制移动端菜单显示
   
   // 构建基于标签的菜单树
   const tagTree = useMemo(() => {
@@ -401,13 +402,33 @@ export function APIViewer({ document }: APIViewerProps) {
     <div 
       ref={containerRef} 
       className={cn(
-        "flex flex-col md:flex-row rounded-lg border border-white/10 overflow-hidden h-[calc(100vh-64px)]",
+        "flex flex-col md:flex-row rounded-lg border border-white/10 overflow-hidden h-[calc(100vh-64px)] md:h-[calc(100vh-12rem)]",
         isFullscreen && "fixed inset-0 z-50 h-screen rounded-none"
       )}
     >
-      {/* 左侧菜单栏 - 独立滚动区域 */}
-      <div className="w-full md:w-1/4 lg:w-1/5 bg-card/50 border-r border-white/5 flex flex-col h-full max-h-full">
-        <div className="p-4 border-b border-white/5 flex justify-between items-center">
+      {/* 移动端菜单切换按钮 */}
+      <div className="md:hidden flex items-center justify-between p-4 border-b border-white/5 bg-card/50">
+        <h2 className="font-medium text-sm">
+          {showMenu ? "API 分组" : activeEndpoint ? 
+            (currentOperation?.summary || currentOperation?.operationId || "API端点") : 
+            "选择API端点"}
+        </h2>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="p-2 h-auto"
+          onClick={() => setShowMenu(!showMenu)}
+        >
+          {showMenu ? "查看文档" : "查看菜单"}
+        </Button>
+      </div>
+      
+      {/* 左侧菜单栏 - 独立滚动区域，在移动端根据状态显示/隐藏 */}
+      <div className={cn(
+        "w-full md:w-1/4 lg:w-1/5 bg-card/50 border-r border-white/5 flex flex-col h-full max-h-full",
+        !showMenu && "hidden md:flex"
+      )}>
+        <div className="p-4 border-b border-white/5 hidden md:flex justify-between items-center">
           <h2 className="font-medium text-sm">API 分组</h2>
           <Button 
             variant="ghost" 
@@ -427,18 +448,21 @@ export function APIViewer({ document }: APIViewerProps) {
         </div>
       </div>
       
-      {/* 右侧内容区 - 独立滚动区域 */}
-      <div className="flex-1 bg-card flex flex-col h-full max-h-full overflow-hidden">
+      {/* 右侧内容区 - 独立滚动区域，在移动端根据状态显示/隐藏 */}
+      <div className={cn(
+        "flex-1 bg-card flex flex-col h-full max-h-full overflow-hidden",
+        showMenu && "hidden md:flex"
+      )}>
         {activeEndpoint ? (
           <div className="h-full flex flex-col overflow-hidden">
             {/* 端点路径标题 - 固定不滚动 */}
-            <div className="border-b border-white/5 p-4 flex-shrink-0">
+            <div className="border-b border-white/5 p-4 flex-shrink-0 hidden md:block">
               <h2 className="text-xl font-semibold mb-2">
                 {currentOperation?.summary || currentOperation?.operationId || "API端点"}
               </h2>
-              <div className="font-mono text-sm mb-2 flex items-center">
+              <div className="font-mono text-sm mb-2 flex flex-wrap items-center">
                 <span className={cn(
-                  "uppercase px-2 py-1 rounded font-semibold text-xs mr-2",
+                  "uppercase px-2 py-1 rounded font-semibold text-xs mr-2 mb-1",
                   activeMethod === "get" ? "bg-blue-500/20 text-blue-500" : 
                   activeMethod === "post" ? "bg-green-500/20 text-green-500" : 
                   activeMethod === "put" ? "bg-yellow-500/20 text-yellow-500" : 
@@ -448,7 +472,7 @@ export function APIViewer({ document }: APIViewerProps) {
                   {activeMethod}
                 </span>
                 <span className="text-gray-400">{'{base_url}'}</span>
-                <span className="text-primary">{activeEndpoint}</span>
+                <span className="text-primary break-all">{activeEndpoint}</span>
               </div>
               {currentOperation?.description && (
                 <p className="text-sm text-muted-foreground">
@@ -457,10 +481,27 @@ export function APIViewer({ document }: APIViewerProps) {
               )}
             </div>
             
+            {/* 移动端端点信息 - 简化版 */}
+            <div className="border-b border-white/5 p-4 flex-shrink-0 md:hidden">
+              <div className="font-mono text-sm mb-2 flex flex-wrap items-center">
+                <span className={cn(
+                  "uppercase px-2 py-1 rounded font-semibold text-xs mr-2 mb-1",
+                  activeMethod === "get" ? "bg-blue-500/20 text-blue-500" : 
+                  activeMethod === "post" ? "bg-green-500/20 text-green-500" : 
+                  activeMethod === "put" ? "bg-yellow-500/20 text-yellow-500" : 
+                  activeMethod === "delete" ? "bg-red-500/20 text-red-500" : 
+                  "bg-gray-500/20 text-gray-500"
+                )}>
+                  {activeMethod}
+                </span>
+                <span className="text-primary break-all">{activeEndpoint}</span>
+              </div>
+            </div>
+            
             {/* 操作详情 - 可滚动区域 */}
-            <div className="p-6 overflow-y-auto flex-1">
+            <div className="p-3 sm:p-4 md:p-6 overflow-y-auto flex-1">
               {currentOperation ? (
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   {/* 参数 */}
                   {currentOperation.parameters && currentOperation.parameters.length > 0 && (
                     <div className="rounded-md border border-white/5 overflow-hidden">

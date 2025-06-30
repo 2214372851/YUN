@@ -3,6 +3,14 @@ import {MediaItem} from '@/types/media';
 
 export const mediaItems: MediaItem[] = [
     {
+        id: 'jjy-lu',
+        title: '落',
+        imageUrl: 'https://minio-endpoint.bybxbwg.fun/docs/鞠婧祎-落.png',
+        author: '鞠婧祎',
+        lyricsUrl: 'https://minio-endpoint.bybxbwg.fun/docs/鞠婧祎-落.lrc',
+        musicUrl: 'https://minio-endpoint.bybxbwg.fun/docs/鞠婧祎-落.mp3',
+    },
+    {
         id: 'jjy-tyx',
         title: '叹云兮',
         imageUrl: 'https://minio-endpoint.bybxbwg.fun/docs/jjy-tyx.jpg',
@@ -49,6 +57,22 @@ export const mediaItems: MediaItem[] = [
         author: '银临',
         lyricsUrl: 'https://minio-endpoint.bybxbwg.fun/docs/yl-lgxm.lrc',
         musicUrl: 'https://minio-endpoint.bybxbwg.fun/docs/yl-lgxm.mp3',
+    },
+    {
+        id: 'dx-fzzh',
+        title: '风走之后',
+        imageUrl: 'https://minio-endpoint.bybxbwg.fun/docs/单循-风走之后.png',
+        author: '单循',
+        lyricsUrl: 'https://minio-endpoint.bybxbwg.fun/docs/单循-风走之后.lrc',
+        musicUrl: 'https://minio-endpoint.bybxbwg.fun/docs/单循-风走之后.mp4',
+    },
+    {
+        id: 'dx-f',
+        title: '放',
+        imageUrl: 'https://minio-endpoint.bybxbwg.fun/docs/单循-放.png',
+        author: '单循',
+        lyricsUrl: 'https://minio-endpoint.bybxbwg.fun/docs/单循-放.lrc',
+        musicUrl: 'https://minio-endpoint.bybxbwg.fun/docs/单循-放.mp4',
     },
     {
         id: 'yl-chfc',

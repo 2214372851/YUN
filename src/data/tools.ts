@@ -41,6 +41,20 @@ const baseTools: Tool[] = [
 // 从 ai.md 提取的新工具数据
 const otherAi: Tool[] = [
     {
+        id: 'frigate-nvr',
+        name: 'Frigate NVR',
+        description: '一款开源本地 AI 物体检测的网络视频录像（NVR）系统，支持隐私保护与智能家居集成。',
+        href: 'https://frigate.video/',
+        category: '系统工具'
+    },
+    {
+        id: 'ahooks',
+        name: 'ahooks',
+        description: '高质量且可靠的 React Hooks 库，支持 SSR，包含丰富基础与高级 Hooks，TypeScript 编写。',
+        href: 'https://ahooks.js.org/',
+        category: '开发工具'
+    },
+    {
         id: 'shadcn-ui',
         name: 'shadcn/ui',
         description: 'shadcn/ui 提供设计精美、易于访问的组件以及一个与各种框架兼容的代码分发平台。',
@@ -294,7 +308,14 @@ const otherTools: Tool[] = [
         name: 'Heroicons',
         description: '精美的手工制作的 SVG 图标，由 Tailwind CSS 的制作者提供。',
         href: 'https://heroicons.com/',
-        category: '开发工具',
+        category: '设计工具',
+    },
+    {
+        id: 'napkin-ai',
+        name: 'Napkin AI',
+        description: '将文本内容自动生成可编辑的可视化图表、流程图和信息图，适用于演示、博客、社交媒体等多场景。',
+        href: 'https://www.napkin.ai/',
+        category: '设计工具'
     },
     {
         id: 'sealos',
@@ -575,6 +596,13 @@ const otherTools: Tool[] = [
         description: '专注下载YouTube视频，音乐，字幕与封面，兼容多个网站。',
         href: 'https://tubedown.cn/',
         category: '下载工具',
+    },
+    {
+        id: 'kedou-视频解析',
+        name: 'Kedou视频解析',
+        description: '支持超1000+视频网站的视频、图片、音频及文档解析下载，提供无水印下载和多线程下载器。',
+        href: 'https://www.kedou.life/',
+        category: '下载工具'
     },
     {
         id: 'xyjun',
