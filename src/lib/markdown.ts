@@ -23,7 +23,7 @@ renderer.code = ({text, lang}) => {
 };
 renderer.codespan = (code) => {
     const highlighted = hljs.highlight(code.text, {language: 'bash'}).value;
-    return `<code>${highlighted}</code>`;
+    return `<code style="white-space: break-spaces;">${highlighted}</code>`;
 };
 
 marked.use({renderer});
@@ -58,7 +58,7 @@ export async function markdownToHtml(markdown: string): Promise<{ content: strin
     });
 
     $("img").each((_, element) => {
-        $(element).attr('class', 'mk-img')
+        $(element).attr('class', 'mk-img bg-stone-50/95 p-1')
     });
     $("p").each((_, element) => {
         $(element).attr('class', 'whitespace-pre-wrap')

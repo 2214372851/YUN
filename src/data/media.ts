@@ -3,6 +3,14 @@ import {MediaItem} from '@/types/media';
 
 export const mediaItems: MediaItem[] = [
     {
+        id: 'jjy-lrwm',
+        title: '落日未眠',
+        imageUrl: 'https://minio-endpoint.bybxbwg.fun/docs/鞠婧祎-落日未眠.jpg',
+        author: '鞠婧祎',
+        lyricsUrl: 'https://minio-endpoint.bybxbwg.fun/docs/鞠婧祎-落日未眠.lrc',
+        musicUrl: 'https://minio-endpoint.bybxbwg.fun/docs/鞠婧祎-落日未眠.mp3',
+    },
+    {
         id: 'jjy-lu',
         title: '落',
         imageUrl: 'https://minio-endpoint.bybxbwg.fun/docs/鞠婧祎-落.png',
