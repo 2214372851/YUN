@@ -37,7 +37,9 @@ tags: ["部署", "分享", "前端", "静态站", "工具"]
 
 ```
 {
-  "project": "my-awesome-site"
+  "author": "yinhai",
+  "email": "bybxbwg@foxmail.com",
+  "project": "test"
 }
 ```
 
