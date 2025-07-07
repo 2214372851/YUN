@@ -6,6 +6,11 @@ type Announcement = {
 
 const announcements: Announcement[] = [
     {
+        content: "🎉 Yun Share Static Resource Web Hosting Service is launched 🎉",
+        link: "https://apps.apple.com/cn/app/yun-music-mcp/id6444466159",
+        createdAt: new Date("2025-7-7")
+    },
+    {
         content: "🎉 The Minio Manage plugin is now available in Raycast. 🎉",
         link: "https://www.raycast.com/2214372851/minio-manager",
         createdAt: new Date("2025-6-21")
