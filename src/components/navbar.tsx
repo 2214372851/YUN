@@ -13,6 +13,7 @@ const navLinks = [
     {href: "/blog/", text: "Blog"},
     {href: "/docs/", text: "Document"},
     {href: "/tools/", text: "Tools"},
+    {href: "/share/", text: "Share"},
     {href: "/api/", text: "API"},
     {href: "/media/", text: "Music"},
     {href: "/contact/", text: "Contact"},
