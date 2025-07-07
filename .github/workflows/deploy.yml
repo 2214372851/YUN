@@ -1,9 +1,7 @@
 name: Build and Deploy via FTP
 
 on:
-  push:
-    branches:
-      - main # 你可以根据需要修改为其他分支
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
