@@ -1,0 +1,7 @@
+{
+  "name": "yun",
+  "compatibility_date": "2025-07-07",
+  "assets": {
+    "directory": "./out/*"
+  }
+}
