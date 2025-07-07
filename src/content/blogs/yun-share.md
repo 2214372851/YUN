@@ -13,7 +13,7 @@ tags: ["部署", "分享", "前端", "静态站", "工具"]
 :::
 
 <div class="flex justify-center">
-  <a class="mk-btn" href="https://yunshare.yun.moe">👉 前往 YUN Share</a>
+  <a class="mk-btn" href="/share/">👉 前往 YUN Share</a>
 </div>
 
 ## **🎯 工具简介**
@@ -37,7 +37,9 @@ tags: ["部署", "分享", "前端", "静态站", "工具"]
 
 ```
 {
-  "project": "my-awesome-site"
+  "author": "yinhai",
+  "email": "bybxbwg@foxmail.com",
+  "project": "test"
 }
 ```
 
@@ -78,7 +80,7 @@ my-project/
 点击验证链接后，项目将正式部署完成，你将获得一个可以直接访问的在线链接，形如：
 
 ```
-https://example.com/my-awesome-site/
+https://share.bybxbwg.fun/{project}/
 ```
 
 ## **📄 项目管理**
