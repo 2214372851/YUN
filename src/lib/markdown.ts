@@ -13,13 +13,18 @@ export interface TableOfContents {
 
 const renderer = new marked.Renderer();
 renderer.code = ({text, lang}) => {
-    if (lang === 'mermaid') {
+    const [langName, filename, ...args] = (lang as string).split(' ');
+    if (langName === 'mermaid') {
         const uniqueId = `mermaid-${Date.now()}`
         return `<div class="mermaid" id="${uniqueId}" style="white-space: break-spaces">${text}</div>`;
     }
-    const validLang = lang && hljs.getLanguage(lang) ? lang : "plaintext";
+    const validLang = lang && hljs.getLanguage(langName) ? langName : "plaintext";
     const highlighted = hljs.highlight(text, {language: validLang}).value;
-    return `<pre><code class="hljs ${validLang}">${highlighted}</code></pre>`;
+    let extra = ''
+    const macAction = '<div class="size-[12px] bg-red-600 rounded-full"></div> <div class="size-[12px] bg-yellow-600 rounded-full"></div> <div class="size-[12px] bg-green-600 rounded-full"></div>'
+    extra += `<div class="flex justify-between items-center code-header"><div class="filename flex items-center gap-1">${macAction}${filename ? filename : ''}</div><div class="langname">${langName}</div></div>`
+
+    return `<pre>${extra}<code class="hljs ${validLang}">${highlighted}</code></pre>`;
 };
 renderer.codespan = (code) => {
     const highlighted = hljs.highlight(code.text, {language: 'bash'}).value;
@@ -70,9 +75,15 @@ export async function markdownToHtml(markdown: string): Promise<{ content: strin
     $("table").each((_, element) => {
         $(element).wrap('<div class="overflow-x-auto marked-table">');
     });
-    const htmlContent = $.html().replace(/::: (info|warn|tip|danger)([\s\S]*?):::/g, (match, type, content) => {
-        return `<div class="whitespace-pre-wrap rounded-md p-4 text-black alert ${type}">${marked.parseInline(content.trim())}</div>`;
+    let htmlContent = $.html().replace(/::: (info|warn|tip|danger)([\s\S]*?)\n([\s\S]*?):::/g, (match, type, title, content) => {
+        if (title) {
+            content = `<div class="title">${title.trim()}</div>` + content.trim()
+        }
+        return `<div class="whitespace-pre-wrap rounded-md p-4 alert ${type}">${marked.parseInline(content.trim())}</div>`;
     })
+    // htmlContent = htmlContent.replace(/```mermaid([\s\S]*?)```/g, (match, content) => {
+    //     return `<div class="mermaid">${content.trim()}</div>`;
+    // });
 
     return {content: htmlContent, headings};
 }

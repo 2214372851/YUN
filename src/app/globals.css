@@ -96,6 +96,19 @@ pre {
     background: red;
     overflow-x: auto;
     border-radius: var(--radius);
+    border: 1px solid #4C4D4D;
+
+    .code-header {
+        color: #C7C7C7;
+        padding: 0 10px;
+        background: #1F2020;
+
+        .filename {
+            max-width: 50%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
 
     code.hljs {
         background: #151B23;
@@ -175,6 +188,10 @@ input[type="color"]::-moz-color-swatch {
 
 .alert {
     color: #dfdfd6;
+
+    .title {
+        font-weight: 1000;
+    }
 
     &.info {
         background: #65758529;
