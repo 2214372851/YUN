@@ -23,6 +23,7 @@ import {Document} from "@/components/icon/document";
 import {Download} from "@/components/icon/download";
 import {Expand} from "@/components/icon/expand";
 import {Collapse} from "@/components/icon/collapse";
+import {Export} from "@/components/icon/export";
 import {markdownToHtml} from "@/lib/markdown";
 import {useFullscreen} from "@/hooks/use-fullscreen";
 
@@ -31,6 +32,7 @@ const MarkdownEditorPage = () => {
     const [markdownText, setMarkdownText] = useState<string>('');
     const [htmlPreview, setHtmlPreview] = useState<string>('');
     const [leftPaneWidth, setLeftPaneWidth] = useState<number>(50); // 左侧宽度百分比，默认50%
+    const [showExportMenu, setShowExportMenu] = useState<boolean>(false); // 导出菜单显示状态
     const containerRef = useRef<HTMLDivElement>(null);
     const editorContainerRef = useRef<HTMLDivElement>(null);
     const isDraggingRef = useRef<boolean>(false);
@@ -112,6 +114,24 @@ console.log(greeting("World"));
 
 - [x] 已完成任务
 - [ ] 未完成任务
+
+### 自定义容器 (info | warn | tip | danger)
+::: info
+hello info
+:::
+
+::: tip
+hello tip
+:::
+
+::: warn
+hello warn
+:::
+
+::: danger
+hello
+:::
+
 `;
 
     // 工具栏按钮配置
@@ -136,7 +156,13 @@ console.log(greeting("World"));
     const documentButtons = [
         {icon: Trash, title: '清空', action: () => setMarkdownText('')},
         {icon: Document, title: '加载示例', action: () => setMarkdownText(defaultMarkdown)},
-        {icon: Download, title: '下载Markdown', action: downloadMarkdown, primary: true},
+        {icon: Export, title: '导出', action: () => setShowExportMenu(!showExportMenu), primary: true, hasMenu: true},
+    ];
+
+    // 导出菜单选项
+    const exportOptions = [
+        {title: 'Markdown', action: downloadMarkdown, icon: Download},
+        {title: '图片', action: exportAsImage, icon: Image},
     ];
 
     // 处理分隔线拖动
@@ -206,7 +232,114 @@ console.log(greeting("World"));
         a.download = 'document.md';
         a.click();
         URL.revokeObjectURL(url);
+        setShowExportMenu(false);
     }
+
+    // 导出为图片
+    function exportAsImage() {
+        // 获取预览区域的HTML内容
+        const previewElement = document.querySelector('.prose') as HTMLElement;
+        
+        if (!previewElement) {
+            alert('无法获取预览内容');
+            return;
+        }
+
+        // 创建一个临时容器，用于克隆和渲染完整内容
+        const tempContainer = document.createElement('div');
+        tempContainer.style.position = 'absolute';
+        tempContainer.style.left = '-9999px';
+        tempContainer.style.top = '0';
+        tempContainer.style.width = `${previewElement.scrollWidth}px`;
+        
+        // 克隆预览内容
+        const clonedContent = previewElement.cloneNode(true) as HTMLElement;
+        clonedContent.style.width = `${previewElement.scrollWidth}px`;
+        clonedContent.style.height = 'auto';
+        clonedContent.style.overflow = 'visible';
+        clonedContent.style.maxHeight = 'none';
+        
+        // 设置背景和样式
+        clonedContent.classList.add('prose', 'prose-invert');
+        clonedContent.style.padding = '20px';
+        clonedContent.style.background = '#121212'; // 深色背景
+        
+        // 添加到临时容器
+        tempContainer.appendChild(clonedContent);
+        document.body.appendChild(tempContainer);
+        
+        // 使用html2canvas将内容转为canvas
+        import('html2canvas')
+            .then(html2canvas => {
+                return html2canvas.default(clonedContent, {
+                    scale: 2, // 高分辨率
+                    useCORS: true, // 允许跨域图片
+                    allowTaint: true,
+                    backgroundColor: '#121212',
+                    windowWidth: document.documentElement.offsetWidth,
+                    windowHeight: document.documentElement.offsetHeight,
+                    logging: false,
+                    onclone: (doc) => {
+                        // 确保所有样式都被应用
+                        const styles = Array.from(document.styleSheets);
+                        
+                        // 将所有样式表复制到克隆的文档
+                        styles.forEach(styleSheet => {
+                            try {
+                                const cssRules = Array.from(styleSheet.cssRules);
+                                const style = doc.createElement('style');
+                                
+                                cssRules.forEach(rule => {
+                                    style.appendChild(doc.createTextNode(rule.cssText));
+                                });
+                                
+                                doc.head.appendChild(style);
+                            } catch (e) {
+                                console.log('无法访问样式表:', e);
+                            }
+                        });
+                    }
+                });
+            })
+            .then(canvas => {
+                // 转换canvas为图片并下载
+                const image = canvas.toDataURL('image/png');
+                const a = document.createElement('a');
+                a.href = image;
+                a.download = 'markdown-preview.png';
+                a.click();
+                setShowExportMenu(false);
+                
+                // 清理临时元素
+                document.body.removeChild(tempContainer);
+            })
+            .catch(error => {
+                console.error('导出图片失败:', error);
+                alert('导出图片失败');
+                // 确保清理临时元素
+                if (document.body.contains(tempContainer)) {
+                    document.body.removeChild(tempContainer);
+                }
+            });
+    }
+
+    // 点击其他区域时关闭导出菜单
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as HTMLElement;
+            if (!target.closest('.export-button') && !target.closest('.export-menu')) {
+                setShowExportMenu(false);
+            }
+        };
+
+        if (showExportMenu) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showExportMenu]);
 
     // 当Markdown文本变化时更新预览
     useEffect(() => {
@@ -231,7 +364,7 @@ console.log(greeting("World"));
             document.removeEventListener('mousemove', handleMouseMove);
             document.removeEventListener('mouseup', handleMouseUp);
         };
-    }, []);
+    }, [handleMouseUp]);
 
     // 处理Tab键
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -314,18 +447,52 @@ console.log(greeting("World"));
                                     <button
                                         key={index}
                                         onClick={button.action}
-                                        className={`h-8 w-8 p-1 rounded transition-colors flex items-center justify-center group relative ${
+                                        className={`export-button h-8 ${button.hasMenu ? 'px-2 w-auto' : 'w-8 p-1'} rounded transition-colors flex items-center justify-center group relative ${
                                             button.primary
                                                 ? 'bg-primary text-primary-foreground hover:bg-primary/90'
                                                 : 'bg-transparent hover:bg-muted/50 border border-input'
                                         }`}
                                         aria-label={button.title}
                                     >
-                                        <IconComponent/>
+                                        <div className="flex items-center gap-1">
+                                            <IconComponent/>
+                                            {button.hasMenu && (
+                                                <>
+                                                    <span className="text-xs font-medium">{button.title}</span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                        <path d="m6 9 6 6 6-6"/>
+                                                    </svg>
+                                                </>
+                                            )}
+                                        </div>
                                         <span
-                                            className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 border border-input text-xs py-0.5 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-sm z-20 text-black dark:text-white pointer-events-none">
-                      {button.title}
-                    </span>
+                                            className={`absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-background border border-input text-xs py-0.5 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-sm z-20 text-foreground pointer-events-none ${button.hasMenu ? 'hidden' : ''}`}>
+                                            {button.title}
+                                        </span>
+                                        
+                                        {/* 导出菜单 */}
+                                        {button.title === '导出' && showExportMenu && (
+                                            <div className="export-menu absolute top-full right-0 mt-1.5 bg-background border border-input rounded-md shadow-md z-30 min-w-[140px] overflow-hidden">
+                                                {exportOptions.map((option, optIndex) => {
+                                                    const OptionIcon = option.icon;
+                                                    return (
+                                                        <div
+                                                            key={optIndex}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation(); // 防止冒泡触发父级按钮
+                                                                option.action();
+                                                            }}
+                                                            className="w-full px-3 py-2.5 text-left flex items-center gap-2.5 hover:bg-muted text-sm cursor-pointer transition-colors duration-200"
+                                                        >
+                                                            <span className="flex items-center justify-center w-5 h-5 text-foreground">
+                                                                <OptionIcon />
+                                                            </span>
+                                                            <span className="text-foreground">{option.title}</span>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
                                     </button>
                                 );
                             })}

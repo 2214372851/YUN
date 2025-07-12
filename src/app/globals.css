@@ -173,20 +173,24 @@ input[type="color"]::-moz-color-swatch {
 
 }
 
-.alert.info {
-    @apply bg-gray-200;
-}
+.alert {
+    color: #dfdfd6;
 
-.alert.warn {
-    @apply bg-yellow-50;
-}
+    &.info {
+        background: #65758529;
+    }
 
-.alert.tip {
-    @apply bg-indigo-200;
-}
+    &.warn {
+        background: #eab30829;
+    }
 
-.alert.danger {
-    @apply bg-red-200;
+    &.tip {
+        background: #646cff29;
+    }
+
+    &.danger {
+        background: #f43f5e29;
+    }
 }
 
 .mk-img {

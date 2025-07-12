@@ -24,8 +24,8 @@ const JsonFormatterPage = () => {
       const currentIndent = typeof indent === 'string' ? indent : Number(indent);
       const formattedJson = JSON.stringify(parsedJson, null, currentIndent);
       setOutputJson(formattedJson);
-    } catch (e: any) {
-      setError(`无效的 JSON: ${e.message}`);
+    } catch (e) {
+      setError(`无效的 JSON: ${e}`);
     }
   };
 
@@ -96,7 +96,7 @@ const JsonFormatterPage = () => {
         <div className="flex flex-wrap items-center justify-between gap-4">
            <div className="flex items-center gap-4">
              <Button onClick={handleFormat}>格式化</Button>
-             <Button className='text-gray-900' variant="outline" onClick={handleClear}>清空</Button>
+             <Button variant="outline" onClick={handleClear}>清空</Button>
            </div>
            <div className="flex items-center gap-2">
              <label htmlFor="indentSelect" className="text-sm text-muted-foreground">缩进:</label>
