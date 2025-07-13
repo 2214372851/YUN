@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState, useCallback} from 'react';
 import 'highlight.js/styles/github-dark.css';
 
 // 导入图标组件
@@ -36,6 +36,7 @@ const MarkdownEditorPage = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const editorContainerRef = useRef<HTMLDivElement>(null);
     const isDraggingRef = useRef<boolean>(false);
+    const lastUpdateTimeRef = useRef<number>(0); // 用于节流的上一次更新时间
     
     // 使用自定义的 useFullscreen hook
     const { isFullscreen, toggleFullscreen } = useFullscreen(editorContainerRef);
@@ -165,33 +166,53 @@ hello
         {title: '图片', action: exportAsImage, icon: Image},
     ];
 
-    // 处理分隔线拖动
-    const handleMouseDown = (e: React.MouseEvent) => {
-        e.preventDefault();
-        isDraggingRef.current = true;
-        document.addEventListener('mousemove', handleMouseMove);
-        document.addEventListener('mouseup', handleMouseUp);
-    };
+    // 节流函数：限制函数执行频率
+    const throttle = useCallback((callback: (e: MouseEvent) => void, delay: number) => {
+        return (e: MouseEvent) => {
+            const now = Date.now();
+            if (now - lastUpdateTimeRef.current >= delay) {
+                callback(e);
+                lastUpdateTimeRef.current = now;
+            }
+        };
+    }, []);
 
-    const handleMouseMove = (e: MouseEvent) => {
-        if (!isDraggingRef.current || !containerRef.current) return;
+    // 使用节流处理鼠标移动更新
+    const updatePaneWidth = useCallback((e: MouseEvent) => {
+        if (!containerRef.current) return;
 
         const containerRect = containerRef.current.getBoundingClientRect();
         const containerWidth = containerRect.width;
         const mouseX = e.clientX - containerRect.left;
-
+        
         // 计算左侧宽度百分比，限制在20%到80%之间
         let newLeftPaneWidth = (mouseX / containerWidth) * 100;
         newLeftPaneWidth = Math.max(20, Math.min(80, newLeftPaneWidth));
-
+        
         setLeftPaneWidth(newLeftPaneWidth);
-    };
+    }, []);
 
-    const handleMouseUp = () => {
+    // 处理分隔线拖动
+    const handleMouseDown = useCallback((e: React.MouseEvent) => {
+        e.preventDefault();
+        isDraggingRef.current = true;
+        lastUpdateTimeRef.current = Date.now();
+        document.addEventListener('mousemove', throttledMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+    }, []);
+
+    // 创建节流后的鼠标移动处理函数
+    const throttledMouseMove = useCallback(throttle((e: MouseEvent) => {
+        if (isDraggingRef.current) {
+            updatePaneWidth(e);
+        }
+    }, 16), [updatePaneWidth, throttle]); // 约60fps的更新频率
+
+    const handleMouseUp = useCallback(() => {
         isDraggingRef.current = false;
-        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mousemove', throttledMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
-    };
+    }, [throttledMouseMove]);
 
     // 插入格式化文本
     const insertFormat = (prefix: string, suffix: string) => {
@@ -361,10 +382,10 @@ hello
     // 组件卸载时移除事件监听器
     useEffect(() => {
         return () => {
-            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mousemove', throttledMouseMove);
             document.removeEventListener('mouseup', handleMouseUp);
         };
-    }, [handleMouseUp]);
+    }, [throttledMouseMove, handleMouseUp]);
 
     // 处理Tab键
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
