@@ -138,7 +138,7 @@ bun run start
   - Hierarchical endpoint navigation
 - Responsive Design
 - Markdown Support
-  - Custom container support (`info` | `warning` | `tip` | `danger`)
+  - Custom container support (`info` | `warn` | `tip` | `danger`)
      - Syntax: `::: danger :::`
   - Mermaid diagram support
 - Code Highlighting

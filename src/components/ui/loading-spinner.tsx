@@ -40,16 +40,16 @@ export function LoadingSpinner({
     <div className={containerClasses}>
       <div className="relative flex items-center justify-center">
         {/* 外圈旋转动画 */}
-        <div className={`${sizeClasses[size].outer} rounded-full border-4 border-t-blue-500 border-r-transparent border-b-transparent border-l-transparent animate-spin`}></div>
+        <div className={`${sizeClasses[size].outer} rounded-full border-4 border-t-white border-r-transparent border-b-transparent border-l-transparent animate-spin`}></div>
         
         {/* 内圈反向旋转动画 */}
         <div 
-          className={`absolute ${sizeClasses[size].inner} rounded-full border-4 border-t-transparent border-r-blue-400 border-b-transparent border-l-blue-400 animate-spin`} 
+          className={`absolute ${sizeClasses[size].inner} rounded-full border-4 border-t-transparent border-r-white border-b-transparent border-l-white animate-spin`}
           style={{ animationDirection: 'reverse', animationDuration: '0.8s' }}
         ></div>
         
         {/* 中心点 */}
-        <div className="absolute w-2 h-2 bg-blue-500 rounded-full"></div>
+        <div className="absolute w-2 h-2 bg-white rounded-full"></div>
       </div>
       
       {text && <div className="mt-4 text-base font-medium text-white/90">{text}</div>}
@@ -60,7 +60,7 @@ export function LoadingSpinner({
           {[0, 1, 2].map((i) => (
             <div 
               key={i}
-              className={`${sizeClasses[size].dot} bg-blue-500 rounded-full animate-pulse`} 
+              className={`${sizeClasses[size].dot} bg-white rounded-full animate-pulse`}
               style={{ animationDelay: `${i * 0.2}s` }}
             ></div>
           ))}

@@ -1,27 +1,20 @@
-function MenuItem() {
-    return (
-        <div className="p-2 h-16 bg-card rounded-lg border border-white/5 hover:border-white/20">
-            <h3>Status API</h3>
-            <span className="text-white/40">/aapx/index.html</span>
-        </div>
-    )
-}
+
 
 function TestPage() {
     return (
-        <div className="container pt-20 flex max-w-7xl mx-auto">
-            <div
-                className=" w-60 gap-3 space-y-2 border border-transparent border-r-white/5 transition-colors overflow-hidden p-1 h-full">
+        <div className="container pt-20 flex max-w-7xl mx-auto min-h-dvh bg-green-900 justify-center items-center">
+            <div className="w-1/2 relative" style={{
+                transformOrigin: 'bottom'
 
-                <MenuItem/>
-                <MenuItem/>
-                <MenuItem/>
-                <MenuItem/>
-                <MenuItem/>
-                <MenuItem/>
-
+            }}>
+                {/*<img src="/bg.png" alt="bg" className="w-full h-full object-cover"*/}
+                {/*     style={{*/}
+                {/*         transform: 'perspective(1000px) rotateX(30deg) skewX(20deg)',*/}
+                {/*         transformOrigin: 'bottom'*/}
+                {/*     }}*/}
+                {/*     />*/}
+                {/*<img src="/no-bg.png" alt="bg" className="w-full h-full object-cover absolute bottom-0"/>*/}
             </div>
-            test
         </div>
     );
 }
