@@ -7,6 +7,7 @@ export default function GlobalLoading() {
 
   // 在 docs 路径下不显示全局 loading
   if (pathname.startsWith("/docs")) return null;
+  if (pathname.startsWith("/blog")) return null;
 
   return <LoadingSpinner size="lg" fullScreen={true} />;
 }
