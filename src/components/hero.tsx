@@ -53,8 +53,8 @@ function ProductDiagram() {
                         className={index ? "max-w-4xl mx-auto absolute bottom-13" : "max-w-4xl mx-auto"}
                     >
                         <Image
-                            loading="lazy"
                             className="rounded-md"
+                            priority={true}
                             width={800}
                             height={200}
                             src={image.src}

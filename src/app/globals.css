@@ -80,10 +80,10 @@
 
 @font-face {
     font-family: 'MapleMono-NF-CN-Light';
-    /*noinspection CssUnknownTarget*/
-    src: url('/MapleMono-NF-CN-Light.ttf');
+    src: url('/MapleMono-NF-CN-Light.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 * {

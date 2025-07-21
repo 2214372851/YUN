@@ -13,7 +13,7 @@ export interface TableOfContents {
 
 const renderer = new marked.Renderer();
 renderer.code = ({text, lang}) => {
-    const [langName, filename, ...args] = (lang as string).split(' ');
+    const [langName, filename] = (lang as string).split(' ');
     if (langName === 'mermaid') {
         const uniqueId = `mermaid-${Date.now()}`
         return `<div class="mermaid" id="${uniqueId}" style="white-space: break-spaces">${text}</div>`;
@@ -44,13 +44,15 @@ export async function markdownToHtml(markdown: string): Promise<{ content: strin
         const level = parseInt(tagName.substring(1));
         const title = $(element).text().trim();
 
+        // 使用更健壮的 ID 生成逻辑
         let id = title
             .toLowerCase()
-            .replace(/[^\w\s-]/g, "")     // 移除标点
-            .replace(/\s+/g, "-");        // 空格换成 -
+            .replace(/[^\u4e00-\u9fa5a-zA-Z0-9\s-]/g, "") // 保留中英文数字及空格、短横线
+            .replace(/\s+/g, "-");                        // 空格转为短横线
 
         id = `toc-${id}`;
 
+        // 如果 ID 已存在，添加唯一编号后缀
         if (idCount[id] !== undefined) {
             idCount[id] += 1;
             id = `${id}-${idCount[id]}`;
@@ -75,15 +77,12 @@ export async function markdownToHtml(markdown: string): Promise<{ content: strin
     $("table").each((_, element) => {
         $(element).wrap('<div class="overflow-x-auto marked-table">');
     });
-    let htmlContent = $.html().replace(/::: (info|warn|tip|danger)([\s\S]*?)\n([\s\S]*?):::/g, (match, type, title, content) => {
+    const htmlContent = $.html().replace(/::: (info|warn|tip|danger)([\s\S]*?)\n([\s\S]*?):::/g, (match, type, title, content) => {
         if (title) {
             content = `<div class="title">${title.trim()}</div>` + content.trim()
         }
         return `<div class="whitespace-pre-wrap rounded-md p-4 alert ${type}">${marked.parseInline(content.trim())}</div>`;
     })
-    // htmlContent = htmlContent.replace(/```mermaid([\s\S]*?)```/g, (match, content) => {
-    //     return `<div class="mermaid">${content.trim()}</div>`;
-    // });
 
     return {content: htmlContent, headings};
 }

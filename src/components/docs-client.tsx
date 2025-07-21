@@ -30,8 +30,10 @@ function DocNavigation({docs, currentSlug, className}: { docs: DocData[]; curren
                         <TransitionLink
                             key={doc.slug}
                             href={`/docs/${doc.slug}`}
-                            className={`block text-sm py-1 text-muted-foreground hover:text-foreground transition-colors ${
-                                doc.slug === currentSlug ? 'text-foreground font-medium' : ''
+                            className={`block text-sm py-1 transition-colors ${
+                                doc.slug === currentSlug
+                                    ? 'text-foreground font-medium'
+                                    : 'text-muted-foreground hover:text-foreground '
                             }`}
                         >
                             {doc.title}
