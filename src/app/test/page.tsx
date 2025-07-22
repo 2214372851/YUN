@@ -1,6 +1,6 @@
 "use client";
 
-import {useCallback, useEffect, useRef} from "react";
+import {useEffect, useRef} from "react";
 import {ScrollTrigger} from "gsap/ScrollTrigger";
 import gsap from "gsap";
 
@@ -8,47 +8,46 @@ function TestPage() {
 
     const wrapperRef = useRef<HTMLDivElement>(null);
     const cardBoxRef = useRef<HTMLDivElement>(null);
-    let distance = 0
-    let isLeave = false;
+    const distanceRef = useRef(0);
+    const isLeaveRef = useRef(false); // 用 useRef 替代 let isLeave
 
-
-    const resize = useCallback(() => {
-
-        if (!cardBoxRef.current || !wrapperRef.current) {
-            console.log("resize cardBoxRef or wrapperRef is not defined");
-            return
-        }
-        distance = cardBoxRef.current.scrollWidth - innerWidth * 0.75;
-        wrapperRef.current.style.height = cardBoxRef.current.scrollWidth + "px";
-        if (isLeave) {
-            cardBoxRef.current.style.transform = `translateX(-${distance}px)`;
-        }
-    })
-
-    const createScrollTrigger = useCallback(() => {
-        if (wrapperRef.current && cardBoxRef.current) {
-            gsap.registerPlugin(ScrollTrigger);
-
-            ScrollTrigger.create({
-                trigger: wrapperRef.current,
-                start: "top top",
-                end: "bottom bottom",
-                onUpdate: (self) => {
-                    if (cardBoxRef.current) {
-                        cardBoxRef.current.style.transform = `translateX(-${self.progress * distance}px)`;
-                    }
-                },
-                onLeave: () => {
-                    isLeave = true;
-                },
-                onEnterBack: () => {
-                    isLeave = false;
-                }
-            })
-        }
-    })
 
     useEffect(() => {
+        const resize = () => {
+
+            if (!cardBoxRef.current || !wrapperRef.current) {
+                console.log("resize cardBoxRef or wrapperRef is not defined");
+                return
+            }
+            distanceRef.current = cardBoxRef.current.scrollWidth - innerWidth * 0.75; // 修改为 distanceRef.current
+            wrapperRef.current.style.height = cardBoxRef.current.scrollWidth + "px";
+            if (isLeaveRef.current) { // 修改为 isLeaveRef.current
+                cardBoxRef.current.style.transform = `translateX(-${distanceRef.current}px)`; // 修改为 distanceRef.current
+            }
+        }
+
+        const createScrollTrigger = () => {
+            if (wrapperRef.current && cardBoxRef.current) {
+                gsap.registerPlugin(ScrollTrigger);
+
+                ScrollTrigger.create({
+                    trigger: wrapperRef.current,
+                    start: "top top",
+                    end: "bottom bottom",
+                    onUpdate: (self) => {
+                        if (cardBoxRef.current) {
+                            cardBoxRef.current.style.transform = `translateX(-${self.progress * distanceRef.current}px)`; // 修改为 distanceRef.current
+                        }
+                    },
+                    onLeave: () => {
+                        isLeaveRef.current = true; // 修改为 isLeaveRef.current
+                    },
+                    onEnterBack: () => {
+                        isLeaveRef.current = false; // 修改为 isLeaveRef.current
+                    }
+                })
+            }
+        }
         resize();
         createScrollTrigger();
         window.addEventListener("resize", resize);
@@ -56,7 +55,7 @@ function TestPage() {
             window.removeEventListener("resize", resize);
             ScrollTrigger.getAll().forEach(trigger => trigger.kill());
         };
-    }, [createScrollTrigger, resize]);
+    }, []);
 
     return (
         <div className="main pt-32">
