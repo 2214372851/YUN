@@ -4,7 +4,6 @@ import {useEffect, useState} from 'react';
 import {List, Menu, X} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 import type {TableOfContents as TocItem} from "@/lib/markdown";
-import mermaid from "mermaid";
 import TransitionLink from "@/components/TransitionLink";
 import dynamic from "next/dynamic";
 import {LoadingSpinner} from "@/components/ui/loading-spinner";
@@ -220,7 +219,7 @@ export function DocsClient({allDocs, currentSlug, contentHtml, headings}: DocsCl
     const [isTocOpen, setIsTocOpen] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
     const MarkdownView = dynamic(() => import('@/components/markdown-view'),
-        {ssr: false, loading: () => <LoadingSpinner fullScreen={true} />}
+        {ssr: false, loading: () => <LoadingSpinner fullScreen={true}/>}
     );
 
     useEffect(() => {
