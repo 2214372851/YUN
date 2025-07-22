@@ -2,6 +2,118 @@
 title: 常用命令
 ---
 
+## Prometheus 组件之 node_exporter 机器指标
+
+Prometheus 的架构中 Prometheus Server 本身并不直接提供主机级别的监控指标，但我们通常希望对宿主机 CPU、内存、磁盘等基础指标进行收集。**node_exporter** 就是 Prometheus 官方提供的系统级指标导出器。  
+它由 Golang 编写，零依赖，解压即可运行，非常轻量。
+
+### **1. 下载与解压**
+
+你可以从 Prometheus 的官网获取最新版本的构建包：  
+[下载地址](https://prometheus.io/download/)
+
+下载完成后解压：
+```bash
+tar -zxf node_exporter-1.9.1.linux-amd64.tar.gz
+```
+
+此时可以直接使用以下命令启动 node_exporter：
+```bash
+./node_exporter-1.9.1.linux-amd64/node_exporter
+```
+默认会监听在 `9100` 端口，访问 `http://<host-ip>:9100/metrics` 可以看到导出的系统指标。
+
+### **2. 注册为 systemd 服务**
+
+直接运行会占用前台，当 shell 关闭时进程也会停止，因此推荐注册为 systemd 服务，以便后台运行和开机自启。
+
+1. **复制可执行文件到环境路径：**
+   ```bash
+   sudo cp node_exporter-1.9.1.linux-amd64/node_exporter /usr/local/bin/
+   ```
+
+2. **创建服务文件 `/usr/lib/systemd/system/node_exporter.service`：**
+   
+   ```ini
+   [Unit]
+   Description=Node_exporter
+   Documentation=https://prometheus.io/
+   After=network.target
+   
+   [Service]
+   Type=simple
+   User=root
+   Group=root
+   ExecStart=/usr/local/bin/node_exporter \
+     --web.listen-address=:9100
+   ExecReload=/bin/kill -s HUP $MAINPID
+   ExecStop=/bin/kill -s QUIT $MAINPID
+   Restart=on-failure
+   
+   [Install]
+   WantedBy=multi-user.target
+   ```
+   
+3. **加载服务并启动：**
+   
+   ```bash
+   sudo systemctl daemon-reload
+   sudo systemctl start node_exporter
+   sudo systemctl enable node_exporter
+   ```
+   
+4. **查看运行状态：**
+   ```bash
+   sudo systemctl status node_exporter
+   ```
+
+### **3. 在 Prometheus 中配置抓取**
+
+修改 `prometheus.yml`：
+```yaml
+scrape_configs:
+  - job_name: 'node_exporter'
+    static_configs:
+      - targets: ['localhost:9100']
+```
+加载配置：
+```bash
+curl -X POST http://localhost:9090/-/reload
+```
+或者：
+```bash
+sudo systemctl restart prometheus
+```
+
+### **4. 验证 node_exporter**
+
+- **浏览器访问：** `http://<host-ip>:9100/metrics`  
+  可看到各种系统指标（CPU、内存、磁盘、网络）。
+- **Prometheus 界面验证：** 打开 http://<prometheus-ip>:9090，执行：
+  ```
+  up{job="node_exporter"}
+  ```
+  返回 `1` 表示成功采集。
+
+### **5. 常用优化参数**
+
+- **只监听特定网卡：**
+  ```bash
+  --web.listen-address=0.0.0.0:9100
+  ```
+- **禁用不需要的指标收集器：**
+  ```bash
+  --collector.disable-defaults --collector.cpu --collector.meminfo
+  ```
+- **自定义日志级别：**
+  ```bash
+  --log.level=warn
+  ```
+
+---
+
+
+
 ## 内网穿透（云服务器）
 
 #### **🎯 目标**
@@ -110,6 +222,10 @@ autossh -fN -R 3000:localhost:22 user@remote_host
 
 也可以配合 systemd 或 supervisor 等工具长期运行。
 
+---
+
+
+
 ## SSH 免密登录
 
 1. 在本地机器生成密钥对
@@ -128,6 +244,10 @@ autossh -fN -R 3000:localhost:22 user@remote_host
      `cat ~/.ssh/id_rsa.pub | ssh username@remotehost 'mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys && chmod 700 ~/.ssh'`
 
      将`~/.ssh/id_rsa.pub`里的文本放到远程主机 `~/.ssh/authorized_keys`
+
+---
+
+
 
 ## fd 的安装及使用
 
@@ -193,6 +313,8 @@ fd -E /mnt/external-drive
 fd -E '*.bak'
 ```
 
+---
+
 
 
 ## Windows 安装 NeoVim 及 LazyVim
@@ -206,6 +328,8 @@ scoop install neovim git gcc ripgrep fd unzip tree-sitter luarocks
 # 下载安装 LazyVim 配置
 git clone https://github.com/LazyVim/starter $env:LOCALAPPDATA\nvim --depth=1
 ```
+
+---
 
 
 
@@ -223,6 +347,8 @@ irm scoop.201704.xyz -outfile 'install.ps1'
  
 .\install.ps1 -ScoopDir 'E:\Scoop' -ScoopGlobalDir 'E:\GlobalScoopApps'
 ```
+
+---
 
 
 
@@ -245,6 +371,10 @@ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 ```bash
 sudo apt install ./google-chrome-stable_current_amd64.deb
 ```
+
+---
+
+
 
 ## 服务器速度测试
 
@@ -278,6 +408,10 @@ bash <(wget -qO- https://down.vpsaff.net/linux/speedtest/superbench.sh) --speed
 bash <(wget -qO- https://down.vpsaff.net/linux/speedtest/superbench.sh) -m
 ```
 
+---
+
+
+
 ## Git仓库代码行数统计
 
 ### 不显示内容
@@ -288,6 +422,10 @@ bash <(wget -qO- https://down.vpsaff.net/linux/speedtest/superbench.sh) -m
 
 `git ls-files | xargs wc -l`
 
+---
+
+
+
 ## VMware 挂载本地文件夹
 
 查看共享文件夹是否存在
@@ -297,6 +435,10 @@ bash <(wget -qO- https://down.vpsaff.net/linux/speedtest/superbench.sh) -m
 将所有文件夹挂载到 `/mnt/hgfs`
 
 `sudo vmhgfs-fuse .host:/ /mnt/hgfs -o subtype=vmhgfs-fuse,allow_other`
+
+---
+
+
 
 ## Miniconda 静默安装
 
@@ -322,11 +464,19 @@ echo "Miniconda安装和初始化完成"
 
 ```
 
+---
+
+
+
 ## ffmpeg ts视频转mp4视频
 
 ```bash
 ffmpeg -i input.ts -c copy -map 0:v -map 0:a -bsf:a aac_adtstoasc .\output.mp4
 ```
+
+---
+
+
 
 ## Linux统计文件夹及其子文件夹中文件个数
 
@@ -334,11 +484,19 @@ ffmpeg -i input.ts -c copy -map 0:v -map 0:a -bsf:a aac_adtstoasc .\output.mp4
 find /path/dir -type f | wc -l
 ```
 
+---
+
+
+
 ## Linux把查询出来的进程全部杀死
 
 ```bash
 ps -ef | grep workcommod | awk '{print $2}' | xargs kill -9
 ```
+
+---
+
+
 
 ## Linux查看文件列表时排序
 
@@ -347,6 +505,10 @@ ps -ef | grep workcommod | awk '{print $2}' | xargs kill -9
 ```bash
 ll | awk '{print $9}' | sort -k1.1n
 ```
+
+---
+
+
 
 ## ssh 端口转发至本地
 

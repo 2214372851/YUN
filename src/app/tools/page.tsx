@@ -68,7 +68,7 @@ const ToolsPage = () => {
 
     return (
         <main className="min-h-screen flex flex-col">
-            <div className="flex-1 pt-32 pb-24 px-4 container max-w-7xl mx-auto">
+            <div className="main pt-32">
                 <h1 className="text-4xl font-bold mb-8">工具</h1> {/* 减少标题下方间距 */}
 
                 {/* 分类筛选器 */}

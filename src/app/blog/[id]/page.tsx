@@ -3,6 +3,7 @@ import {markdownToHtml} from "@/lib/markdown";
 import {notFound} from "next/navigation";
 import Script from "next/script";
 import Image from "next/image";
+import BlogClient from "@/components/blog-client";
 
 // 生成所有可能的博客文章路径
 export async function generateStaticParams() {
@@ -70,11 +71,11 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
 
     // 格式化日期为ISO 8601格式
     const isoDate = formatDateToISO(post.lastEdited);
-    
+
     // 网站域名
     const siteUrl = "https://bybxbwg.fun";
     const articleUrl = `${siteUrl}/blog/${id}`;
-    
+
     // 生成结构化数据
     const structuredData = {
         "@context": "https://schema.org",
@@ -106,6 +107,7 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
         "articleSection": post.category,
         "keywords": post.tags.join(', ')
     };
+
 
     return (
         <>
@@ -156,18 +158,7 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
                                     </div>
                                 )}
 
-                                <div
-                                    className="prose prose-invert max-w-none prose-headings:scroll-mt-32
-                                    prose-p:text-base sm:prose-p:text-lg
-                                    prose-h1:text-3xl sm:prose-h1:text-4xl
-                                    prose-h2:text-2xl sm:prose-h2:text-3xl
-                                    prose-h3:text-xl sm:prose-h3:text-2xl
-                                    prose-img:rounded-lg prose-img:shadow-lg
-                                    prose-a:text-blue-400 hover:prose-a:text-blue-300
-                                    prose-code:bg-gray-800 prose-code:px-1 prose-code:py-0.5 prose-code:rounded
-                                    prose-pre:bg-gray-900 prose-pre:rounded-lg"
-                                    dangerouslySetInnerHTML={{__html: content}}
-                                />
+                                <BlogClient content={content}/>
 
                                 <footer className="mt-8 pt-8 border-t border-white/10">
                                     <div className="flex flex-wrap gap-2">

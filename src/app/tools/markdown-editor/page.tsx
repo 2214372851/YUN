@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useEffect, useRef, useState, useCallback} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import 'highlight.js/styles/github-dark.css';
 
 // 导入图标组件
@@ -37,9 +37,9 @@ const MarkdownEditorPage = () => {
     const editorContainerRef = useRef<HTMLDivElement>(null);
     const isDraggingRef = useRef<boolean>(false);
     const lastUpdateTimeRef = useRef<number>(0); // 用于节流的上一次更新时间
-    
+
     // 使用自定义的 useFullscreen hook
-    const { isFullscreen, toggleFullscreen } = useFullscreen(editorContainerRef);
+    const {isFullscreen, toggleFullscreen} = useFullscreen(editorContainerRef);
 
     // 示例Markdown文本
     const defaultMarkdown = `# Markdown 编辑器示例
@@ -184,11 +184,11 @@ hello
         const containerRect = containerRef.current.getBoundingClientRect();
         const containerWidth = containerRect.width;
         const mouseX = e.clientX - containerRect.left;
-        
+
         // 计算左侧宽度百分比，限制在20%到80%之间
         let newLeftPaneWidth = (mouseX / containerWidth) * 100;
         newLeftPaneWidth = Math.max(20, Math.min(80, newLeftPaneWidth));
-        
+
         setLeftPaneWidth(newLeftPaneWidth);
     }, []);
 
@@ -260,7 +260,7 @@ hello
     function exportAsImage() {
         // 获取预览区域的HTML内容
         const previewElement = document.querySelector('.prose') as HTMLElement;
-        
+
         if (!previewElement) {
             alert('无法获取预览内容');
             return;
@@ -272,23 +272,23 @@ hello
         tempContainer.style.left = '-9999px';
         tempContainer.style.top = '0';
         tempContainer.style.width = `${previewElement.scrollWidth}px`;
-        
+
         // 克隆预览内容
         const clonedContent = previewElement.cloneNode(true) as HTMLElement;
         clonedContent.style.width = `${previewElement.scrollWidth}px`;
         clonedContent.style.height = 'auto';
         clonedContent.style.overflow = 'visible';
         clonedContent.style.maxHeight = 'none';
-        
+
         // 设置背景和样式
         clonedContent.classList.add('prose', 'prose-invert');
         clonedContent.style.padding = '20px';
         clonedContent.style.background = '#121212'; // 深色背景
-        
+
         // 添加到临时容器
         tempContainer.appendChild(clonedContent);
         document.body.appendChild(tempContainer);
-        
+
         // 使用html2canvas将内容转为canvas
         import('html2canvas')
             .then(html2canvas => {
@@ -303,17 +303,17 @@ hello
                     onclone: (doc) => {
                         // 确保所有样式都被应用
                         const styles = Array.from(document.styleSheets);
-                        
+
                         // 将所有样式表复制到克隆的文档
                         styles.forEach(styleSheet => {
                             try {
                                 const cssRules = Array.from(styleSheet.cssRules);
                                 const style = doc.createElement('style');
-                                
+
                                 cssRules.forEach(rule => {
                                     style.appendChild(doc.createTextNode(rule.cssText));
                                 });
-                                
+
                                 doc.head.appendChild(style);
                             } catch (e) {
                                 console.log('无法访问样式表:', e);
@@ -330,7 +330,7 @@ hello
                 a.download = 'markdown-preview.png';
                 a.click();
                 setShowExportMenu(false);
-                
+
                 // 清理临时元素
                 document.body.removeChild(tempContainer);
             })
@@ -410,7 +410,7 @@ hello
     return (
         <main className="min-h-screen flex flex-col">
             <div ref={editorContainerRef}
-                 className={`flex-1 ${isFullscreen ? 'p-0' : 'pt-32 pb-24 px-4'} container max-w-7xl mx-auto transition-all duration-300`}>
+                 className={`flex-1 ${isFullscreen ? 'p-0' : 'pt-32 pb-24 px-4'} main transition-all duration-300`}>
                 {!isFullscreen && (
                     <>
                         <h1 className="text-4xl font-bold mb-8">Markdown 编辑器</h1>
@@ -480,7 +480,9 @@ hello
                                             {button.hasMenu && (
                                                 <>
                                                     <span className="text-xs font-medium">{button.title}</span>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                         strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                         <path d="m6 9 6 6 6-6"/>
                                                     </svg>
                                                 </>
@@ -490,10 +492,11 @@ hello
                                             className={`absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-background border border-input text-xs py-0.5 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-sm z-20 text-foreground pointer-events-none ${button.hasMenu ? 'hidden' : ''}`}>
                                             {button.title}
                                         </span>
-                                        
+
                                         {/* 导出菜单 */}
                                         {button.title === '导出' && showExportMenu && (
-                                            <div className="export-menu absolute top-full right-0 mt-1.5 bg-background border border-input rounded-md shadow-md z-30 min-w-[140px] overflow-hidden">
+                                            <div
+                                                className="export-menu absolute top-full right-0 mt-1.5 bg-background border border-input rounded-md shadow-md z-30 min-w-[140px] overflow-hidden">
                                                 {exportOptions.map((option, optIndex) => {
                                                     const OptionIcon = option.icon;
                                                     return (
@@ -505,8 +508,9 @@ hello
                                                             }}
                                                             className="w-full px-3 py-2.5 text-left flex items-center gap-2.5 hover:bg-muted text-sm cursor-pointer transition-colors duration-200"
                                                         >
-                                                            <span className="flex items-center justify-center w-5 h-5 text-foreground">
-                                                                <OptionIcon />
+                                                            <span
+                                                                className="flex items-center justify-center w-5 h-5 text-foreground">
+                                                                <OptionIcon/>
                                                             </span>
                                                             <span className="text-foreground">{option.title}</span>
                                                         </div>

@@ -80,14 +80,24 @@
 
 @font-face {
     font-family: 'MapleMono-NF-CN-Light';
-    /*noinspection CssUnknownTarget*/
-    src: url('/MapleMono-NF-CN-Light.ttf');
+    src: url('/MapleMono-NF-CN-Light.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 * {
     font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+
+.main {
+    @apply flex-1;
+    @apply pb-24;
+    @apply px-4;
+    @apply max-w-7xl;
+    @apply mx-auto;
+    @apply w-full;
+    @apply min-h-screen;
 }
 
 pre {
@@ -190,23 +200,41 @@ input[type="color"]::-moz-color-swatch {
     color: #dfdfd6;
 
     .title {
+        display: flex;
+        gap: 5px;
+        align-items: center;
         font-weight: 1000;
+        font-size: 20px;
+        /*color: #f4c117;*/
     }
 
     &.info {
         background: #65758529;
+
+        & .title {
+            color: #ffffff;
+        }
     }
 
     &.warn {
         background: #eab30829;
+        & .title {
+            color: #f4c117;
+        }
     }
 
     &.tip {
         background: #646cff29;
+        & .title {
+            color: #378cf0;
+        }
     }
 
     &.danger {
         background: #f43f5e29;
+        & .title {
+            color: #f03b3b;
+        }
     }
 }
 

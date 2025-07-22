@@ -171,7 +171,7 @@ const MermaidPage = () => {
 
     return (
         <main className="min-h-screen flex flex-col">
-            <div className="flex-1 pt-32 pb-24 px-4 container max-w-7xl mx-auto">
+            <div className="main pt-32">
                 <h1 className="text-4xl font-bold mb-8">Mermaid 图表转换器</h1>
                 <p className="text-muted-foreground mb-12">在线将 Mermaid 代码转换为 SVG
                     图表，支持流程图、时序图、甘特图等多种图表类型。</p>

@@ -1,5 +1,6 @@
 import {getAllBlogPosts} from "@/data/blog-posts";
 import TransitionLink from "@/components/TransitionLink";
+import Image from "next/image";
 
 interface BlogPostProps {
     index?: number;
@@ -19,14 +20,18 @@ function FeaturedPost({index, slug, category, title, imageUrl, excerpt}: BlogPos
         >
             <div
                 className="h-64 rounded-md overflow-hidden flex items-center justify-center mb-4">
-                <img src={imageUrl || `https://minio-endpoint.bybxbwg.fun/docs/YUN Blog bg ${index}.svg`} alt={title} width={0} height={0} className="w-full h-full object-cover"
-                     loading="lazy"/>
+                <Image
+                    src={imageUrl || `https://minio-endpoint.bybxbwg.fun/docs/YUN Blog bg ${index}.svg`}
+                    alt={title} width={0} height={0}
+                    className="w-full h-full object-cover"
+                    loading="lazy"/>
             </div>
             <div className="p-4">
                 <div className="text-sm text-muted-foreground mb-2">
                     {
                         category.split(',').map(item => (
-                            <span key={item} className="inline-block border px-1 backdrop-blur-xs text-[hsl(var(--linear-gray))] rounded-sm py-1 text-xs font-semibold mr-2">
+                            <span key={item}
+                                  className="inline-block border px-1 backdrop-blur-xs text-[hsl(var(--linear-gray))] rounded-sm py-1 text-xs font-semibold mr-2">
                                 {item}
                             </span>
                         ))
@@ -73,7 +78,7 @@ export default async function BlogPage() {
 
     return (
         <main className="min-h-screen flex flex-col">
-            <div className="flex-1 pt-32 pb-24 px-4 container max-w-7xl mx-auto">
+            <div className="main">
                 <div className="flex items-center justify-between mb-16">
                     <h1 className="text-4xl font-bold">博客</h1>
                 </div>
@@ -85,7 +90,7 @@ export default async function BlogPage() {
                         {featuredPosts.slice(0, 2).map((post, idx) => (
                             <div className="h-full" key={`featured-top-${post.slug}-${idx}`}>
                                 <FeaturedPost
-                                    index={idx + 1 }
+                                    index={idx + 1}
                                     slug={post.slug}
                                     category={post.category}
                                     title={post.title}
@@ -104,7 +109,7 @@ export default async function BlogPage() {
                                 key={`featured-bottom-${post.slug}-${idx}`}
                             >
                                 <FeaturedPost
-                                    index={ idx + 3 }
+                                    index={idx + 3}
                                     slug={post.slug}
                                     category={post.category}
                                     title={post.title}

@@ -4,8 +4,10 @@ import {useEffect, useState} from 'react';
 import {List, Menu, X} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 import type {TableOfContents as TocItem} from "@/lib/markdown";
-import mermaid from "mermaid";
 import TransitionLink from "@/components/TransitionLink";
+import dynamic from "next/dynamic";
+import {LoadingSpinner} from "@/components/ui/loading-spinner";
+
 
 interface DocData {
     slug: string;
@@ -30,8 +32,10 @@ function DocNavigation({docs, currentSlug, className}: { docs: DocData[]; curren
                         <TransitionLink
                             key={doc.slug}
                             href={`/docs/${doc.slug}`}
-                            className={`block text-sm py-1 text-muted-foreground hover:text-foreground transition-colors ${
-                                doc.slug === currentSlug ? 'text-foreground font-medium' : ''
+                            className={`block text-sm py-1 transition-colors ${
+                                doc.slug === currentSlug
+                                    ? 'text-foreground font-medium'
+                                    : 'text-muted-foreground hover:text-foreground '
                             }`}
                         >
                             {doc.title}
@@ -43,7 +47,7 @@ function DocNavigation({docs, currentSlug, className}: { docs: DocData[]; curren
     );
 }
 
-function TableOfContents({ headings, className }: { headings: TocItem[]; className?: string }) {
+function TableOfContents({headings, className}: { headings: TocItem[]; className?: string }) {
     const [activeId, setActiveId] = useState<string | null>(null);
 
     useEffect(() => {
@@ -214,18 +218,13 @@ export function DocsClient({allDocs, currentSlug, contentHtml, headings}: DocsCl
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isTocOpen, setIsTocOpen] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
+    const MarkdownView = dynamic(() => import('@/components/markdown-view'),
+        {ssr: false, loading: () => <LoadingSpinner fullScreen={true}/>}
+    );
 
     useEffect(() => {
         setIsMounted(true);
-        mermaid.initialize({
-            startOnLoad: false,
-            theme: 'default',
-            securityLevel: 'loose'
-        })
-        setTimeout(() => {
-            mermaid.run()
-        }, 100)
-    }, [currentSlug, allDocs]);
+    }, [])
 
     const handleToggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
     const handleToggleTOC = () => setIsTocOpen(!isTocOpen);
@@ -242,14 +241,7 @@ export function DocsClient({allDocs, currentSlug, contentHtml, headings}: DocsCl
         }
 
         return (
-            <div
-                className="prose prose-invert max-w-none prose-headings:scroll-mt-32
-          prose-pre:bg-[#0d1117] prose-pre:border prose-pre:border-[#30363d] prose-pre:rounded-lg
-          prose-code:text-[#e6edf3] prose-code:bg-[#161b22] prose-code:rounded-md prose-code:px-1 prose-code:py-0.5
-          prose-pre:!p-0 [&_pre]:overflow-x-auto [&_pre]:p-4 [&_pre]:bg-[#0d1117]
-          [&_.prose]:!bg-[#0d1117] [&_:not(pre)>code]:bg-[#161b22]"
-                dangerouslySetInnerHTML={{__html: contentHtml}}
-            />
+            <MarkdownView contentHtml={contentHtml}/>
         );
     };
 

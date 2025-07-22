@@ -20,7 +20,8 @@ function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
 function rgbToHsl(r: number, g: number, b: number): { h: number; s: number; l: number } {
   r /= 255; g /= 255; b /= 255;
   const max = Math.max(r, g, b), min = Math.min(r, g, b);
-  let h = 0, s = 0, l = (max + min) / 2;
+  let h = 0, s = 0;
+  const l = (max + min) / 2;
 
   if (max !== min) {
     const d = max - min;
@@ -110,7 +111,7 @@ const ColorPickerPage = () => {
 
   return (
     <main className="min-h-screen flex flex-col">
-      <div className="flex-1 pt-32 pb-24 px-4 container max-w-7xl mx-auto">
+      <div className="main pt-32">
         <h1 className="text-4xl font-bold mb-8">颜色选择器</h1>
         <p className="text-muted-foreground mb-12">选择一个颜色，并获取其不同格式的代码。</p>
 

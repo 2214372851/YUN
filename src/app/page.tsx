@@ -8,7 +8,7 @@ import {Announcement} from "@/components/announcement";
 
 export default function Home() {
     return (
-        <main className="min-h-screen flex flex-col">
+        <main className="main">
             <Announcement/>
             <Hero/>
             <FeaturesSection/>
