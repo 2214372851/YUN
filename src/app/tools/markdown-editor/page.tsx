@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useEffect, useRef, useState, useCallback} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import 'highlight.js/styles/github-dark.css';
 
 // 导入图标组件
@@ -26,7 +26,6 @@ import {Collapse} from "@/components/icon/collapse";
 import {Export} from "@/components/icon/export";
 import {markdownToHtml} from "@/lib/markdown";
 import {useFullscreen} from "@/hooks/use-fullscreen";
-import mermaid from "mermaid";
 
 
 const MarkdownEditorPage = () => {
