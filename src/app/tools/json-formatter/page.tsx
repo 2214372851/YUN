@@ -1,4 +1,3 @@
-// src/app/tools/json-formatter/page.tsx
 "use client";
 
 import React, { useState } from 'react';
@@ -56,7 +55,7 @@ const JsonFormatterPage = () => {
 
   return (
     <main className="min-h-screen flex flex-col">
-      <div className="flex-1 pt-32 pb-24 px-4 container max-w-7xl mx-auto">
+      <div className="main pt-32">
         <h1 className="text-4xl font-bold mb-8">JSON 格式化工具</h1>
         <p className="text-muted-foreground mb-12">在线格式化、校验和美化您的 JSON 数据。</p>
 

@@ -47,6 +47,7 @@ export default function SharePage() {
   
   // 邮箱搜索状态
   const [email, setEmail] = useState<string>("");
+  const [searchEmail, setSearchEmail] = useState<string>("");
   const [deployedProjects, setDeployedProjects] = useState<DeployedProject[]>([]);
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [searchError, setSearchError] = useState<string | null>(null);
@@ -319,6 +320,7 @@ export default function SharePage() {
   // 清空邮箱和搜索结果
   const clearEmailSearch = () => {
     setEmail('');
+    setSearchEmail('')
     setDeployedProjects([]);
     setSearchError(null);
   };
@@ -349,6 +351,7 @@ export default function SharePage() {
     setSearchError(null);
     
     try {
+      setSearchEmail(email);
       const response = await fetch(`${API_BASE_URL}/project/?email=${encodeURIComponent(email.trim())}`);
       const result = await response.json();
       
@@ -365,6 +368,7 @@ export default function SharePage() {
             title: "搜索成功",
             description: `找到 ${result.projects.length} 个已部署项目`,
           });
+
         }
       } else {
         setSearchError(result.detail?.[0]?.msg || "查询失败，请稍后重试");
@@ -389,7 +393,7 @@ export default function SharePage() {
 
   // 删除已部署的项目
   const handleDeleteDeployedProject = async (name: string) => {
-    if (!email) {
+    if (!searchEmail) {
       toast({
         title: "错误",
         description: "缺少邮箱信息，无法删除项目",
@@ -400,7 +404,7 @@ export default function SharePage() {
 
     try {
       const response = await fetch(
-        `${API_BASE_URL}/project/?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}`,
+        `${API_BASE_URL}/project/?email=${encodeURIComponent(searchEmail)}&name=${encodeURIComponent(name)}`,
         {
           method: "DELETE",
         }
@@ -613,13 +617,13 @@ export default function SharePage() {
           </CardHeader>
           <CardContent>
             {/* 搜索结果显示 */}
-            {email && deployedProjects.length > 0 && (
+            {searchEmail && deployedProjects.length > 0 && (
               <div className="mb-6 border rounded-lg bg-primary/5 p-4">
                 <h3 className="font-medium text-primary mb-2 flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
-                  {email} 的部署项目 ({deployedProjects.length})
+                  {searchEmail} 的部署项目 ({deployedProjects.length})
                 </h3>
                 <div className="space-y-3">
                   {deployedProjects.map((project) => (
@@ -674,7 +678,7 @@ export default function SharePage() {
               </div>
             )}
             
-            {email && searchError && (
+            {searchEmail && searchError && (
               <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-md">
                 <div className="flex items-start">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -689,7 +693,7 @@ export default function SharePage() {
             )}
             
             {/* 只有在用户点击搜索按钮后，且无结果时才显示无结果提示框 */}
-            {email && !isSearching && deployedProjects.length === 0 && !searchError && deployedProjects.length !== undefined && (
+            {searchEmail && !isSearching && deployedProjects.length === 0 && !searchError && deployedProjects.length !== undefined && (
               <div className="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-md">
                 <div className="flex items-start">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-yellow-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -697,7 +701,7 @@ export default function SharePage() {
                   </svg>
                   <div>
                     <h4 className="text-sm font-medium text-yellow-500">无搜索结果</h4>
-                    <p className="text-sm mt-1">未找到与邮箱 {email} 关联的已部署项目</p>
+                    <p className="text-sm mt-1">未找到与邮箱 {searchEmail} 关联的已部署项目</p>
                   </div>
                 </div>
               </div>

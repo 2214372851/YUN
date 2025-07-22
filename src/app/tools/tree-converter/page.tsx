@@ -153,7 +153,7 @@ export default function TreeConverter() {
 
     return (
         <main className="min-h-screen flex flex-col">
-            <div className="flex-1 pt-32 pb-24 px-4 container max-w-7xl mx-auto">
+            <div className="main pt-32">
                 <h1 className="text-4xl font-bold mb-8">文件树转换器</h1>
                 <p className="text-muted-foreground mb-12">将缩进格式的文本转换为树形结构显示</p>
 

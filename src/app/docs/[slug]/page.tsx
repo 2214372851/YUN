@@ -170,7 +170,7 @@ export default async function DocPage({params}: { params: Promise<{ slug: string
         console.error('Error processing markdown:', error);
         return (
             <div className="flex-1 pt-32 pb-24">
-                <div className="container max-w-7xl mx-auto px-4">
+                <div className="main">
                     <div className="text-red-500">
                         处理文档内容时出错，请稍后重试。
                     </div>
