@@ -1,25 +1,11 @@
 "use client";
 
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef} from "react";
 import {ScrollTrigger} from "gsap/ScrollTrigger";
 import gsap from "gsap";
 
 function TestPage() {
 
-    const imageMap = [
-        {
-            src: "https://minio-endpoint.bybxbwg.fun/docs/ide.png",
-            alt: "Ide",
-        },
-        {
-            src: "https://minio-endpoint.bybxbwg.fun/docs/carwlsy.png",
-            alt: "Carwlsy",
-        },
-        {
-            src: "https://minio-endpoint.bybxbwg.fun/docs/node.png",
-            alt: "Node",
-        },
-    ]
     const wrapperRef = useRef<HTMLDivElement>(null);
     const cardBoxRef = useRef<HTMLDivElement>(null);
     let distance = 0
