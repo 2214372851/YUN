@@ -88,7 +88,7 @@ export async function markdownToHtml(markdown: string): Promise<{ content: strin
         $(element).attr('class', 'whitespace-pre-wrap')
     });
     $("iframe").each((_, element) => {
-        $(element).attr('class', 'mk-iframe')
+        marked.use({renderer});
     });
 
     $("table").each((_, element) => {

@@ -14,7 +14,7 @@ const MarkdownView = ({contentHtml}: { contentHtml: string }) => {
         setTimeout(() => {
             mermaid.run()
         }, 100)
-    }, []);
+    }, [contentHtml]);
 
     return (
         <div
