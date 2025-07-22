@@ -18,7 +18,7 @@ const dangerIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
 
 const renderer = new marked.Renderer();
 renderer.code = ({text, lang}) => {
-    const [langName, filename] = (lang as string).split(' ');
+    const [langName, filename] = lang === undefined ? ["", ""] : (lang as string).split(' ');
     if (langName === 'mermaid') {
         const uniqueId = `mermaid-${Date.now()}`
         return `<div class="mermaid" id="${uniqueId}" style="white-space: break-spaces">${text}</div>`;
