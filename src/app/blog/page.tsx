@@ -20,11 +20,11 @@ function FeaturedPost({index, slug, category, title, imageUrl, excerpt}: BlogPos
         >
             <div
                 className="h-64 rounded-md overflow-hidden flex items-center justify-center mb-4">
-                <Image
+                <img
                     src={imageUrl || `https://minio-endpoint.bybxbwg.fun/docs/YUN Blog bg ${index}.svg`}
-                    alt={title} width={0} height={0}
+                    alt={title}
                     className="w-full h-full object-cover"
-                    loading="lazy"/>
+                    />
             </div>
             <div className="p-4">
                 <div className="text-sm text-muted-foreground mb-2">
