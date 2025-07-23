@@ -49,7 +49,7 @@ function ProductDiagram() {
                         }}
                         key={index}
                         exit={{opacity: 0, x: 0}} // 添加退出动画
-                        transition={{duration: 1, exit: {duration: 1}, delay: !index ? 0 : index + 0.3}} // 为进入和退出动画设置时长
+                        transition={{duration: 1, delay: !index ? 0 : index + 0.3}} // 为进入和退出动画设置时长
                         className={index ? "max-w-4xl mx-auto absolute bottom-13" : "max-w-4xl mx-auto"}
                     >
                         <Image
@@ -73,7 +73,7 @@ export function Hero() {
                 initial={{opacity: 0, y: -100}}
                 animate={{opacity: 1, y: 0}}
                 exit={{opacity: 0, x: 100}} // 添加退出动画
-                transition={{duration: 2, exit: {duration: 1}}} // 为进入和退出动画设置时长
+                transition={{duration: 2}} // 为进入和退出动画设置时长
                 className="max-w-4xl mx-auto"
             >
                 <TypeAnimation

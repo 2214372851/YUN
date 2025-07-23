@@ -116,7 +116,7 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{__html: JSON.stringify(structuredData)}}
             />
-            <main className="min-h-screen flex flex-col">
+            <div className="flex flex-col">
                 <div className="flex-1 pt-32 pb-24">
                     <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex flex-col lg:flex-row gap-8">
@@ -146,21 +146,17 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
 
                                 {post.imageUrl && (
                                     <div
-                                        className="relative w-full h-[200px] sm:h-[300px] md:h-[400px] mb-8 rounded-lg overflow-hidden">
-                                        <Image
+                                        className="flex w-full h-[200px] sm:h-[300px] md:h-[400px] mb-8 rounded-lg overflow-hidden">
+                                        <img
                                             src={post.imageUrl}
                                             alt={post.title}
-                                            fill
-                                            className="object-cover rounded-lg"
-                                            priority
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                            className="object-cover rounded-lg w-full"
                                         />
                                     </div>
                                 )}
 
                                 <BlogClient content={content}/>
-
-                                <footer className="mt-8 pt-8 border-t border-white/10">
+                                <div className="mt-8 pt-8 border-t border-white/10">
                                     <div className="flex flex-wrap gap-2">
                                         {post.tags.map((tag) => (
                                             <span
@@ -171,12 +167,13 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
                                             </span>
                                         ))}
                                     </div>
-                                </footer>
+                                </div>
+
                             </article>
                         </div>
                     </div>
                 </div>
-            </main>
+            </div>
         </>
     );
 } 
