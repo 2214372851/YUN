@@ -5,36 +5,37 @@ import {Navbar} from "@/components/navbar";
 import {Footer} from "@/components/footer";
 import React from "react";
 import {Toaster} from "@/components/ui/toaster"
+import { siteName, baseUrl, image } from '@/config/site';
 
 const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
     title: {
-        default: "YunHai",
-        template: "%s | YunHai"
+        default: siteName,
+        template: `%s | ${siteName}`
     },
-    description: "YunHai，分享技术文章、项目经验和生活点滴",
-    keywords: ["YunHai", "技术博客", "前端开发", "全栈开发"],
-    authors: [{name: "YunHai"}],
-    creator: "YunHai",
-    publisher: "YunHai",
+    description: `${siteName}，专注于技术文章、项目经验、生活点滴与云端分享。`,
+    keywords: [siteName, "云海亦云", "技术博客", "前端开发", "全栈开发", "项目经验", "生活分享"],
+    authors: [{name: siteName}],
+    creator: siteName,
+    publisher: siteName,
     formatDetection: {
         email: false,
         address: false,
         telephone: false,
     },
-    metadataBase: new URL('https://bybxbwg.fun'),
+    metadataBase: new URL(baseUrl),
     alternates: {
-        canonical: '/',
+        canonical: baseUrl,
     },
     openGraph: {
-        title: "YunHai - 云海亦云",
-        description: "YunHai的网站，分享技术文章、项目经验和生活点滴",
-        url: 'https://bybxbwg.fun',
-        siteName: 'YunHai',
+        title: siteName,
+        description: `${siteName}，专注于技术文章、项目经验、生活点滴与云端分享。`,
+        url: baseUrl,
+        siteName: siteName,
         images: [
             {
-                url: 'https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp',
+                url: image,
                 width: 800,
                 height: 600,
             },
@@ -44,13 +45,13 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: "YunHai - 云海亦云",
-        description: "YunHai的网站，分享技术文章、项目经验和生活点滴",
-        images: ['https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp'],
+        title: siteName,
+        description: `${siteName}，专注于技术文章、项目经验、生活点滴与云端分享。`,
+        images: [image],
     },
     icons: {
-        icon: 'https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp',
-        apple: 'https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp',
+        icon: image,
+        apple: image,
     },
     robots: {
         index: true,
@@ -62,10 +63,7 @@ export const metadata: Metadata = {
             'max-image-preview': 'large',
             'max-snippet': -1,
         },
-    },
-    verification: {
-        google: 'your-google-site-verification',
-    },
+    }
 };
 
 export default function RootLayout({
@@ -86,3 +84,5 @@ export default function RootLayout({
         </html>
     );
 }
+
+export const dynamicParams = false

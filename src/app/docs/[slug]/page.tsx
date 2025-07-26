@@ -5,9 +5,12 @@ import matter from 'gray-matter';
 import {markdownToHtml} from "@/lib/markdown"; // Renamed import
 import {DocsClient} from "@/components/docs-client";
 import Script from "next/script";
+import {Metadata} from "next";
+import {baseUrl, image, siteName} from '@/config/site';
 
 // 获取文档文件目录
 const docsDirectory = path.join(process.cwd(), 'src/content/docs');
+
 
 // 获取所有文档
 async function getAllDocs() {
@@ -69,36 +72,46 @@ export async function generateStaticParams() {
 }
 
 // 生成页面元数据
-export async function generateMetadata({params}: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({params}: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const pageParams = await params;
     const doc = await getDocBySlug(pageParams.slug);
-    if (!doc) return {title: '文档未找到'};
+    if (!doc) return {title: '文档未找到', description: '未找到相关文档内容。'};
+
+    const url = `${baseUrl}/docs/${pageParams.slug}`;
 
     return {
-        title: doc.title,
-        description: doc.description,
+        title: `${doc.title} | ${siteName}`,
+        description: doc.description || `${doc.title} 的详细文档、教程与使用说明。`,
+        keywords: doc.title ? [doc.title, 'YunHai', '文档', '教程', '使用说明'] : ['YunHai', '文档'],
         openGraph: {
-            title: doc.title,
-            description: doc.description,
+            title: `${doc.title} | ${siteName}`,
+            description: doc.description || `${doc.title} 的详细文档、教程与使用说明。`,
             type: 'article',
+            url,
             images: [
                 {
-                    url: 'https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp',
+                    url: image,
                     width: 1200,
                     height: 630,
                     alt: doc.title,
                 }
             ],
+            siteName,
         },
         twitter: {
             card: 'summary_large_image',
-            title: doc.title,
-            description: doc.description,
-            images: ['https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp'],
+            title: `${doc.title} | ${siteName}`,
+            description: doc.description || `${doc.title} 的详细文档、教程与使用说明。`,
+            images: [image],
         },
         alternates: {
-            canonical: `/docs/${pageParams.slug}`,
+            canonical: url,
         },
+        robots: {
+            index: true,
+            follow: true,
+        },
+        metadataBase: new URL(baseUrl),
     };
 }
 
@@ -127,27 +140,27 @@ export default async function DocPage({params}: { params: Promise<{ slug: string
             "description": doc.description,
             "image": [{
                 "@type": "ImageObject",
-                "url": "https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp",
+                "url": image,
                 "width": 1200,
                 "height": 630
             }],
             "author": {
                 "@type": "Person",
-                "name": "YunHai"
+                "name": siteName
             },
             "publisher": {
                 "@type": "Organization",
-                "name": "YunHai",
+                "name": siteName,
                 "logo": {
                     "@type": "ImageObject",
-                    "url": "https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp"
+                    "url": image
                 }
             },
             "datePublished": new Date().toISOString(),
             "dateModified": new Date().toISOString(),
             "mainEntityOfPage": {
                 "@type": "WebPage",
-                "@id": `https://bybxbwg.fun/docs/${slug}`
+                "@id": `${baseUrl}/docs/${slug}`
             }
         };
 

@@ -2,8 +2,6 @@
 title: Redis数据库
 ---
 
-# Redis
-
 ## CentOS 7 安装Redis
 
 ### 安装依赖

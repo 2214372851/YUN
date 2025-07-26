@@ -1,7 +1,9 @@
+const baseUrl = 'https://bybxbwg.fun';
+
 /** @type {import('next-sitemap').IConfig} */
 
 module.exports = {
-    siteUrl: 'https://bybxbwg.fun',
+    siteUrl: baseUrl,
     generateRobotsTxt: true,
     outDir: './out',
     generateIndexSitemap: false,
@@ -18,4 +20,11 @@ module.exports = {
             },
         ],
     },
-}
+    sitemapSize: 5000,
+    changefreq: 'weekly',
+    priority: 0.7,
+    exclude: ['/test', '/share'],
+    additionalSitemaps: [
+        `${baseUrl}/sitemap-0.xml`
+    ]
+};

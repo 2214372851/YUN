@@ -1,11 +1,12 @@
 import { getAllAPIDocuments } from "@/lib/api";
+import { siteName } from '@/config/site';
 import { Metadata } from "next";
 import TransitionLink from "@/components/TransitionLink";
 
 // 生成页面元数据
 export const metadata: Metadata = {
-  title: "API 文档",
-  description: "浏览提供的API文档列表",
+  title: `${siteName} API 文档`,
+  description: `浏览 ${siteName} 提供的API文档列表`,
 };
 
 // API页面组件
@@ -44,4 +45,4 @@ export default async function APIPage() {
       </div>
     </div>
   );
-} 
+}

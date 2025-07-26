@@ -2,9 +2,103 @@
 title: Rust 技巧与库
 ---
 
-# Rust 技巧与库
+## File 文件操作
 
-## reqwest网络请求
+> 当我们使用 BufWriter 进行 chunks 写入时需要注意
+
+| **场景**                             | **是否需要手动调用** flush() | **原因**                         |
+| ------------------------------------ | ---------------------------- | -------------------------------- |
+| ✅ 程序结束前写入内容                 | ✔️ **推荐**                   | 确保缓冲区内容写入磁盘           |
+| ✅ 写完后立刻要读文件                 | ✔️ 必须                       | 否则读不到新写入的内容           |
+| ✅ 多次写入但中间希望立即落盘         | ✔️ 视需求                     | 及时刷新，防止数据丢失           |
+| ❌ 只写一次 & 直接 drop（作用域结束） | ❌ 通常不需要                 | BufWriter 在 drop 时会自动 flush |
+
+
+```rust
+use std::fs;
+use std::io::{BufRead, Read, Write};
+
+fn main() {
+    // 读取文本文件内容
+    let file_content = fs::read_to_string("./data.json").unwrap();
+    println!("File content: {}", file_content);
+    
+
+    // 流式读取二进制文件
+    let file = fs::File::open("./Surge Mac 6.zip").unwrap();
+    let mut reader = std::io::BufReader::new(file);
+    let mut buffer = [0u8; 1024];
+    while let Ok(size) = reader.read(&mut buffer) {
+        if size == 0 {
+            break; // EOF
+        }
+        println!("Read {} bytes", size);
+    }
+
+    // 按行读取文件
+    let file = fs::File::open("./data.json").unwrap();
+    let reader = std::io::BufReader::new(file);
+    for line in reader.lines() {
+        let line = line.unwrap();
+        println!("{}", line);
+    }
+
+    // 写入字符串到文件（覆盖）
+    let content = "Hello, world!";
+    fs::write("./output.txt", content).unwrap();
+
+    // 覆盖流式写入文件
+    let file = fs::File::create("./output_stream.txt").unwrap();
+    let mut writer = std::io::BufWriter::new(file);
+    for chunk in content.as_bytes().chunks(1024) {
+        writer.write_all(chunk).unwrap();
+    }
+    writer.flush().unwrap(); // flush 确保写入
+
+    // 追加写入文件
+    let mut file = fs::OpenOptions::new()
+        .append(true)
+        .write(true) // ✅ 必须加
+        .create(true) // 文件不存在时创建
+        .open("./output_append.txt")
+        .unwrap();
+    file.write_all(content.as_bytes()).unwrap();
+
+    // 追加流式写入文件
+    let file = fs::OpenOptions::new()
+        .append(true)
+        .write(true) // ✅ 必须加
+        .create(true)
+        .open("./output_append_stream.txt")
+        .unwrap();
+    let mut writer = std::io::BufWriter::new(file);
+    for chunk in content.as_bytes().chunks(1024) {
+        writer.write_all(chunk).unwrap();
+    }
+    writer.flush().unwrap();
+}
+```
+
+### OpenOptions 配置
+
+`use std::fs::OpenOptions;`
+
+| **方法名**        | **说明**                                     |
+| ----------------- | -------------------------------------------- |
+| .read(bool)       | 是否以**读取**模式打开文件                   |
+| .write(bool)      | 是否以**写入**模式打开文件                   |
+| .append(bool)     | 是否以**追加**方式写入文件（内容追加在末尾） |
+| .truncate(bool)   | 如果文件已存在，是否**清空文件内容**         |
+| .create(bool)     | 如果文件不存在，是否**创建**                 |
+| .create_new(bool) | 创建新文件，**如果文件已存在则返回错误**     |
+
+::: warn
+append(true) 的作用是：**写入操作发生在文件末尾（即追加）**。
+
+但它**不会自动隐含 write(true)**。你需要显式声明你打算写入。
+:::
+
+## reqwest 网络请求
 
 本文介绍 Rust 语言中常用的 HTTP 客户端库——**reqwest**。通过对其同步（阻塞）和异步 API 的说明和代码示例，帮助你快速上手这一库的使用。
 
@@ -667,6 +761,47 @@ fn main() {
     }"#;
     let person: Person = serde_json::from_str(json_str).unwrap();
     println!("{:?}", person);
+  
+}
+```
+
+### 格式化输出
+
+要格式化（美化）JSON字符串，可以使用携带 `pretty` 的方法，它会生成带缩进的可读性更好的 JSON。
+
+- `serde_json::to_writer_pretty`
+- `serde_json::to_vec_pretty`
+- `serde_json::to_string_pretty`
+
+```rust
+use serde::{Deserialize, Serialize};
+use serde_json;
+use String;
+
+#[derive(Deserialize, Serialize, Debug)]
+struct Person {
+    name: String,
+    age: i32,
+}
+
+fn main() {
+    let person = Person {
+        name: String::from("Alice"),
+        age: 30,
+    };
+    // 普通的序列化
+    let serialized = serde_json::to_string(&person).unwrap();
+    println!("Serialized: {}", serialized);
+
+    // 序列化为带缩进的格式
+    let pretty_serialized_string = serde_json::to_string_pretty(&person).unwrap();
+    println!("Pretty Serialized:\n{}", pretty_serialized_string);
+
+    let pretty_serialized_vec: Vec<u8> = serde_json::to_vec_pretty(&person).unwrap();
+    println!("Pretty Serialized Vec: {:?}", String::from_utf8(pretty_serialized_vec).unwrap());
+
+    let _pretty_serialized_writer = serde_json::to_writer_pretty(std::io::stdout(), &person).unwrap();
+
 }
 ```
 

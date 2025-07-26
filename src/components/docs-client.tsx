@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {List, Menu, X} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 import type {TableOfContents as TocItem} from "@/lib/markdown";
@@ -64,7 +64,7 @@ function TableOfContents({headings, className}: { headings: TocItem[]; className
             },
             {
                 rootMargin: '-70px 0px -70% 0px',
-                threshold: 0.1,
+                threshold: 1,
             }
         );
 
@@ -93,7 +93,7 @@ function TableOfContents({headings, className}: { headings: TocItem[]; className
             <div className="sticky top-32">
                 <div className="text-sm font-medium mb-4">页面目录</div>
                 <nav
-                    className="space-y-1 overflow-y-auto max-h-[calc(100vh-16rem)] scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent pr-4">
+                    className="space-y-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent pr-4">
                     {headings.map((heading) => {
                         const isActive = activeId === heading.id;
                         return (
@@ -214,13 +214,14 @@ function MobileControls({onToggleSidebar, onToggleTOC, isSidebarOpen, isTocOpen}
     );
 }
 
+const MarkdownView = dynamic(() => import('@/components/markdown-view'),
+    {ssr: false, loading: () => <LoadingSpinner fullScreen={true}/>}
+);
+
 export function DocsClient({allDocs, currentSlug, contentHtml, headings}: DocsClientProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isTocOpen, setIsTocOpen] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
-    const MarkdownView = dynamic(() => import('@/components/markdown-view'),
-        {ssr: false, loading: () => <LoadingSpinner fullScreen={true}/>}
-    );
 
     useEffect(() => {
         setIsMounted(true);
@@ -231,7 +232,8 @@ export function DocsClient({allDocs, currentSlug, contentHtml, headings}: DocsCl
     const handleCloseSidebar = () => setIsSidebarOpen(false);
     const handleCloseTOC = () => setIsTocOpen(false);
 
-    const renderContent = () => {
+    const renderContent = useMemo(() => {
+        console.log('flush page cache');
         if (!contentHtml) {
             return (
                 <div className="text-red-500">
@@ -243,7 +245,7 @@ export function DocsClient({allDocs, currentSlug, contentHtml, headings}: DocsCl
         return (
             <MarkdownView contentHtml={contentHtml}/>
         );
-    };
+    }, [contentHtml])
 
     // 如果没有当前文档且文档列表为空，显示提示信息
     if (!currentSlug && allDocs.length === 0) {
@@ -291,7 +293,7 @@ export function DocsClient({allDocs, currentSlug, contentHtml, headings}: DocsCl
                         {/* add title*/}
                         <h1 className="text-4xl font-bold">{allDocs.find(doc => doc.slug === currentSlug)?.title}</h1>
                         <div className="w-full h-[1px] bg-gray-500 my-8"></div>
-                        {renderContent()}
+                        {renderContent}
                     </article>
 
                     {/* Desktop TOC */}
