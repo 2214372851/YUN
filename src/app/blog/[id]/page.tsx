@@ -110,7 +110,7 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
             "name": siteName,
             "logo": {
                 "@type": "ImageObject",
-                "url": "https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp"
+                "url": image
             }
         },
         "datePublished": isoDate,

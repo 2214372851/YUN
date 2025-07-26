@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       images: musicItem.imageUrl ? [musicItem.imageUrl] : undefined,
     },
     alternates: {
-      canonical: `/media/${musicItem.id}`,
+      canonical: `${baseUrl}/media/${musicItem.id}`,
     },
     robots: {
       index: true,
