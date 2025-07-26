@@ -4,7 +4,7 @@ import {notFound} from "next/navigation";
 import Script from "next/script";
 import BlogClient from "@/components/blog-client";
 import {Metadata} from "next";
-import {baseUrl, siteName} from '@/config/site';
+import {baseUrl, image, siteName} from '@/config/site';
 
 // 生成所有可能的博客文章路径
 export async function generateStaticParams() {
@@ -20,7 +20,7 @@ export async function generateMetadata({params}: { params: Promise<{ id: string 
     const post = await getBlogPostBySlug(id);
     if (!post) return {title: '文章未找到', robots: {index: false, follow: false}};
 
-    const imageUrl = post.imageUrl || "https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp";
+    const imageUrl = post.imageUrl || image;
     const keywords = post.tags.join(', ');
     const canonicalUrl = `${baseUrl}/blog/${id}`;
 

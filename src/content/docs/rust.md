@@ -725,7 +725,7 @@ fn main() {
       - 当si离开作用域时，Rust不需要释放任何东西
       - 把S1赋值给别的变量后S1就会失效
 
-![image-20240525122819358](https://minio-endpoint.fun/docs/image-20240525122819358.png)
+![image-20240525122819358](https://minio-endpoint.bybxbwg.fun/docs/image-20240525122819358.png)
 
 - 浅拷贝（shallow copy）
 - 深拷贝（deep copy）

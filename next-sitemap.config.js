@@ -24,7 +24,4 @@ module.exports = {
     changefreq: 'weekly',
     priority: 0.7,
     exclude: ['/test', '/share'],
-    additionalSitemaps: [
-        `${baseUrl}/sitemap-0.xml`
-    ]
 };

@@ -93,7 +93,7 @@ function TableOfContents({headings, className}: { headings: TocItem[]; className
             <div className="sticky top-32">
                 <div className="text-sm font-medium mb-4">页面目录</div>
                 <nav
-                    className="space-y-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent pr-4">
+                    className="space-y-1 overflow-y-auto max-h-[calc(100vh-16rem)] scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent pr-4">
                     {headings.map((heading) => {
                         const isActive = activeId === heading.id;
                         return (
@@ -233,7 +233,6 @@ export function DocsClient({allDocs, currentSlug, contentHtml, headings}: DocsCl
     const handleCloseTOC = () => setIsTocOpen(false);
 
     const renderContent = useMemo(() => {
-        console.log('flush page cache');
         if (!contentHtml) {
             return (
                 <div className="text-red-500">
