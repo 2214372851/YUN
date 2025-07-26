@@ -2,10 +2,9 @@ import {getAllBlogPosts, getBlogPostBySlug} from "@/data/blog-posts";
 import {markdownToHtml} from "@/lib/markdown";
 import {notFound} from "next/navigation";
 import Script from "next/script";
-import Image from "next/image";
 import BlogClient from "@/components/blog-client";
 import {Metadata} from "next";
-import { siteName, baseUrl } from '@/config/site';
+import {baseUrl, siteName} from '@/config/site';
 
 // 生成所有可能的博客文章路径
 export async function generateStaticParams() {
