@@ -40,7 +40,7 @@ function FeaturedPost({index, slug, category, title, imageUrl, excerpt}: BlogPos
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{title}</h3>
                 {excerpt && (
-                    <p className="text-sm text-muted-foreground line-clamp-2">{excerpt}</p>
+                    <p className="text-sm text-muted-foreground line-clamp-1">{excerpt}</p>
                 )}
             </div>
         </TransitionLink>
