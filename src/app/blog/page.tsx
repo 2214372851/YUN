@@ -1,7 +1,6 @@
 import {getAllBlogPosts} from "@/data/blog-posts";
 import TransitionLink from "@/components/TransitionLink";
-import Image from "next/image";
-import {siteName, image} from '@/config/site';
+import {image, siteName} from '@/config/site';
 import type {Metadata} from 'next';
 
 interface BlogPostProps {
