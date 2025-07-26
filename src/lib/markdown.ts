@@ -30,7 +30,7 @@ renderer.code = ({text, lang}) => {
 };
 renderer.codespan = (code) => {
     const highlighted = hljs.highlight(code.text, {language: 'bash'}).value;
-    return `<code style="white-space: break-spaces;">${highlighted}</code>`;
+    return `<code style="white-space: pre-wrap; word-break: break-all;">${highlighted}</code>`;
 };
 
 marked.use({renderer});

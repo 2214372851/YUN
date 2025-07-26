@@ -357,6 +357,9 @@ let array = [1, 2, 3, 4, 5];
 
 // 5 个 3
 let arr2 = [3; 5]
+
+// u8字节缓存数组，这里的 0u8 代表填充 1024 个类型为无符号8bit整数的0
+let buffer = [0u8; 1024]
 ```
 
 
@@ -722,13 +725,13 @@ fn main() {
       - 当si离开作用域时，Rust不需要释放任何东西
       - 把S1赋值给别的变量后S1就会失效
 
-![image-20240525122819358](/img/image-20240525122819358.png)
+![image-20240525122819358](https://minio-endpoint.bybxbwg.fun/docs/image-20240525122819358.png)
 
 - 浅拷贝（shallow copy）
 - 深拷贝（deep copy）
 - 上面的复制S1内容可能被视未浅拷贝，但是他同时让S1变量失效了，所以这里叫 移动（Move）
 
-![image-20240525123954622](/img/image-20240525123954622.png)
+![image-20240525123954622](https://minio-endpoint.bybxbwg.fun/docs/image-20240525123954622.png)
 
 - Rust不会自动创建数据的深拷贝
 

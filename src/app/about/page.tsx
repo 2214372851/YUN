@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import {motion} from "framer-motion";
+import { image } from '@/config/site';
 
 export default function About() {
     return (
@@ -19,7 +20,7 @@ export default function About() {
                     <div className="flex flex-col md:flex-row items-center justify-center gap-8">
                         <div className="w-32 h-32 md:w-64 md:h-64">
                             <Image
-                                src={"https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp"}
+                                src={image}
                                 alt="头像"
                                 width={128}
                                 height={128}
@@ -208,4 +209,4 @@ export default function About() {
             </section>
         </main>
     );
-} 
+}

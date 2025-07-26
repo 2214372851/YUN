@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -H 0.0.0.0 --turbopack",
     "build": "next build",
-    "sitemap-build": "next build && npx next-sitemap",
+    "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "next lint"
   },

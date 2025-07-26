@@ -1,6 +1,7 @@
 import {getAllBlogPosts} from "@/data/blog-posts";
 import TransitionLink from "@/components/TransitionLink";
-import Image from "next/image";
+import {image, siteName} from '@/config/site';
+import type {Metadata} from 'next';
 
 interface BlogPostProps {
     index?: number;
@@ -24,7 +25,7 @@ function FeaturedPost({index, slug, category, title, imageUrl, excerpt}: BlogPos
                     src={imageUrl || `https://minio-endpoint.bybxbwg.fun/docs/YUN Blog bg ${index}.svg`}
                     alt={title}
                     className="w-full h-full object-cover"
-                    />
+                />
             </div>
             <div className="p-4">
                 <div className="text-sm text-muted-foreground mb-2">
@@ -60,6 +61,16 @@ function RegularPost({slug, category, title, date}: BlogPostProps) {
         </TransitionLink>
     );
 }
+
+export const metadata: Metadata = {
+    title: `博客 | ${siteName}`,
+    description: `${siteName} 博客文章与技术分享`,
+    openGraph: {
+        title: `博客 | ${siteName}`,
+        description: `${siteName} 博客文章与技术分享`,
+        images: [image],
+    },
+};
 
 export async function generateStaticParams() {
     const allPosts = await getAllBlogPosts();

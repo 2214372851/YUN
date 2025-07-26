@@ -2,8 +2,9 @@ import {getAllBlogPosts, getBlogPostBySlug} from "@/data/blog-posts";
 import {markdownToHtml} from "@/lib/markdown";
 import {notFound} from "next/navigation";
 import Script from "next/script";
-import Image from "next/image";
 import BlogClient from "@/components/blog-client";
+import {Metadata} from "next";
+import {baseUrl, image, siteName} from '@/config/site';
 
 // 生成所有可能的博客文章路径
 export async function generateStaticParams() {
@@ -14,15 +15,19 @@ export async function generateStaticParams() {
 }
 
 // 生成页面元数据
-export async function generateMetadata({params}: { params: Promise<{ id: string }> }) {
+export async function generateMetadata({params}: { params: Promise<{ id: string }> }): Promise<Metadata> {
     const id = (await params).id
     const post = await getBlogPostBySlug(id);
-    if (!post) return {title: '文章未找到'};
+    if (!post) return {title: '文章未找到', robots: {index: false, follow: false}};
+
+    const imageUrl = post.imageUrl || image;
+    const keywords = post.tags.join(', ');
+    const canonicalUrl = `${baseUrl}/blog/${id}`;
 
     return {
-        title: post.title,
+        title: `${post.title} | ${post.category} | ${siteName}`,
         description: post.excerpt,
-        keywords: post.tags.join(', '),
+        keywords,
         authors: [{name: post.author}],
         openGraph: {
             title: post.title,
@@ -30,17 +35,28 @@ export async function generateMetadata({params}: { params: Promise<{ id: string 
             type: 'article',
             publishedTime: post.lastEdited,
             authors: [post.author],
-            images: post.imageUrl ? post.imageUrl : "https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp"
+            images: [imageUrl],
+            url: canonicalUrl,
+            siteName: siteName,
+            locale: "zh_CN"
         },
         twitter: {
             card: 'summary_large_image',
             title: post.title,
             description: post.excerpt,
-            images: post.imageUrl ? [post.imageUrl] : undefined,
+            images: [imageUrl],
+            creator: post.author,
         },
         alternates: {
-            canonical: `/blog/${id}`,
+            canonical: canonicalUrl,
         },
+        robots: {
+            index: true,
+            follow: true,
+            "max-snippet": -1,
+            "max-image-preview": "large",
+            "max-video-preview": -1
+        }
     };
 }
 
@@ -73,7 +89,7 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
     const isoDate = formatDateToISO(post.lastEdited);
 
     // 网站域名
-    const siteUrl = "https://bybxbwg.fun";
+    const siteUrl = baseUrl;
     const articleUrl = `${siteUrl}/blog/${id}`;
 
     // 生成结构化数据
@@ -91,10 +107,10 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
         },
         "publisher": {
             "@type": "Organization",
-            "name": "YunHai",
+            "name": siteName,
             "logo": {
                 "@type": "ImageObject",
-                "url": "https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp"
+                "url": image
             }
         },
         "datePublished": isoDate,
@@ -176,4 +192,4 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
             </div>
         </>
     );
-} 
+}
