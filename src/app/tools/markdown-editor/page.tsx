@@ -26,7 +26,9 @@ import {Collapse} from "@/components/icon/collapse";
 import {Export} from "@/components/icon/export";
 import {markdownToHtml} from "@/lib/markdown";
 import {useFullscreen} from "@/hooks/use-fullscreen";
-
+import {useToast} from "@/hooks/use-toast";
+import {LoaderCircle} from "lucide-react";
+import html2canvas from 'html2canvas'
 
 const MarkdownEditorPage = () => {
     const [markdownText, setMarkdownText] = useState<string>('');
@@ -37,6 +39,9 @@ const MarkdownEditorPage = () => {
     const editorContainerRef = useRef<HTMLDivElement>(null);
     const isDraggingRef = useRef<boolean>(false);
     const lastUpdateTimeRef = useRef<number>(0); // 用于节流的上一次更新时间
+    const {toast} = useToast();
+    const [downloadLoading, setDownloadLoading] = useState(false);
+    const [exportLoading, setExportLoading] = useState(false);
 
     // 使用自定义的 useFullscreen hook
     const {isFullscreen, toggleFullscreen} = useFullscreen(editorContainerRef);
@@ -160,11 +165,6 @@ hello
         {icon: Export, title: '导出', action: () => setShowExportMenu(!showExportMenu), primary: true, hasMenu: true},
     ];
 
-    // 导出菜单选项
-    const exportOptions = [
-        {title: 'Markdown', action: downloadMarkdown, icon: Download},
-        {title: '图片', action: exportAsImage, icon: Image},
-    ];
 
     // 节流函数：限制函数执行频率
     const throttle = useCallback((callback: (e: MouseEvent) => void, delay: number) => {
@@ -246,83 +246,95 @@ hello
 
     // 下载Markdown文件
     function downloadMarkdown() {
-        const blob = new Blob([markdownText], {type: 'text/markdown'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'document.md';
-        a.click();
-        URL.revokeObjectURL(url);
-        setShowExportMenu(false);
+        try {
+            setDownloadLoading(true);
+            const blob = new Blob([markdownText], {type: 'text/markdown'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'document.md';
+            a.click();
+            URL.revokeObjectURL(url);
+            setShowExportMenu(false);
+        } finally {
+            setDownloadLoading(false);
+        }
+
     }
 
     // 导出为图片
     function exportAsImage() {
-        // 获取预览区域的HTML内容
-        const previewElement = document.querySelector('.prose') as HTMLElement;
-
-        if (!previewElement) {
-            alert('无法获取预览内容');
-            return;
-        }
-
-        // 创建一个临时容器，用于克隆和渲染完整内容
-        const tempContainer = document.createElement('div');
-        tempContainer.style.position = 'absolute';
-        tempContainer.style.left = '-9999px';
-        tempContainer.style.top = '0';
-        tempContainer.style.width = `${previewElement.scrollWidth}px`;
-
-        // 克隆预览内容
-        const clonedContent = previewElement.cloneNode(true) as HTMLElement;
-        clonedContent.style.width = `${previewElement.scrollWidth}px`;
-        clonedContent.style.height = 'auto';
-        clonedContent.style.overflow = 'visible';
-        clonedContent.style.maxHeight = 'none';
-
-        // 设置背景和样式
-        clonedContent.classList.add('prose', 'prose-invert');
-        clonedContent.style.padding = '20px';
-        clonedContent.style.background = '#121212'; // 深色背景
-
-        // 添加到临时容器
-        tempContainer.appendChild(clonedContent);
-        document.body.appendChild(tempContainer);
-
-        // 使用html2canvas将内容转为canvas
-        import('html2canvas')
-            .then(html2canvas => {
-                return html2canvas.default(clonedContent, {
-                    scale: 2, // 高分辨率
-                    useCORS: true, // 允许跨域图片
-                    allowTaint: true,
-                    backgroundColor: '#121212',
-                    windowWidth: document.documentElement.offsetWidth,
-                    windowHeight: document.documentElement.offsetHeight,
-                    logging: false,
-                    onclone: (doc) => {
-                        // 确保所有样式都被应用
-                        const styles = Array.from(document.styleSheets);
-
-                        // 将所有样式表复制到克隆的文档
-                        styles.forEach(styleSheet => {
-                            try {
-                                const cssRules = Array.from(styleSheet.cssRules);
-                                const style = doc.createElement('style');
-
-                                cssRules.forEach(rule => {
-                                    style.appendChild(doc.createTextNode(rule.cssText));
-                                });
-
-                                doc.head.appendChild(style);
-                            } catch (e) {
-                                console.log('无法访问样式表:', e);
-                            }
-                        });
-                    }
-                });
+        try {
+            setExportLoading(true);
+            toast({
+                title: "导出图片",
+                description: "正在导出预览内容为图片，请稍候...",
+                variant: "default",
             })
-            .then(canvas => {
+            const previewElement = document.querySelector('.prose') as HTMLElement;
+
+            if (!previewElement) {
+                toast({
+                    title: "错误",
+                    description: "无法获取预览内容",
+                    variant: "destructive",
+                });
+                return;
+            }
+
+            // 创建一个临时容器，用于克隆和渲染完整内容
+            const tempContainer = document.createElement('div');
+            tempContainer.style.position = 'absolute';
+            tempContainer.style.left = '-9999px';
+            tempContainer.style.top = '0';
+            tempContainer.style.width = `${previewElement.scrollWidth}px`;
+
+            // 克隆预览内容
+            const clonedContent = previewElement.cloneNode(true) as HTMLElement;
+            clonedContent.style.width = `${previewElement.scrollWidth}px`;
+            clonedContent.style.height = 'auto';
+            clonedContent.style.overflow = 'visible';
+            clonedContent.style.maxHeight = 'none';
+
+            // 设置背景和样式
+            clonedContent.classList.add('prose', 'prose-invert');
+            clonedContent.style.padding = '20px';
+            clonedContent.style.background = '#121212'; // 深色背景
+
+            // 添加到临时容器
+            tempContainer.appendChild(clonedContent);
+            document.body.appendChild(tempContainer);
+
+            // 使用html2canvas将内容转为canvas
+            html2canvas(clonedContent, {
+                scale: 2, // 高分辨率
+                useCORS: true, // 允许跨域图片
+                allowTaint: true,
+                backgroundColor: '#121212',
+                windowWidth: document.documentElement.offsetWidth,
+                windowHeight: document.documentElement.offsetHeight,
+                logging: false,
+                onclone: (doc) => {
+                    // 确保所有样式都被应用
+                    const styles = Array.from(document.styleSheets);
+
+                    // 将所有样式表复制到克隆的文档
+                    styles.forEach(styleSheet => {
+                        try {
+                            const cssRules = Array.from(styleSheet.cssRules);
+                            const style = doc.createElement('style');
+
+                            cssRules.forEach(rule => {
+                                style.appendChild(doc.createTextNode(rule.cssText));
+                            });
+
+                            doc.head.appendChild(style);
+                        } catch (e) {
+                            console.log('无法访问样式表:', e);
+                        }
+                    });
+                }
+            }).then(canvas => {
                 // 转换canvas为图片并下载
                 const image = canvas.toDataURL('image/png');
                 const a = document.createElement('a');
@@ -334,14 +346,17 @@ hello
                 // 清理临时元素
                 document.body.removeChild(tempContainer);
             })
-            .catch(error => {
-                console.error('导出图片失败:', error);
-                alert('导出图片失败');
-                // 确保清理临时元素
-                if (document.body.contains(tempContainer)) {
-                    document.body.removeChild(tempContainer);
-                }
-            });
+                .catch(error => {
+                    console.error('导出图片失败:', error);
+                    alert('导出图片失败');
+                    // 确保清理临时元素
+                    if (document.body.contains(tempContainer)) {
+                        document.body.removeChild(tempContainer);
+                    }
+                });
+        } finally {
+            setExportLoading(false);
+        }
     }
 
     // 点击其他区域时关闭导出菜单
@@ -493,29 +508,40 @@ hello
                                             {button.title}
                                         </span>
 
-                                        {/* 导出菜单 */}
                                         {button.title === '导出' && showExportMenu && (
                                             <div
                                                 className="export-menu absolute top-full right-0 mt-1.5 bg-background border border-input rounded-md shadow-md z-30 min-w-[140px] overflow-hidden">
-                                                {exportOptions.map((option, optIndex) => {
-                                                    const OptionIcon = option.icon;
-                                                    return (
-                                                        <div
-                                                            key={optIndex}
-                                                            onClick={(e) => {
-                                                                e.stopPropagation(); // 防止冒泡触发父级按钮
-                                                                option.action();
-                                                            }}
-                                                            className="w-full px-3 py-2.5 text-left flex items-center gap-2.5 hover:bg-muted text-sm cursor-pointer transition-colors duration-200"
-                                                        >
+                                                <div
+                                                    onClick={(e) => {
+                                                        e.stopPropagation(); // 防止冒泡触发父级按钮
+                                                        downloadMarkdown()
+                                                    }}
+                                                    className="w-full px-3 py-2.5 text-left flex items-center gap-2.5 hover:bg-muted text-sm cursor-pointer transition-colors duration-200"
+                                                >
                                                             <span
-                                                                className="flex items-center justify-center w-5 h-5 text-foreground">
-                                                                <OptionIcon/>
+                                                                className={`flex items-center justify-center w-5 h-5 text-foreground ${downloadLoading ? 'animate-spin' : ''}`}>
+                                                                {
+                                                                    downloadLoading ? <LoaderCircle/> : <Download/>
+                                                                }
                                                             </span>
-                                                            <span className="text-foreground">{option.title}</span>
-                                                        </div>
-                                                    );
-                                                })}
+                                                    <span className="text-foreground">Markdown</span>
+                                                </div>
+                                                <div
+                                                    onClick={(e) => {
+                                                        e.stopPropagation(); // 防止冒泡触发父级按钮
+                                                        exportAsImage()
+                                                    }}
+                                                    className="w-full px-3 py-2.5 text-left flex items-center gap-2.5 hover:bg-muted text-sm cursor-pointer transition-colors duration-200"
+                                                >
+                                                            <span
+                                                                className={`flex items-center justify-center w-5 h-5 text-foreground ${exportLoading ? 'animate-spin' : ''}`}>
+                                                                {
+                                                                    exportLoading ? <LoaderCircle/> : <Image/>
+
+                                                                }
+                                                            </span>
+                                                    <span className="text-foreground">图片</span>
+                                                </div>
                                             </div>
                                         )}
                                     </button>
