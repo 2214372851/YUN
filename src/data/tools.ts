@@ -276,6 +276,13 @@ const otherTools: Tool[] = [
         category: '开发工具',
     },
     {
+        id: 'zashboard',
+        name: 'zashboard',
+        description: 'Mihomo 内核 Web 控制台',
+        href: 'https://github.com/Zephyruso/zashboard',
+        category: '开发工具',
+    },
+    {
         id: 'better-auth',
         name: 'Better Auth',
         description: '一个用于简化前端认证和授权过程的工具或框架，旨在提供更安全、更便捷的身份验证解决方案。',
