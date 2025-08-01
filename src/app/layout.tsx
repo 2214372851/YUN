@@ -6,6 +6,7 @@ import {Footer} from "@/components/footer";
 import React from "react";
 import {Toaster} from "@/components/ui/toaster"
 import { siteName, baseUrl, image } from '@/config/site';
+import {headers} from "next/headers";
 
 const inter = Inter({subsets: ["latin"]});
 

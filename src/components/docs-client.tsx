@@ -7,21 +7,16 @@ import type {TableOfContents as TocItem} from "@/lib/markdown";
 import TransitionLink from "@/components/TransitionLink";
 import dynamic from "next/dynamic";
 import {LoadingSpinner} from "@/components/ui/loading-spinner";
-
-
-interface DocData {
-    slug: string;
-    title: string;
-}
+import {DocItem} from "@/data/docs-navigation";
 
 interface DocsClientProps {
-    allDocs: DocData[];
+    allDocs: DocItem[];
     currentSlug: string;
     contentHtml: string;
     headings: TocItem[];
 }
 
-function DocNavigation({docs, currentSlug, className}: { docs: DocData[]; currentSlug: string; className?: string }) {
+function DocNavigation({docs, currentSlug, className}: { docs: DocItem[]; currentSlug: string; className?: string }) {
     return (
         <div className={className}>
             <div className="sticky top-32">
@@ -122,7 +117,7 @@ function TableOfContents({headings, className}: { headings: TocItem[]; className
 function MobileNavigation({isOpen, onClose, docs, currentSlug}: {
     isOpen: boolean;
     onClose: () => void;
-    docs: DocData[];
+    docs: DocItem[];
     currentSlug: string;
 }) {
     return (

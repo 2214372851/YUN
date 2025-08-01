@@ -1,11 +1,7 @@
 import {DocItem} from './docs-navigation';
 import fs from "fs";
 import path from "path";
-// import {docsTree} from "@/content/docs-tree";
-
-// 此数据结构模拟content/docs目录下的文件结构
-// 在实际生产环境中，这可以从文件系统自动生成
-// export const docsNavigation: DocItem[] = docsTree;
+import matter from "gray-matter";
 
 
 const findDocNavigation = (docsDirectory = path.join(process.cwd(), 'src/content/docs')) => {
@@ -18,15 +14,23 @@ const findDocNavigation = (docsDirectory = path.join(process.cwd(), 'src/content
                 title: file,
                 slug: file,
                 items: findDocNavigation(path.join(docsDirectory, file)),
+                mtimeMs: 0, // 目录没有具体的修改时间
             });
         } else {
             // 如果是文件，则添加到导航树中
+            const fullPath = path.join(docsDirectory, file);
+            const fileContents = fs.readFileSync(fullPath, 'utf8');
+            const stats = fs.statSync(fullPath);
+            const {data} = matter(fileContents);
+            const slug = file.replace(/\.md$/, '');
             docsTree.push({
-                title: file.replace(/\.md$/, ''),
-                slug: file.replace(/\.md$/, ''),
+                slug,
+                title: data.title || slug,
+                mtimeMs: stats.mtimeMs, // 添加修改时间（毫秒）
             })
         }
     });
-    return docsTree;
+    // 按修改时间降序排序（最新的在前）
+    return docsTree.sort((a, b) => b.mtimeMs - a.mtimeMs);
 }
 export const docsNavigation: DocItem[] = findDocNavigation();

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import {Separator} from "./ui/separator";
 import TransitionLink from "@/components/TransitionLink";
+import {usePathname} from "next/navigation";
 
 const footerLinks = [
     {
@@ -47,6 +48,10 @@ const footerLinks = [
 ];
 
 export function Footer() {
+    const pathname = usePathname()
+    if (/^\/(api|docs|media)\/[^/]+\/$/.test(pathname)) {
+        return null;
+    }
     return (
         <footer className="pb-16 pt-24 px-4 border-t border-white/5">
             <div className="max-w-7xl mx-auto">
