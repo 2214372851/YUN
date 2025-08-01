@@ -1775,7 +1775,7 @@ RUN mkdir /code && mkdir /data
 VOLUME /data
 
 
-COPY . /code
+COPY .. /code
 
 RUN pip install -r /code/requirements.txt
 

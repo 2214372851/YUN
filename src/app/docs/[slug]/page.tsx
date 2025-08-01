@@ -136,6 +136,7 @@ export default async function DocPage({params}: { params: Promise<{ slug: string
                 />
                 <DocsClient
                     allDocs={docsNavigation}
+                    title={doc.title}
                     currentSlug={slug}
                     contentHtml={contentHtml}
                     headings={headings}
