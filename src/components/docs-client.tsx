@@ -1,45 +1,94 @@
 "use client";
 
 import {useEffect, useMemo, useState} from 'react';
-import {List, Menu, X} from 'lucide-react';
+import {ChevronDown, ChevronRight, List, Menu, X} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 import type {TableOfContents as TocItem} from "@/lib/markdown";
 import TransitionLink from "@/components/TransitionLink";
 import dynamic from "next/dynamic";
 import {LoadingSpinner} from "@/components/ui/loading-spinner";
-
-
-interface DocData {
-    slug: string;
-    title: string;
-}
+import {DocItem} from "@/data/docs-navigation";
 
 interface DocsClientProps {
-    allDocs: DocData[];
+    allDocs: DocItem[];
     currentSlug: string;
     contentHtml: string;
     headings: TocItem[];
 }
 
-function DocNavigation({docs, currentSlug, className}: { docs: DocData[]; currentSlug: string; className?: string }) {
+function DocNavItem({
+                        doc,
+                        currentSlug,
+                        level,
+                    }: {
+    doc: DocItem;
+    currentSlug: string;
+    level: number;
+}) {
+    const isActive = doc.slug === currentSlug;
+    const hasChildren = !!doc.items?.length;
+
+    // 自动展开含有当前项的父级
+    const shouldBeOpen = currentSlug.startsWith(doc.slug);
+    const [open, setOpen] = useState(shouldBeOpen);
+
+    useEffect(() => {
+        if (shouldBeOpen) setOpen(true);
+    }, [shouldBeOpen]);
+
+    return (
+        <div className="space-y-1">
+            <div
+                className={`flex items-center cursor-pointer pl-${level} ${isActive ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'} text-sm py-1`}
+                onClick={() => hasChildren ? setOpen(!open) : null}
+            >
+                {hasChildren ? (
+                    <span className="flex-1 block" onClick={() => setOpen(!open)}>
+                        {doc.title}
+                    </span>
+                ) : (
+                    <TransitionLink href={`/docs/${doc.slug}`} className="flex-1 block">
+                        {doc.title}
+                    </TransitionLink>
+                )}
+                {hasChildren && (
+                    <span className="ml-1">
+                        {open ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+                    </span>
+                )}
+            </div>
+            {hasChildren && (
+                <div
+                    className={`ml-1 border-l border-border pl-2 overflow-hidden transition-all duration-300 ${open ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}
+                    style={{
+                        // 让动画更流畅
+                        transitionProperty: 'max-height, opacity',
+                    }}
+                >
+                    {open && doc.items!.map((child) => (
+                        <DocNavItem key={child.slug} doc={child} currentSlug={currentSlug} level={level + 1} />
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}
+
+export function DocNavigation({
+                                  docs,
+                                  currentSlug,
+                                  className,
+                              }: {
+    docs: DocItem[];
+    currentSlug: string;
+    className?: string;
+}) {
     return (
         <div className={className}>
-            <div className="sticky top-32">
-                <div className="font-medium mb-2 text-lg">文档导航</div>
-                <nav
-                    className="space-y-1 overflow-y-auto max-h-[calc(100vh-16rem)] scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent pr-4">
+            <div className="sticky top-0 border-r pt-[64px] h-screen pointer-events-auto">
+                <nav className="scroll-container hover:overflow-auto space-y-1 overflow-y-auto max-h-[calc(100vh-64px)] scrollbar scrollbar-thumb-gray-700 scrollbar-track-transparent pr-4 py-4">
                     {docs.map((doc) => (
-                        <TransitionLink
-                            key={doc.slug}
-                            href={`/docs/${doc.slug}`}
-                            className={`block text-sm py-1 transition-colors ${
-                                doc.slug === currentSlug
-                                    ? 'text-foreground font-medium'
-                                    : 'text-muted-foreground hover:text-foreground '
-                            }`}
-                        >
-                            {doc.title}
-                        </TransitionLink>
+                        <DocNavItem key={doc.slug} doc={doc} currentSlug={currentSlug} level={0} />
                     ))}
                 </nav>
             </div>
@@ -63,8 +112,8 @@ function TableOfContents({headings, className}: { headings: TocItem[]; className
                 }
             },
             {
-                rootMargin: '-70px 0px -70% 0px',
-                threshold: 1,
+                rootMargin: '0% 0px -60% 0px', // 👈 关键修改
+                threshold: 0,
             }
         );
 
@@ -90,10 +139,9 @@ function TableOfContents({headings, className}: { headings: TocItem[]; className
 
     return (
         <div className={className}>
-            <div className="sticky top-32">
-                <div className="text-sm font-medium mb-4">页面目录</div>
+            <div className="sticky top-0 pt-[64px] h-screen pointer-events-auto">
                 <nav
-                    className="space-y-1 overflow-y-auto max-h-[calc(100vh-16rem)] scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent pr-4">
+                    className="py-4 space-y-1 pl-2 overflow-y-auto max-h-[calc(100vh-64px)] scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent pr-4">
                     {headings.map((heading) => {
                         const isActive = activeId === heading.id;
                         return (
@@ -101,8 +149,8 @@ function TableOfContents({headings, className}: { headings: TocItem[]; className
                                 key={heading.id}
                                 id={`table-toc-${heading.id}`}
                                 href={`#${heading.id}`}
-                                className={`py-0.5 rounded block text-sm hover:text-foreground transition-colors ${
-                                    heading.level === 1 ? 'pl-0 font-semibold' :
+                                className={`py-1 rounded block text-[13px] hover:text-foreground transition-colors ${
+                                    heading.level === 1 ? 'pl-0' :
                                         heading.level === 2 ? 'pl-2' :
                                             heading.level === 3 ? 'pl-8' :
                                                 heading.level === 4 ? 'pl-14' :
@@ -122,7 +170,7 @@ function TableOfContents({headings, className}: { headings: TocItem[]; className
 function MobileNavigation({isOpen, onClose, docs, currentSlug}: {
     isOpen: boolean;
     onClose: () => void;
-    docs: DocData[];
+    docs: DocItem[];
     currentSlug: string;
 }) {
     return (
@@ -133,7 +181,7 @@ function MobileNavigation({isOpen, onClose, docs, currentSlug}: {
             onClick={onClose}
         >
             <div
-                className={`fixed top-0 left-0 h-full w-64 bg-background p-6 pt-20 overflow-y-auto shadow-xl border-r border-border transition-transform duration-200 ${
+                className={`fixed top-0 pl-4 left-0 w-64 bg-background shadow-xl border-r border-border transition-transform duration-200 ${
                     isOpen ? 'translate-x-0' : '-translate-x-full'
                 }`}
                 onClick={(e) => e.stopPropagation()}
@@ -260,7 +308,7 @@ export function DocsClient({allDocs, currentSlug, contentHtml, headings}: DocsCl
     }
 
     return (
-        <div className="flex-1 pt-32 pb-24">
+        <div className="flex-1">
             <div className="container max-w-7xl mx-auto px-4 relative">
                 {isMounted && (
                     <MobileControls
@@ -276,7 +324,7 @@ export function DocsClient({allDocs, currentSlug, contentHtml, headings}: DocsCl
                     <DocNavigation
                         docs={allDocs}
                         currentSlug={currentSlug}
-                        className="hidden lg:block w-64 shrink-0 mr-8"
+                        className="hidden lg:block w-48 shrink-0 mr-8"
                     />
 
                     {/* Mobile Sidebar */}
@@ -288,7 +336,7 @@ export function DocsClient({allDocs, currentSlug, contentHtml, headings}: DocsCl
                     />
 
                     {/* Main Content */}
-                    <article className="flex-1 min-w-0 px-0 lg:px-4">
+                    <article className="flex-1 min-w-0 px-0 lg:px-4 mt-32 mb-[50vh]">
                         {/* add title*/}
                         <h1 className="text-4xl font-bold">{allDocs.find(doc => doc.slug === currentSlug)?.title}</h1>
                         <div className="w-full h-[1px] bg-gray-500 my-8"></div>
@@ -298,7 +346,7 @@ export function DocsClient({allDocs, currentSlug, contentHtml, headings}: DocsCl
                     {/* Desktop TOC */}
                     <TableOfContents
                         headings={headings}
-                        className="hidden lg:block w-64 ml-8 shrink-0"
+                        className="hidden lg:block w-48 ml-8 shrink-0"
                     />
 
                     {/* Mobile TOC */}

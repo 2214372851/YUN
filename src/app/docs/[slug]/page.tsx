@@ -7,49 +7,16 @@ import {DocsClient} from "@/components/docs-client";
 import Script from "next/script";
 import {Metadata} from "next";
 import {baseUrl, image, siteName} from '@/config/site';
+import {docsNavigation, docsSlugs} from "@/data/docs-structure";
 
 // 获取文档文件目录
 const docsDirectory = path.join(process.cwd(), 'src/content/docs');
 
 
-// 获取所有文档
-async function getAllDocs() {
-    try {
-        if (!fs.existsSync(docsDirectory)) {
-            console.warn('文档目录不存在:', docsDirectory);
-            fs.mkdirSync(docsDirectory, {recursive: true});
-            return [];
-        }
-
-        const fileNames = fs.readdirSync(docsDirectory);
-        const docs = fileNames
-            .filter(fileName => fileName.endsWith('.md'))
-            .map(fileName => {
-                const fullPath = path.join(docsDirectory, fileName);
-                const fileContents = fs.readFileSync(fullPath, 'utf8');
-                const stats = fs.statSync(fullPath); // 获取文件状态
-                const {data} = matter(fileContents);
-                const slug = fileName.replace(/\.md$/, '');
-
-                return {
-                    slug,
-                    title: data.title || slug,
-                    mtimeMs: stats.mtimeMs // 添加修改时间（毫秒）
-                };
-            });
-
-        // 按修改时间降序排序（最新的在前）
-        return docs.sort((a, b) => b.mtimeMs - a.mtimeMs);
-    } catch (error) {
-        console.error("获取文档列表出错:", error);
-        return [];
-    }
-}
-
 // 获取特定文档的内容
 async function getDocBySlug(slug: string) {
     try {
-        const fullPath = path.join(docsDirectory, `${slug}.md`);
+        const fullPath = path.join(docsDirectory, `${slug.replace(/-yun-/g, '/')}.md`);
         const fileContents = fs.readFileSync(fullPath, 'utf8');
         const {data, content} = matter(fileContents);
 
@@ -67,8 +34,7 @@ async function getDocBySlug(slug: string) {
 
 // 生成静态路径参数
 export async function generateStaticParams() {
-    const docs = await getAllDocs();
-    return docs.map(({slug}) => ({slug}));
+    return docsSlugs.map((slug) => ({slug}));
 }
 
 // 生成页面元数据
@@ -118,10 +84,7 @@ export async function generateMetadata({params}: { params: Promise<{ slug: strin
 // 文档页面组件 - Now primarily fetches data and passes it to DocsClient
 export default async function DocPage({params}: { params: Promise<{ slug: string }> }) {
     const slug = (await params).slug;
-    const [doc, allDocs] = await Promise.all([
-        getDocBySlug(slug),
-        getAllDocs()
-    ]);
+    const doc = await getDocBySlug(slug)
 
     // 如果没有找到文档且文档列表为空，显示 404
     if (!doc) {
@@ -172,7 +135,7 @@ export default async function DocPage({params}: { params: Promise<{ slug: string
                     dangerouslySetInnerHTML={{__html: JSON.stringify(structuredData)}}
                 />
                 <DocsClient
-                    allDocs={allDocs}
+                    allDocs={docsNavigation}
                     currentSlug={slug}
                     contentHtml={contentHtml}
                     headings={headings}

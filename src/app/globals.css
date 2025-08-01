@@ -92,7 +92,6 @@
 
 .main {
     @apply flex-1;
-    @apply pb-24;
     @apply px-4;
     @apply max-w-7xl;
     @apply mx-auto;
@@ -129,8 +128,10 @@ pre {
     }
 }
 
+
+
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 6px;
     height: 10px;
 }
 
@@ -143,7 +144,7 @@ pre {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: rgba(144, 147, 153, .5);
+    background-color: rgba(144, 147, 153, .2);
     background-clip: padding-box;
     min-height: 28px;
     -webkit-border-radius: 2em;

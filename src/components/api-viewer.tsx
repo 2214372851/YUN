@@ -402,7 +402,7 @@ export function APIViewer({ document }: APIViewerProps) {
     <div 
       ref={containerRef} 
       className={cn(
-        "flex flex-col md:flex-row rounded-lg border border-white/10 overflow-hidden h-[calc(100vh-64px)] md:h-[calc(100vh-12rem)]",
+        "flex flex-col md:flex-row rounded-lg border border-white/10 overflow-hidden h-[calc(100vh-16rem)]",
         isFullscreen && "fixed inset-0 z-50 h-screen rounded-none"
       )}
     >
