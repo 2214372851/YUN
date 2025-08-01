@@ -5,8 +5,7 @@ import {Navbar} from "@/components/navbar";
 import {Footer} from "@/components/footer";
 import React from "react";
 import {Toaster} from "@/components/ui/toaster"
-import { siteName, baseUrl, image } from '@/config/site';
-import {headers} from "next/headers";
+import {baseUrl, image, siteName} from '@/config/site';
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -76,7 +75,7 @@ export default function RootLayout({
         <html lang="zh-CN">
         <body className={inter.className}>
         <Navbar/>
-        <Toaster />
+        <Toaster/>
         <main className="min-h-screen">
             {children}
         </main>

@@ -490,7 +490,7 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                 audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
             };
         }
-    }, [author, autoPlay, duration, imageUrl, title, toast]);
+    }, [author, autoPlay, backward, duration, forward, imageUrl, router, title, toast]);
 
     useEffect(() => {
         const autoPlayConfig = window.localStorage.getItem('autoPlay')
