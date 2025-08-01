@@ -1060,7 +1060,7 @@ export default {
 
 ```javascript
 //main.js
-import { createApp } from 'vue'
+import {createApp} from 'src/content/docs/Frontend/vue'
 import App from './App.vue'
 // import {mixin} from "@/mixin";
 
@@ -1355,17 +1355,17 @@ export default {
 main.js
 
 ```javascript
-import Vue from 'vue'
+import Vue from 'src/content/docs/Frontend/vue'
 import App from './App.vue'
 import vueResource from 'vue-resource'	//导入库
 
 Vue.config.productionTip = false
 Vue.use(vueResource)	//封装到vc
 new Vue({
-  render: h => h(App),
-  beforeCreate() {
-    Vue.prototype.$bus = this
-  }
+    render: h => h(App),
+    beforeCreate() {
+        Vue.prototype.$bus = this
+    }
 }).$mount('#app')
 ```
 
@@ -1519,7 +1519,7 @@ export default {
 ```javascript
 //该文件用于创建Vuex最核心的store
 //引入Vue
-import Vue from "vue";
+import Vue from "src/content/docs/Frontend/vue";
 //应用Vuex插件
 Vue.use(Vuex)
 //引入Vuex
@@ -1527,19 +1527,19 @@ import Vuex from 'vuex'
 //准备actions用于响应组件中的动作
 const actions = {
     //context是上下文，value是传递的数据
-    jia(context,value){
-        context.commit('JIA',value)
+    jia(context, value) {
+        context.commit('JIA', value)
     }
 }
 //准备mutations用于操作数据（state）
 const mutations = {
     //state是下面的数据，value是传递过来的数据
-    JIA(state,value){
+    JIA(state, value) {
         state.todo.unshift(value)
     }
 }
 //准备state用于存储数据,初始化数据
-const state = {todo:[{id:'13',name:'李华',age:89}]}
+const state = {todo: [{id: '13', name: '李华', age: 89}]}
 //创建store并暴露store
 export default new Vuex.Store({
     actions,
@@ -1676,35 +1676,39 @@ export default {
 ### `index.js`
 
 ```javascript
-import Vue from "vue";
+import Vue from "src/content/docs/Frontend/vue";
+
 Vue.use(Vuex)
 
 import Vuex from 'vuex'
 import axios from "axios";
 
 const getList = {
-    namespaced:true,    //开启命名空间
-    actions:{
-        jia(context){
-            axios.get('http://192.168.2.110:4523/m1/1074324-0-default/server').then(data=>{
+    namespaced: true,    //开启命名空间
+    actions: {
+        jia(context) {
+            axios.get('http://192.168.2.110:4523/m1/1074324-0-default/server').then(data => {
                 console.log(data)
-                context.commit('JIA',data.data)
-            }).catch(error=>alert("请求错误"+error.message))
-        }},
-    mutations:{
-        JIA(state,value){
+                context.commit('JIA', data.data)
+            }).catch(error => alert("请求错误" + error.message))
+        }
+    },
+    mutations: {
+        JIA(state, value) {
             console.log(value)
             state.todo.unshift(value)
-        }},
-    getters:{
-        bigSum(state){
-            return state.todo[0].id+'1'
-        }},
-    state:{todo:[{id:'13',name:'李华',age:89}]}
+        }
+    },
+    getters: {
+        bigSum(state) {
+            return state.todo[0].id + '1'
+        }
+    },
+    state: {todo: [{id: '13', name: '李华', age: 89}]}
 }
 
 export default new Vuex.Store({
-    modules:{
+    modules: {
         getList
     }
 })
@@ -2522,7 +2526,7 @@ Vue3也提供了Composition API形式的生命周期钩子，与Vue2中的钩子
 
   ```javascript
   // import HelloWorld from "@/components/HelloWorld";
-  import {reactive,toRefs,provide,defineAsyncComponent} from "vue";
+  import {reactive,toRefs,provide,defineAsyncComponent} from "src/content/docs/Frontend/vue";
   const HelloWorld = defineAsyncComponent(()=>import('./components/HelloWorld.vue'))
   ```
 

@@ -20,6 +20,7 @@ const findDocNavigation = (docsDirectory = docsDirs) => {
             });
         } else {
             // 如果是文件，则添加到导航树中
+            if (!file.endsWith('.md')) return; // 只处理Markdown文件
             const fullPath = path.join(docsDirectory, file);
             const fileContents = fs.readFileSync(fullPath, 'utf8');
             const stats = fs.statSync(fullPath);

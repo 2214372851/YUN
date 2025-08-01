@@ -111,6 +111,7 @@ pre {
         color: #C7C7C7;
         padding: 0 10px;
         background: #1F2020;
+        height: 20px;
 
         .filename {
             max-width: 50%;
@@ -121,6 +122,7 @@ pre {
 
     code.hljs {
         background: #151B23;
+        border-radius: 0;
     }
 
     * {

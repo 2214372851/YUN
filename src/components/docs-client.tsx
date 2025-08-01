@@ -14,6 +14,7 @@ interface DocsClientProps {
     currentSlug: string;
     contentHtml: string;
     headings: TocItem[];
+    title: string;
 }
 
 function DocNavItem({
@@ -266,7 +267,7 @@ const MarkdownView = dynamic(() => import('@/components/markdown-view'),
     {ssr: false, loading: () => <LoadingSpinner fullScreen={true}/>}
 );
 
-export function DocsClient({allDocs, currentSlug, contentHtml, headings}: DocsClientProps) {
+export function DocsClient({allDocs, title, currentSlug, contentHtml, headings}: DocsClientProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isTocOpen, setIsTocOpen] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
@@ -338,7 +339,7 @@ export function DocsClient({allDocs, currentSlug, contentHtml, headings}: DocsCl
                     {/* Main Content */}
                     <article className="flex-1 min-w-0 px-0 lg:px-4 mt-32 mb-[50vh]">
                         {/* add title*/}
-                        <h1 className="text-4xl font-bold">{allDocs.find(doc => doc.slug === currentSlug)?.title}</h1>
+                        <h1 className="text-4xl font-bold">{title}</h1>
                         <div className="w-full h-[1px] bg-gray-500 my-8"></div>
                         {renderContent}
                     </article>
