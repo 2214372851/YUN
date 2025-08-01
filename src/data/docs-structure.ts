@@ -4,7 +4,9 @@ import path from "path";
 import matter from "gray-matter";
 
 
-const findDocNavigation = (docsDirectory = path.join(process.cwd(), 'src/content/docs')) => {
+const docsDirs = path.join(process.cwd(), 'src/content/docs')
+
+const findDocNavigation = (docsDirectory = docsDirs) => {
     // 遍历docs目录下的所有文件，构建导航树
     const docsTree: DocItem[] = [];
     fs.readdirSync(docsDirectory).forEach(file => {
@@ -22,7 +24,10 @@ const findDocNavigation = (docsDirectory = path.join(process.cwd(), 'src/content
             const fileContents = fs.readFileSync(fullPath, 'utf8');
             const stats = fs.statSync(fullPath);
             const {data} = matter(fileContents);
-            const slug = file.replace(/\.md$/, '');
+            const slug = path.relative(docsDirs, fullPath)
+                .replace(/\.md$/, '')
+                .replace(/\\/g, '/')
+                .replace(/\//g, '-yun-');
             docsTree.push({
                 slug,
                 title: data.title || slug,
@@ -31,6 +36,24 @@ const findDocNavigation = (docsDirectory = path.join(process.cwd(), 'src/content
         }
     });
     // 按修改时间降序排序（最新的在前）
-    return docsTree.sort((a, b) => b.mtimeMs - a.mtimeMs);
+    return docsTree.sort((a, b) => b.mtimeMs - a.mtimeMs)
 }
-export const docsNavigation: DocItem[] = findDocNavigation();
+
+export function getAllSlugs(docs: DocItem[]): string[] {
+    const result: string[] = [];
+
+    function traverse(items: DocItem[]) {
+        for (const item of items) {
+            result.push(item.slug);
+            if (item.items && item.items.length > 0) {
+                traverse(item.items);
+            }
+        }
+    }
+
+    traverse(docs);
+    return result;
+}
+
+export const docsNavigation = findDocNavigation();
+export const docsSlugs = getAllSlugs(docsNavigation);

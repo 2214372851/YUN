@@ -59,17 +59,6 @@ const MediaPage = () => {
                         <p className="col-span-full text-center text-muted-foreground">暂无音乐内容。</p>
                     )}
                 </div>
-                <div className="text-center text-muted-foreground text-sm sm:text-base px-2 sm:px-0 mt-8">
-                    <div>
-                        🚫 严禁任何商业用途！本站仅供个人学习娱乐。
-                    </div>
-                    <div>
-                        🚫 用户行为与本站无关，作者不承担任何法律责任。
-                    </div>
-                    <div>
-                        💬 如有版权问题，可以联系上方本站作者。
-                    </div>
-                </div>
             </div>
         </main>
     );

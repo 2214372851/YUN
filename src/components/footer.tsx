@@ -49,7 +49,7 @@ const footerLinks = [
 
 export function Footer() {
     const pathname = usePathname()
-    if (/^\/(api|docs|media)\/[^/]+\/$/.test(pathname)) {
+    if (/^\/(api|docs|media|tools)\/[^/]+\/.*?$/.test(pathname)) {
         return null;
     }
     return (

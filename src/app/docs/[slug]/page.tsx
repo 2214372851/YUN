@@ -7,7 +7,7 @@ import {DocsClient} from "@/components/docs-client";
 import Script from "next/script";
 import {Metadata} from "next";
 import {baseUrl, image, siteName} from '@/config/site';
-import {docsNavigation} from "@/data/docs-structure";
+import {docsNavigation, docsSlugs} from "@/data/docs-structure";
 
 // 获取文档文件目录
 const docsDirectory = path.join(process.cwd(), 'src/content/docs');
@@ -16,7 +16,7 @@ const docsDirectory = path.join(process.cwd(), 'src/content/docs');
 // 获取特定文档的内容
 async function getDocBySlug(slug: string) {
     try {
-        const fullPath = path.join(docsDirectory, `${slug}.md`);
+        const fullPath = path.join(docsDirectory, `${slug.replace(/-yun-/g, '/')}.md`);
         const fileContents = fs.readFileSync(fullPath, 'utf8');
         const {data, content} = matter(fileContents);
 
@@ -34,7 +34,7 @@ async function getDocBySlug(slug: string) {
 
 // 生成静态路径参数
 export async function generateStaticParams() {
-    return docsNavigation.map(({slug}) => ({slug}));
+    return docsSlugs.map((slug) => ({slug}));
 }
 
 // 生成页面元数据
