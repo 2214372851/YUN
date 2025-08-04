@@ -243,14 +243,6 @@ export const mediaItems: MediaItem[] = [
         lyricsUrl: 'https://minio-endpoint.bybxbwg.fun/docs/snrj-lcc.lrc',
     },
     {
-        id: 'xgxdmx-wzxq',
-        title: '星光下的梦想',
-        imageUrl: 'https://minio-endpoint.bybxbwg.fun/docs/xgxdmx-wzxq.jpg',
-        author: '旺仔小乔',
-        musicUrl: 'https://minio-endpoint.bybxbwg.fun/docs/xgxdmx-wzxq.mp3',
-        lyricsUrl: 'https://minio-endpoint.bybxbwg.fun/docs/xgxdmx-wzxq.lrc',
-    },
-    {
         id: 'xjh-zqy',
         title: '须尽欢',
         imageUrl: 'https://minio-endpoint.bybxbwg.fun/docs/xjh-zqy.jpg',

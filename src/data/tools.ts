@@ -731,13 +731,6 @@ const otherTools: Tool[] = [
         category: '设计资源',
     },
     {
-        id: 'myfreemp3',
-        name: 'MyFreeMP3',
-        description: '免费在线音乐播放器。',
-        href: 'https://tools.liumingye.cn/music/#/',
-        category: '影音娱乐',
-    },
-    {
         id: 'bootcdn',
         name: 'Boot CDN',
         description: '稳定、快速、免费的前端开源项目 CDN 加速服务。',

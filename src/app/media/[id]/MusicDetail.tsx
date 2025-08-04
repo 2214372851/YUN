@@ -279,7 +279,7 @@ const MusicDetail = ({musicItem}: Props) => {
                                         {lyrics[currentLine].text.split(' ').map((line, index) => (
                                             <p
                                                 key={index}
-                                                className='ransition-all text-white font-bold text-5xl z-20 whitespace-nowrap'
+                                                className='ransition-all text-white font-bold text-5xl z-20 whitespace-nowrap pointer-events-none'
                                             >
                                                 {line}
                                             </p>
@@ -365,7 +365,7 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [currentTime, setCurrentTime] = useState(0);
+    const [_currentTime, setCurrentTime] = useState(0);
     const [autoPlay, setAutoPlay] = useState(false);
     const {toast} = useToast();
     const nextToast = useRef(false)
