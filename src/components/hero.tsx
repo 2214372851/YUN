@@ -5,20 +5,21 @@ import {motion} from "framer-motion";
 import Image from 'next/image';
 import {TypeAnimation} from 'react-type-animation';
 import TransitionLink from "@/components/TransitionLink";
+import {STORAGE_HOST} from "@/data/baseUrl";
 
 
 function ProductDiagram() {
     const imageMap = [
         {
-            src: "https://minio-endpoint.bybxbwg.fun/docs/ide.png",
+            src: `${STORAGE_HOST}/docs/ide.png`,
             alt: "Ide",
         },
         {
-            src: "https://minio-endpoint.bybxbwg.fun/docs/carwlsy.png",
+            src: `${STORAGE_HOST}/docs/carwlsy.png`,
             alt: "Carwlsy",
         },
         {
-            src: "https://minio-endpoint.bybxbwg.fun/docs/node.png",
+            src: `${STORAGE_HOST}/docs/node.png`,
             alt: "Node",
         },
     ]

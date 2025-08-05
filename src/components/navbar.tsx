@@ -7,6 +7,7 @@ import Image from 'next/image';
 import {useState} from 'react';
 import {Menu, X} from 'lucide-react';
 import TransitionLink from "@/components/TransitionLink";
+import {STORAGE_HOST} from "@/data/baseUrl";
 
 const navLinks = [
     {href: "/", text: ""},
@@ -37,7 +38,7 @@ export function Navbar() {
                 {/* Logo Link - Centered on mobile via container justify-center */}
                 <TransitionLink href="/" className="flex items-center gap-2">
                     <Image
-                        src="https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp"
+                        src={`${STORAGE_HOST}/docs/Avatar.webp`}
                         alt="头像"
                         width={24}
                         height={24}

@@ -85,7 +85,7 @@ const MarkdownEditorPage = () => {
 
 [链接文本](https://example.com)
 
-![图片替代文本](https://minio-endpoint.bybxbwg.fun/docs/Avatar.webp)
+![图片替代文本](https://minio-endpoint.yhnotes.com/docs/Avatar.webp)
 
 ### 引用
 

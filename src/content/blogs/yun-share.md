@@ -80,7 +80,7 @@ my-project/
 点击验证链接后，项目将正式部署完成，你将获得一个可以直接访问的在线链接，形如：
 
 ```
-https://share.bybxbwg.fun/{project}/
+https://share.yhnotes.com/{project}/
 ```
 
 ## **📄 项目管理**

@@ -2,6 +2,7 @@ import {getAllBlogPosts} from "@/data/blog-posts";
 import TransitionLink from "@/components/TransitionLink";
 import {image, siteName} from '@/config/site';
 import type {Metadata} from 'next';
+import {STORAGE_HOST} from "@/data/baseUrl";
 
 interface BlogPostProps {
     index?: number;
@@ -22,7 +23,7 @@ function FeaturedPost({index, slug, category, title, imageUrl, excerpt}: BlogPos
             <div
                 className="h-64 rounded-md overflow-hidden flex items-center justify-center mb-4">
                 <img
-                    src={imageUrl || `https://minio-endpoint.bybxbwg.fun/docs/YUN Blog bg ${index}.svg`}
+                    src={imageUrl || `${STORAGE_HOST}/docs/YUN Blog bg ${index}.svg`}
                     alt={title}
                     className="w-full h-full object-cover"
                 />

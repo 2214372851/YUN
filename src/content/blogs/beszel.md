@@ -4,7 +4,7 @@ category: Linux
 excerpt: Beszel 快速构建轻量级的服务器监控。
 lastEdited: 2025年4月10日
 tags: [Linux,监控,运维]
-imageUrl: https://minio-endpoint.bybxbwg.fun/docs/image-20250410112704917.png
+imageUrl: https://minio-endpoint.yhnotes.com/docs/image-20250410112704917.png
 ---
 
 ## 什么是 Beszel？
@@ -13,7 +13,7 @@ Beszel 是一个轻量级的服务器监控平台，包含 Docker 统计信息�
 
 它拥有友好的 Web 界面、简单的配置，并且开箱即用。它支持自动备份、多用户、OAuth 身份验证和 API 访问。
 
-![image-20250410112704917](https://minio-endpoint.bybxbwg.fun/docs/image-20250410112704917.png)
+![image-20250410112704917](https://minio-endpoint.yhnotes.com/docs/image-20250410112704917.png)
 
 ## 安装
 
@@ -75,7 +75,7 @@ curl -sL https://gh-proxy.com/raw.githubusercontent.com/henrygd/beszel/main/supp
 
 公钥是指在 Hub 安装完成后添加服务器时自动生成的身份信息
 
-![image-20250410111618338](https://minio-endpoint.bybxbwg.fun/docs/image-20250410111618338.png)
+![image-20250410111618338](https://minio-endpoint.yhnotes.com/docs/image-20250410111618338.png)
 
 配置设置参考：
 
@@ -92,11 +92,11 @@ curl -sL https://gh-proxy.com/raw.githubusercontent.com/henrygd/beszel/main/supp
 ## 多账号
 
 但你配置好监控，需要去添加团队成员到其中时，点击 添加客户端 前面的人形图标点击用户即可进入后台界面，点击左上角的 `New record` 填写信息即可添加账号
-![image-20250410113054555](https://minio-endpoint.bybxbwg.fun/docs/image-20250410113054555.png)
+![image-20250410113054555](https://minio-endpoint.yhnotes.com/docs/image-20250410113054555.png)
 
 填写如下三个输入框，在箭头指向的地方为账号是否可用，不打开该账号无法登录
 
-![image-20250410113352903](https://minio-endpoint.bybxbwg.fun/docs/image-20250410113352903.png)
+![image-20250410113352903](https://minio-endpoint.yhnotes.com/docs/image-20250410113352903.png)
 
 点击 `systems` 后点击需要共享给账号的服务器监控，在下方找到 `users` 通过 `Open picker` 选择共享的用户，该用户登录即可查看到该监控
-![image-20250410113608832](https://minio-endpoint.bybxbwg.fun/docs/image-20250410113608832.png)
+![image-20250410113608832](https://minio-endpoint.yhnotes.com/docs/image-20250410113608832.png)

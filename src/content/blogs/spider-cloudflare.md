@@ -4,7 +4,7 @@ category: "数据采集"
 excerpt: 数据采集中通过 CloudFlare 人机验证方案。
 lastEdited: 2025年4月18日
 tags: [数据采集,Python,CloudFlare]
-imageUrl: https://minio-endpoint.bybxbwg.fun/docs/CF_logo_stacked_whitetype.png
+imageUrl: https://minio-endpoint.yhnotes.com/docs/CF_logo_stacked_whitetype.png
 ---
 
 ## 绕过 cloudflare 人机验证

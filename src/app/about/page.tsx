@@ -3,6 +3,7 @@
 import Image from "next/image";
 import {motion} from "framer-motion";
 import { image } from '@/config/site';
+import {STORAGE_HOST} from "@/data/baseUrl";
 
 export default function About() {
     return (
@@ -155,7 +156,7 @@ export default function About() {
                         </div>
                         <div className="order-1 md:order-2">
                             <Image
-                                src={'https://minio-endpoint.bybxbwg.fun/docs/xuanwei.svg'}
+                                src={`${STORAGE_HOST}/docs/xuanwei.svg`}
                                 alt="xuanwei"
                                 width={400}
                                 height={400}

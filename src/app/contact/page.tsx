@@ -3,6 +3,7 @@ import {motion} from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import {image} from '@/config/site';
+import {STORAGE_HOST} from "@/data/baseUrl";
 
 
 export default function Contact() {
@@ -60,7 +61,7 @@ export default function Contact() {
                             <p className="text-muted-foreground text-lg mb-4">
                                 Feel free to reach out to me via email for any inquiries or collaboration opportunities.
                             </p>
-                            <Link href="mailto:yunhai@bybxbwg.fun" className="text-blue-500 hover:underline"
+                            <Link href="mailto:yunhai@yhnotes.com" className="text-blue-500 hover:underline"
                                   target="_blank">
                                 Click Contact me by email
                             </Link>
@@ -108,7 +109,7 @@ export default function Contact() {
                                     width={120}
                                     height={120}
                                     alt="aaa"
-                                    src="https://minio-endpoint.bybxbwg.fun/docs/contact-wechat.png"/>
+                                    src={`${STORAGE_HOST}/docs/contact-wechat.png`}/>
                             </div>
 
                         </div>

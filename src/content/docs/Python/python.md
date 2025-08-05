@@ -106,19 +106,28 @@ my_value = 2
 
 ### 变量类型
 
-#### 整形与浮点型
+#### 整形
 
 不可变类型
 
 ```python
 x = 10
+```
+
+#### 浮点型
+
+不可变类型
+
+```python
 y = 0.56
 z = .23
 ```
 
+
+
 #### 字符串
 
-有序的字符集合,存储文本信息,不可变类型
+有序的字符集合,存储文本信息，不可变类型
 
 ```python
 a = '1'
@@ -1938,15 +1947,15 @@ graph LR
 >           print(f'{fun.name}运行结束')
 >           return v
 >       return task
->                                                                                                                                                                           
+>                                                                                                                                                                               
 >      @taskRun
 >       def taskA():
 >           time.sleep(5)
->                                                                                                                                                                         
+>                                                                                                                                                                             
 >       @taskRun
 >       def taskB():
 >           time.sleep(8)
->                                                                                                                                                                         
+>                                                                                                                                                                             
 >       taskA()
 >       taskB()
 >     

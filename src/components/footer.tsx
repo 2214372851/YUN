@@ -9,9 +9,9 @@ const footerLinks = [
     {
         title: "Service",
         links: [
-            {href: "https://minio-console.bybxbwg.fun/", label: "OSS"},
-            {href: "https://uptime.bybxbwg.fun/status/aliyun", label: "Service Status"},
-            {href: "https://status.bybxbwg.fun/", label: "Server Status"},
+            {href: "https://minio-console.yhnotes.com/", label: "OSS"},
+            {href: "https://uptime.yhnotes.com/status/aliyun", label: "Service Status"},
+            {href: "https://status.yhnotes.com/", label: "Server Status"},
         ],
     },
     {
@@ -36,7 +36,7 @@ const footerLinks = [
         links: [
             {href: "https://github.com/2214372851", label: "GitHub"},
             {href: "https://gitee.com/yun2hai", label: "Gitee"},
-            {href: "mailto:yunhai@bybxbwg.fun", label: "Email"},
+            {href: "mailto:yunhai@yhnotes.com", label: "Email"},
         ],
     },
     {
