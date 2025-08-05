@@ -6,8 +6,13 @@ type Announcement = {
 
 const announcements: Announcement[] = [
     {
+        content: "🎉 The original domain name will expire in November, click Go to the migrated address 🎉",
+        link: "https://www.yhnotes.com/",
+        createdAt: new Date("2025-8-5")
+    },
+    {
         content: "🎉 Yun Share Static Resource Web Hosting Service is launched 🎉",
-        link: "https://apps.apple.com/cn/app/yun-music-mcp/id6444466159",
+        link: "/blog/yun-share/",
         createdAt: new Date("2025-7-7")
     },
     {

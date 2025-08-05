@@ -64,7 +64,7 @@ function RegularPost({slug, category, title, date}: BlogPostProps) {
 }
 
 export const metadata: Metadata = {
-    title: `博客 | ${siteName}`,
+    title: `博客`,
     description: `${siteName} 博客文章与技术分享`,
     openGraph: {
         title: `博客 | ${siteName}`,
