@@ -3,6 +3,7 @@
 import Link from "next/link";
 import {motion} from "framer-motion";
 import Image from "next/image";
+import {STORAGE_HOST} from "@/data/baseUrl";
 
 export function Carwlsy() {
     return (
@@ -17,7 +18,7 @@ export function Carwlsy() {
                 >
                     <div className="order-2 md:order-1 bg-gray-800 rounded-lg overflow-hidden h-80 relative">
                         <Image
-                            src="https://minio-endpoint.bybxbwg.fun/docs/carwlsy.png"
+                            src={`${STORAGE_HOST}/docs/carwlsy.png`}
                             alt="D0 Tools"
                             width={0}
                             height={0}

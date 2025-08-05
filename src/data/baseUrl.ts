@@ -1,0 +1,1 @@
+export const STORAGE_HOST = 'https://minio-endpoint.yhnotes.com';

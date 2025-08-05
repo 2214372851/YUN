@@ -4,7 +4,7 @@ category: "技术, API工具"
 excerpt: "介绍MCP音乐服务器的功能及使用方法，包括搜索歌曲和获取歌曲详情，帮助开发者快速集成音乐服务。"
 lastEdited: "2025年6月5日"
 tags: ["MCP", "API", "音乐"]
-imageUrl: https://minio-endpoint.bybxbwg.fun/docs/yun-music.png
+imageUrl: https://minio-endpoint.yhnotes.com/docs/yun-music.png
 ---
 
 ## 什么是MCP音乐服务?
@@ -23,7 +23,7 @@ MCP（Model Context Protocol）音乐服务是一组通过本地化代理提供�
 {
   "mcpServers": {
     "yun-music": {
-      "url": "http://mcp.bybxbwg.fun/music"
+      "url": "http://mcp.yhnotes.com/music"
     }
   }
 }
@@ -77,7 +77,7 @@ const results = await mcpTool({
 # 命令行示例（需替换URL）
 curl -X POST -d '{
   "detail_url": "/music/4190"
-}' http://mcp.bybxbwg.fun/music/get_music_detail
+}' http://mcp.yhnotes.com/music/get_music_detail
 ```
 
 ## 常见问题与建议

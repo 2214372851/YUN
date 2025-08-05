@@ -6,7 +6,9 @@ import {getAllTools} from '@/data/tools';
 import {Tool} from "@/types/tools";
 import {Button} from "@/components/ui/button"; // 引入 Button 用于筛选器
 import {cn} from "@/lib/utils";
-import TransitionLink from "@/components/TransitionLink"; // 引入 cn 用于条件样式
+import TransitionLink from "@/components/TransitionLink";
+import type {Metadata} from "next";
+import {image, siteName} from "@/config/site"; // 引入 cn 用于条件样式
 
 // ToolCard 组件保持不变...
 interface ToolCardProps {

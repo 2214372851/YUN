@@ -25,7 +25,7 @@ export async function generateMetadata({params}: { params: Promise<{ id: string 
     const canonicalUrl = `${baseUrl}/blog/${id}`;
 
     return {
-        title: `${post.title} | ${post.category} | ${siteName}`,
+        title: `${post.title}`,
         description: post.excerpt,
         keywords,
         authors: [{name: post.author}],

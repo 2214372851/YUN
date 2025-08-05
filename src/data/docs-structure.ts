@@ -45,9 +45,10 @@ export function getAllSlugs(docs: DocItem[]): string[] {
 
     function traverse(items: DocItem[]) {
         for (const item of items) {
-            result.push(item.slug);
             if (item.items && item.items.length > 0) {
                 traverse(item.items);
+            } else {
+                result.push(item.slug);
             }
         }
     }

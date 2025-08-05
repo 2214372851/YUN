@@ -1,4 +1,4 @@
-const baseUrl = 'https://bybxbwg.fun';
+const baseUrl = 'https://www.yhnotes.com';
 
 /** @type {import('next-sitemap').IConfig} */
 
@@ -23,5 +23,5 @@ module.exports = {
     sitemapSize: 5000,
     changefreq: 'weekly',
     priority: 0.7,
-    exclude: ['/test', '/share'],
+    exclude: ['/test', '/test/*', '/share', '/share/*', '/docs', '/docs/*'],
 };

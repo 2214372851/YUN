@@ -5,8 +5,8 @@ import TransitionLink from "@/components/TransitionLink";
 
 // 生成页面元数据
 export const metadata: Metadata = {
-  title: `${siteName} API 文档`,
-  description: `浏览 ${siteName} 提供的API文档列表`,
+  title: `API 文档`,
+  description: `浏览 ${siteName} 提供的API文档组件`,
 };
 
 // API页面组件

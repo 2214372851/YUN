@@ -2,6 +2,7 @@ import {getAllBlogPosts} from "@/data/blog-posts";
 import TransitionLink from "@/components/TransitionLink";
 import {image, siteName} from '@/config/site';
 import type {Metadata} from 'next';
+import {STORAGE_HOST} from "@/data/baseUrl";
 
 interface BlogPostProps {
     index?: number;
@@ -22,7 +23,7 @@ function FeaturedPost({index, slug, category, title, imageUrl, excerpt}: BlogPos
             <div
                 className="h-64 rounded-md overflow-hidden flex items-center justify-center mb-4">
                 <img
-                    src={imageUrl || `https://minio-endpoint.bybxbwg.fun/docs/YUN Blog bg ${index}.svg`}
+                    src={imageUrl || `${STORAGE_HOST}/docs/YUN Blog bg ${index}.svg`}
                     alt={title}
                     className="w-full h-full object-cover"
                 />
@@ -63,7 +64,7 @@ function RegularPost({slug, category, title, date}: BlogPostProps) {
 }
 
 export const metadata: Metadata = {
-    title: `博客 | ${siteName}`,
+    title: `博客`,
     description: `${siteName} 博客文章与技术分享`,
     openGraph: {
         title: `博客 | ${siteName}`,

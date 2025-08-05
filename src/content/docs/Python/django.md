@@ -455,7 +455,7 @@ gender = models.SmallIntegerField(verbose_name='性别', choices=gender_choices)
 
 ### 9.4 数据库元组套元组
 
-![image-20220506232826504](https://minio-endpoint.bybxbwg.fun/docs/image-20220506232826504.png)
+![image-20220506232826504](https://minio-endpoint.yhnotes.com/docs/image-20220506232826504.png)
 
 ```python
 # 在django里用get_字段名称_display()可以自动把1输出男2输出女
@@ -1091,7 +1091,7 @@ class MyFrom(BootStrapMyFrom):
         fields = ['name','password']
 ```
 
-![image-20220508011705707](https://minio-endpoint.bybxbwg.fun/docs/image-20220508011705707.png)
+![image-20220508011705707](https://minio-endpoint.yhnotes.com/docs/image-20220508011705707.png)
 
 ## 13 目录
 
@@ -1256,7 +1256,7 @@ def login(request):
 
 #### 中间件文件夹（middleware）
 
-![image-20220508031645437](https://minio-endpoint.bybxbwg.fun/docs/image-20220508031645437.png)
+![image-20220508031645437](https://minio-endpoint.yhnotes.com/docs/image-20220508031645437.png)
 
 ```python
 from django.utils.deprecation import MiddlewareMixin
@@ -1283,13 +1283,13 @@ class C2(MiddlewareMixin):
 
 运行结果
 
-![image-20220508033210917](https://minio-endpoint.bybxbwg.fun/docs/image-20220508033210917.png)
+![image-20220508033210917](https://minio-endpoint.yhnotes.com/docs/image-20220508033210917.png)
 
 #### 应用中间件
 
 在settings.py里的MIDDLEWARE列表里把中间件添加上去
 
-![image-20220508033305980](https://minio-endpoint.bybxbwg.fun/docs/image-20220508033305980.png)
+![image-20220508033305980](https://minio-endpoint.yhnotes.com/docs/image-20220508033305980.png)
 
 #### 中间件实现登录校验
 
@@ -1551,23 +1551,23 @@ $.ajax({
 
 ### 自动写ajax传入后端的值
 
-![image-20220508232152198](https://minio-endpoint.bybxbwg.fun/docs/image-20220508232152198.png)
+![image-20220508232152198](https://minio-endpoint.yhnotes.com/docs/image-20220508232152198.png)
 
-![image-20220508232228145](https://minio-endpoint.bybxbwg.fun/docs/image-20220508232228145.png)
+![image-20220508232228145](https://minio-endpoint.yhnotes.com/docs/image-20220508232228145.png)
 
 案例
 
-![image-20220508234558328](https://minio-endpoint.bybxbwg.fun/docs/image-20220508234558328.png)
+![image-20220508234558328](https://minio-endpoint.yhnotes.com/docs/image-20220508234558328.png)
 
-![image-20220508232228145](https://minio-endpoint.bybxbwg.fun/docs/image-20220508232228145_repeat_1743402858095_547642.png)
+![image-20220508232228145](https://minio-endpoint.yhnotes.com/docs/image-20220508232228145_repeat_1743402858095_547642.png)
 
 html
 
-![image-20220508234838719](https://minio-endpoint.bybxbwg.fun/docs/image-20220508234838719.png)
+![image-20220508234838719](https://minio-endpoint.yhnotes.com/docs/image-20220508234838719.png)
 
 把错误写到html
 
-![image-20220508234658363](https://minio-endpoint.bybxbwg.fun/docs/image-20220508234658363.png)
+![image-20220508234658363](https://minio-endpoint.yhnotes.com/docs/image-20220508234658363.png)
 
 ## 17 上传文件
 
@@ -1575,13 +1575,13 @@ html
 
 * request.FILES 请求发送过来的文件
 
-![image-20220509002043979](https://minio-endpoint.bybxbwg.fun/docs/image-20220509002043979.png)
+![image-20220509002043979](https://minio-endpoint.yhnotes.com/docs/image-20220509002043979.png)
 
 不加enctype默认只是上传文件名，加上才上传了真正的文件
 
-![image-20220509002303320](https://minio-endpoint.bybxbwg.fun/docs/image-20220509002303320.png)
+![image-20220509002303320](https://minio-endpoint.yhnotes.com/docs/image-20220509002303320.png)
 
-![image-20220509002455007](https://minio-endpoint.bybxbwg.fun/docs/image-20220509002455007.png)
+![image-20220509002455007](https://minio-endpoint.yhnotes.com/docs/image-20220509002455007.png)
 
 * file_object.name 文件名
 
@@ -1593,19 +1593,19 @@ html
 
 用form生成input标签
 
-![image-20220509004540163](https://minio-endpoint.bybxbwg.fun/docs/image-20220509004540163.png)
+![image-20220509004540163](https://minio-endpoint.yhnotes.com/docs/image-20220509004540163.png)
 
 写上第二行的就排除img标签不给他加上bootstrap样式
 
-![image-20220509004755564](https://minio-endpoint.bybxbwg.fun/docs/image-20220509004755564.png)
+![image-20220509004755564](https://minio-endpoint.yhnotes.com/docs/image-20220509004755564.png)
 
 上传文件校验的时候一定要加上files
 
-![image-20220609234355937](https://minio-endpoint.bybxbwg.fun/docs/image-20220609234355937.png)
+![image-20220609234355937](https://minio-endpoint.yhnotes.com/docs/image-20220609234355937.png)
 
 ## 18、Django生命周期
 
-![image-20220711165822804](https://minio-endpoint.bybxbwg.fun/docs/image-20220711165822804.png)
+![image-20220711165822804](https://minio-endpoint.yhnotes.com/docs/image-20220711165822804.png)
 
 ## 19、wsgi,uwsgi,uWSGI？
 

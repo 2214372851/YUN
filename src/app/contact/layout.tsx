@@ -2,7 +2,7 @@ import { siteName, image } from '@/config/site';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: `联系 | ${siteName}`,
+    title: `联系`,
     description: `通过本页面联系 ${siteName}`,
     openGraph: {
         title: `联系 | ${siteName}`,

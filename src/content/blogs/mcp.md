@@ -4,7 +4,7 @@ category: "AI, MCP"
 excerpt: 目前模型调用 MCP 的两种做法。
 lastEdited: 2025年3月31日
 tags: [AI, MCP,Prompt,FuntionCall]
-imageUrl: http://minio-endpoint.bybxbwg.fun/docs/mcp.jpg
+imageUrl: http://minio-endpoint.yhnotes.com/docs/mcp.jpg
 ---
 
 ## 什么是 MCP？
@@ -41,7 +41,7 @@ Model Context Protocol (MCP) 是一个开放协议，它使 LLM 应用与外部�
 
 此时如果你不是 `Windows` 那你会看到，你的 MCP 服务已经可用
 
-![image-20250331153547781](http://minio-endpoint.bybxbwg.fun/docs/image-20250331153547781.png)
+![image-20250331153547781](http://minio-endpoint.yhnotes.com/docs/image-20250331153547781.png)
 
 如果你是 `Windows` 那么你需要将配置改为如下
 
@@ -83,7 +83,7 @@ Fucntion calling 是将 LLM 链接外部工具的一种方式。在 `openai` 中
 
 使用 Function Call 可以作为 MCP 的触发器，直接调用 MCP 服务，但是具有比较大的局限性，以 Ollama Models 为例，只有少数模型对 tools 调用支持，包括前端时间比较火的 DeepSeek R1 也不支持函数调用。
 
-![image-20250331174551602](http://minio-endpoint.bybxbwg.fun/docs/image-20250331174551602.png)
+![image-20250331174551602](http://minio-endpoint.yhnotes.com/docs/image-20250331174551602.png)
 
 ### System Prompt
 

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import {motion} from "framer-motion";
 import Image from 'next/image';
+import {STORAGE_HOST} from "@/data/baseUrl";
 
 export function D0Tools() {
     return (
@@ -52,7 +53,7 @@ export function D0Tools() {
                     <div
                         className="bg-gray-600 rounded-lg overflow-hidden h-80 relative flex justify-center items-center">
                         <Image
-                            src="https://minio-endpoint.bybxbwg.fun/docs/data-label.webp"
+                            src={`${STORAGE_HOST}/docs/data-label.webp`}
                             alt="D0 Tools"
                             width={0}
                             height={0}

@@ -4,7 +4,7 @@ category: "游记"
 excerpt: "山色有无中，不如就春风。"
 lastEdited: "2025年5月5日"
 tags: ["游记", "南京", "夫子庙", "云锦", "银临", "李常超"]
-imageUrl: "https://minio-endpoint.bybxbwg.fun/docs/IMG_20250501_211701.jpg"
+imageUrl: "https://minio-endpoint.yhnotes.com/docs/IMG_20250501_211701.jpg"
 ---
 
 
@@ -16,7 +16,7 @@ imageUrl: "https://minio-endpoint.bybxbwg.fun/docs/IMG_20250501_211701.jpg"
 
 偶然又听到《牵丝戏》，忽觉人这一生，应当去感受世间百态。既可以深陷于烟火人间，也可以追逐一首诗与远方。你轻吟一句“山色有无中”，我便到了这座金陵。
 
-![汉江临泛](https://minio-endpoint.bybxbwg.fun/docs/IMG_20250501_192126.jpg)
+![汉江临泛](https://minio-endpoint.yhnotes.com/docs/IMG_20250501_192126.jpg)
 
 ---
 
@@ -24,23 +24,23 @@ imageUrl: "https://minio-endpoint.bybxbwg.fun/docs/IMG_20250501_211701.jpg"
 
 第一次现场感受国风演出，满眼皆是穿汉服的女孩，还有不少年长阿姨同场观赏。南京，果然不愧为明代故都，汉服文化几乎是城市日常——“六朝金粉地，人文荟萃时”。
 
-![演出现场](https://minio-endpoint.bybxbwg.fun/docs/IMG_20250501_194556.jpg)
+![演出现场](https://minio-endpoint.yhnotes.com/docs/IMG_20250501_194556.jpg)
 
 图中是【五色石南叶】与【Smile小千】合唱《江湖归来叙旧茶》。虽然两位歌手我都不甚熟悉，但却是国风圈中颇有资历的前辈。
 
-![西瓜JUN](https://minio-endpoint.bybxbwg.fun/docs/IMG_20250501_202909.jpg)
+![西瓜JUN](https://minio-endpoint.yhnotes.com/docs/IMG_20250501_202909.jpg)
 
 图中是【西瓜JUN】，虽然我对他不熟，但他的《长生诀》早有耳闻：“魑魅魍魉，一剑破万法。”
 
-![玄觞](https://minio-endpoint.bybxbwg.fun/docs/IMG_20250501_201918.jpg)
+![玄觞](https://minio-endpoint.yhnotes.com/docs/IMG_20250501_201918.jpg)
 
 图为【玄觞】，亦是国风元老级歌手之一。
 
-![Winky诗](https://minio-endpoint.bybxbwg.fun/docs/IMG_20250501_205007.jpg)
+![Winky诗](https://minio-endpoint.yhnotes.com/docs/IMG_20250501_205007.jpg)
 
 图中是【Winky诗】，他在《山鬼》中的一段古风舞蹈惊艳全场，才华与舞感俱佳，堪称视听盛宴。
 
-![银临](https://minio-endpoint.bybxbwg.fun/docs/IMG_20250501_211701.jpg)
+![银临](https://minio-endpoint.yhnotes.com/docs/IMG_20250501_211701.jpg)
 
 终于见到国风圈的女神——【银临】。我的播放列表里几乎全是她的歌。她的《不老梦》成了本文标题的灵感来源；一曲《泸沽寻梦》让许多人奔赴泸沽湖；还有描绘少女情谊的《棠梨煎雪》，以及与云の泣合作的现象级作品《牵丝戏》《锦鲤抄》等，皆是心头至爱。
 
@@ -48,7 +48,7 @@ imageUrl: "https://minio-endpoint.bybxbwg.fun/docs/IMG_20250501_211701.jpg"
 
 <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=114433279985852&bvid=BV1WMGzzeEZJ&cid=29740828292&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
 
-![李常超与银临](https://minio-endpoint.bybxbwg.fun/docs/IMG_20250501_214059.jpg)
+![李常超与银临](https://minio-endpoint.yhnotes.com/docs/IMG_20250501_214059.jpg)
 
 最后登场的是李常超（老干妈）与银临合作演唱的《愚人歌》。看过《盗墓笔记》的朋友一定知道那首催泪的《十年人间》，能在现场听到这首歌，实在太幸运了！
 
@@ -74,11 +74,11 @@ imageUrl: "https://minio-endpoint.bybxbwg.fun/docs/IMG_20250501_211701.jpg"
 >正译：别人不了解我，但我不生气，不也是道德上有修养的人吗？
 
 
-![IMG_20250502_121542](https://minio-endpoint.bybxbwg.fun/docs/IMG_20250502_121542.jpg)
+![IMG_20250502_121542](https://minio-endpoint.yhnotes.com/docs/IMG_20250502_121542.jpg)
 
 巨幅孔子挂像，笔法苍劲、造型庄严，孔子手持笏板，面容威仪，彰显其“万世师表”的崇高地位。孔子的画像或雕像通常是孔庙正殿的核心，是祭孔典礼和传承儒学的象征。
 
-![IMG_20250502_121733](https://minio-endpoint.bybxbwg.fun/docs/IMG_20250502_121733.jpg)
+![IMG_20250502_121733](https://minio-endpoint.yhnotes.com/docs/IMG_20250502_121733.jpg)
 
 ## 🧵云锦 · 千丝织就帝王华
 
@@ -86,13 +86,13 @@ imageUrl: "https://minio-endpoint.bybxbwg.fun/docs/IMG_20250501_211701.jpg"
 
 云锦的图案设计丰富多样，有龙凤呈祥、花卉鸟兽等传统吉祥图案，也有根据不同时代需求创作的新颖图案。这些图案寓意深刻，往往蕴含着美好的祝福和象征意义。
 
-![IMG_20250502_124026](https://minio-endpoint.bybxbwg.fun/docs/IMG_20250502_124026.jpg)
+![IMG_20250502_124026](https://minio-endpoint.yhnotes.com/docs/IMG_20250502_124026.jpg)
 
 ## 🏞️玄武湖 · 一池春水映金陵
 
 玄武湖（也叫昆明湖）不仅以其广阔的湖面和美丽的自然风光吸引着众多游客，还承载着丰富的历史文化底蕴。湖中有五个小岛通过堤桥相连，分别是环洲、樱洲、菱洲、梁洲和翠洲，各具特色，四季皆美。这里春天可以赏樱，夏天可以观荷，秋天则能欣赏到五彩斑斓的秋叶，冬天还有机会看到雪后银装素裹的美景。此外，玄武湖周边环绕着明城墙、紫金山等著名景点，共同构成了南京独特的城市景观。
 
-![IMG_20250502_150502](https://minio-endpoint.bybxbwg.fun/docs/IMG_20250502_150502.jpg)
+![IMG_20250502_150502](https://minio-endpoint.yhnotes.com/docs/IMG_20250502_150502.jpg)
 
 
 
@@ -100,4 +100,4 @@ imageUrl: "https://minio-endpoint.bybxbwg.fun/docs/IMG_20250501_211701.jpg"
 
 烟雾在路灯的映照下缓缓升起，仿佛为这座城市披上了一层神秘的面纱。几盏明亮的路灯散发出温暖的黄色光芒，穿透了弥漫的烟雾，在黑暗中勾勒出柔和而梦幻的光晕。
 
-![IMG_20250501_230638](https://minio-endpoint.bybxbwg.fun/docs/IMG_20250501_230638.jpg)
+![IMG_20250501_230638](https://minio-endpoint.yhnotes.com/docs/IMG_20250501_230638.jpg)

@@ -15,7 +15,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const musicItem = getMediaItemById((await params).id) as MediaItem;
   return {
-    title: `${musicItem.title} | ${siteName}音乐`,
+    title: `${musicItem.title} - ${musicItem.author}`,
     description: `在${siteName}欣赏 ${musicItem.title} 的音乐作品与介绍`,
     openGraph: {
       title: `${musicItem.title} | ${siteName}音乐`,
