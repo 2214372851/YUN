@@ -150,13 +150,13 @@ function TableOfContents({headings, className}: { headings: TocItem[]; className
                                 key={heading.id}
                                 id={`table-toc-${heading.id}`}
                                 href={`#${heading.id}`}
-                                className={`py-1 rounded block text-[13px] hover:text-foreground transition-colors ${
+                                className={`py-1 border-l-2 border-l-transparent transition-all block text-[13px] hover:text-foreground ${
                                     heading.level === 1 ? 'pl-0' :
                                         heading.level === 2 ? 'pl-2' :
                                             heading.level === 3 ? 'pl-8' :
                                                 heading.level === 4 ? 'pl-14' :
                                                     heading.level === 5 ? 'pl-20' : 'pl-8'
-                                } ${isActive ? 'text-foreground font-bold bg-blue-900/70' : 'text-muted-foreground'}`}
+                                } ${isActive ? 'text-foreground border-l-white' : 'text-muted-foreground'}`}
                             >
                                 {heading.title}
                             </a>
