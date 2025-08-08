@@ -8,6 +8,7 @@ import TransitionLink from "@/components/TransitionLink";
 import dynamic from "next/dynamic";
 import {LoadingSpinner} from "@/components/ui/loading-spinner";
 import {DocItem} from "@/data/docs-navigation";
+import {useToast} from "@/hooks/use-toast";
 
 interface DocsClientProps {
     allDocs: DocItem[];
@@ -271,10 +272,31 @@ export function DocsClient({allDocs, title, currentSlug, contentHtml, headings}:
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isTocOpen, setIsTocOpen] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
+    const {toast} = useToast()
+
+    const handleCopyClick = (e: MouseEvent)=> {
+        const target = e.target as HTMLElement;
+        const btn = target.closest('.copy-btn') as HTMLElement | null;
+        if (btn) {
+            const code = decodeURIComponent(btn.getAttribute('data-code') || '');
+            navigator.clipboard.writeText(code);
+            btn.classList.add('copied');
+            toast({
+                title: '代码已复制',
+                description: '代码已复制到剪贴板',
+                duration: 2000,
+            });
+            setTimeout(() => btn.classList.remove('copied'), 1000);
+        }
+    }
 
     useEffect(() => {
         setIsMounted(true);
-    }, [])
+        window.addEventListener('click', handleCopyClick as EventListener);
+        return () => {
+            window.removeEventListener('click', handleCopyClick as EventListener);
+        };
+    }, [handleCopyClick])
 
     const handleToggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
     const handleToggleTOC = () => setIsTocOpen(!isTocOpen);
