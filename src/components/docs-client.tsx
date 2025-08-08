@@ -55,7 +55,7 @@ function DocNavItem({
                 )}
                 {hasChildren && (
                     <span className="ml-1">
-                        {open ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+                        {open ? <ChevronDown className="w-4 h-4"/> : <ChevronRight className="w-4 h-4"/>}
                     </span>
                 )}
             </div>
@@ -68,7 +68,7 @@ function DocNavItem({
                     }}
                 >
                     {open && doc.items!.map((child) => (
-                        <DocNavItem key={child.slug} doc={child} currentSlug={currentSlug} level={level + 1} />
+                        <DocNavItem key={child.slug} doc={child} currentSlug={currentSlug} level={level + 1}/>
                     ))}
                 </div>
             )}
@@ -88,9 +88,10 @@ export function DocNavigation({
     return (
         <div className={className}>
             <div className="sticky top-0 border-r pt-[64px] h-screen pointer-events-auto">
-                <nav className="scroll-container hover:overflow-auto space-y-1 overflow-y-auto max-h-[calc(100vh-64px)] scrollbar scrollbar-thumb-gray-700 scrollbar-track-transparent pr-4 py-4">
+                <nav
+                    className="scroll-container hover:overflow-auto space-y-1 overflow-y-auto max-h-[calc(100vh-64px)] scrollbar scrollbar-thumb-gray-700 scrollbar-track-transparent pr-4 py-4">
                     {docs.map((doc) => (
-                        <DocNavItem key={doc.slug} doc={doc} currentSlug={currentSlug} level={0} />
+                        <DocNavItem key={doc.slug} doc={doc} currentSlug={currentSlug} level={0}/>
                     ))}
                 </nav>
             </div>
@@ -274,29 +275,29 @@ export function DocsClient({allDocs, title, currentSlug, contentHtml, headings}:
     const [isMounted, setIsMounted] = useState(false);
     const {toast} = useToast()
 
-    const handleCopyClick = (e: MouseEvent)=> {
-        const target = e.target as HTMLElement;
-        const btn = target.closest('.copy-btn') as HTMLElement | null;
-        if (btn) {
-            const code = decodeURIComponent(btn.getAttribute('data-code') || '');
-            navigator.clipboard.writeText(code);
-            btn.classList.add('copied');
-            toast({
-                title: '代码已复制',
-                description: '代码已复制到剪贴板',
-                duration: 2000,
-            });
-            setTimeout(() => btn.classList.remove('copied'), 1000);
-        }
-    }
 
     useEffect(() => {
         setIsMounted(true);
+        const handleCopyClick = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            const btn = target.closest('.copy-btn') as HTMLElement | null;
+            if (btn) {
+                const code = decodeURIComponent(btn.getAttribute('data-code') || '');
+                navigator.clipboard.writeText(code);
+                btn.classList.add('copied');
+                toast({
+                    title: '代码已复制',
+                    description: '代码已复制到剪贴板',
+                    duration: 2000,
+                });
+                setTimeout(() => btn.classList.remove('copied'), 1000);
+            }
+        }
         window.addEventListener('click', handleCopyClick as EventListener);
         return () => {
             window.removeEventListener('click', handleCopyClick as EventListener);
         };
-    }, [handleCopyClick])
+    }, [toast])
 
     const handleToggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
     const handleToggleTOC = () => setIsTocOpen(!isTocOpen);
