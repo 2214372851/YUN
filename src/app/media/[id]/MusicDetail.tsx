@@ -67,6 +67,7 @@ const MusicDetail = ({musicItem}: Props) => {
     const {toast} = useToast();
     const imgRef = useRef<HTMLImageElement>(null);
     const mediaBgRef = useRef<HTMLDivElement>(null);
+    const [bgTextFlag, setBgTextFlag] = useState(false);
 
     // 使用自定义的 useFullscreen hook，获取全屏状态和控制方法
     const {isFullscreen, toggleFullscreen, exitFullscreen} = useFullscreen(mediaBgRef);
@@ -225,6 +226,16 @@ const MusicDetail = ({musicItem}: Props) => {
         };
     }, [currentLine, lyrics, toast]);
 
+    function isColorCloserToWhite(color: string): boolean {
+        // 支持 #RRGGBB 格式
+        const hex = color.replace('#', '');
+        const r = parseInt(hex.substring(0, 2), 16);
+        const g = parseInt(hex.substring(2, 4), 16);
+        const b = parseInt(hex.substring(4, 6), 16);
+        const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+        return brightness >= 128;
+    }
+
     useEffect(() => {
         const interval = setInterval(() => {
             const img = imgRef.current;
@@ -233,6 +244,7 @@ const MusicDetail = ({musicItem}: Props) => {
                     const mediaBg = mediaBgRef.current;
                     if (mediaBg) {
                         const darkerColors = colors.map(c => darkenIfNearWhite(c, 0.7));
+                        setBgTextFlag(isColorCloserToWhite(darkerColors[0]))
                         mediaBg.style.background = `
                           radial-gradient(circle at 30% 30%, ${darkerColors[0]} 0%, transparent 60%),
                           radial-gradient(circle at 70% 40%, ${darkerColors[1]} 0%, transparent 60%),
@@ -286,7 +298,7 @@ const MusicDetail = ({musicItem}: Props) => {
                                         className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
                                         <div
                                             id='lyrics-word'
-                                            className="lg:text-[13rem] text-8xl font-bold text-black/20 text-center blur-[3px] pointer-events-none"
+                                            className={`lg:text-[13rem] text-8xl font-bold text-center blur-[3px] pointer-events-none ${bgTextFlag ? 'text-black/20': 'text-white/20'}`}
                                         >
                                             {currentLine == 0 ? lyrics[currentLine].text.split(' ')[0] : splitWord(lyrics[currentLine].text)}
                                         </div>
