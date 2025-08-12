@@ -45,7 +45,7 @@ const MarkdownEditorPage = () => {
 
     // 使用自定义的 useFullscreen hook
     const {isFullscreen, toggleFullscreen} = useFullscreen(editorContainerRef);
-
+    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     // 示例Markdown文本
     const defaultMarkdown = `# Markdown 编辑器示例
 
@@ -380,6 +380,12 @@ hello
     // 当Markdown文本变化时更新预览
     useEffect(() => {
         try {
+            if (timerRef.current) {
+                clearTimeout(timerRef.current);
+            }
+            timerRef.current = setTimeout(() => {
+                localStorage.setItem('markdownText', markdownText);
+            })
             markdownToHtml(markdownText).then(({content}) => {
                 setHtmlPreview(content)
             })
@@ -391,7 +397,7 @@ hello
 
     // 组件挂载时加载示例Markdown
     useEffect(() => {
-        setMarkdownText(defaultMarkdown);
+        setMarkdownText(localStorage.getItem('markdownText') || defaultMarkdown);
     }, [defaultMarkdown]);
 
     // 组件卸载时移除事件监听器
@@ -425,7 +431,7 @@ hello
     return (
         <main className="min-h-screen flex flex-col">
             <div ref={editorContainerRef}
-                 className={`flex-1 ${isFullscreen ? 'p-0' : 'pt-32 pb-24 px-4'} main transition-all duration-300`}>
+                 className={`flex-1 ${isFullscreen ? 'p-0' : 'pt-32 pb-8 px-4'} main transition-all duration-300`}>
                 {!isFullscreen && (
                     <>
                         <h1 className="text-4xl font-bold mb-8">Markdown 编辑器</h1>
