@@ -271,12 +271,12 @@ const MusicDetail = ({musicItem}: Props) => {
                                 <div>
                                     <div
                                         id="lyrics"
-                                        className="text-center justify-center space-y-16 tracking-[.3em]"
+                                        className="text-center justify-center space-y-4 tracking-[.3em]"
                                     >
                                         {lyrics[currentLine].text.split(' ').map((line, index) => (
                                             <p
                                                 key={index}
-                                                className='ransition-all text-white font-bold text-5xl z-20 whitespace-nowrap pointer-events-none'
+                                                className='ransition-all text-white font-bold lg:text-[8rem] text-5xl z-20 whitespace-nowrap pointer-events-none'
                                             >
                                                 {line}
                                             </p>
@@ -286,7 +286,7 @@ const MusicDetail = ({musicItem}: Props) => {
                                         className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
                                         <div
                                             id='lyrics-word'
-                                            className="text-8xl font-bold text-white/50 text-center blur-[3px] pointer-events-none"
+                                            className="lg:text-[13rem] text-8xl font-bold text-black/20 text-center blur-[3px] pointer-events-none"
                                         >
                                             {currentLine == 0 ? lyrics[currentLine].text.split(' ')[0] : splitWord(lyrics[currentLine].text)}
                                         </div>
