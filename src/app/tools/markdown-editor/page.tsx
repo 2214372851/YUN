@@ -165,18 +165,7 @@ hello
         {icon: Export, title: '导出', action: () => setShowExportMenu(!showExportMenu), primary: true, hasMenu: true},
     ];
 
-
-    // 节流函数：限制函数执行频率
-    const throttle = useCallback((callback: (e: MouseEvent) => void, delay: number) => {
-        return (e: MouseEvent) => {
-            const now = Date.now();
-            if (now - lastUpdateTimeRef.current >= delay) {
-                callback(e);
-                lastUpdateTimeRef.current = now;
-            }
-        };
-    }, []);
-
+    
     // 使用节流处理鼠标移动更新
     const updatePaneWidth = useCallback((e: MouseEvent) => {
         if (!containerRef.current) return;
@@ -192,6 +181,22 @@ hello
         setLeftPaneWidth(newLeftPaneWidth);
     }, []);
 
+    // 创建节流后的鼠标移动处理函数
+    const throttledMouseMove = useCallback(
+        (e: MouseEvent) => {
+            if (isDraggingRef.current) {
+                updatePaneWidth(e);
+            }
+        },
+        [updatePaneWidth]
+    ); // 约60fps的更新频率
+
+    const handleMouseUp = useCallback(() => {
+        isDraggingRef.current = false;
+        document.removeEventListener('mousemove', throttledMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+    }, [throttledMouseMove]);
+
     // 处理分隔线拖动
     const handleMouseDown = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
@@ -199,20 +204,7 @@ hello
         lastUpdateTimeRef.current = Date.now();
         document.addEventListener('mousemove', throttledMouseMove);
         document.addEventListener('mouseup', handleMouseUp);
-    }, []);
-
-    // 创建节流后的鼠标移动处理函数
-    const throttledMouseMove = useCallback(throttle((e: MouseEvent) => {
-        if (isDraggingRef.current) {
-            updatePaneWidth(e);
-        }
-    }, 16), [updatePaneWidth, throttle]); // 约60fps的更新频率
-
-    const handleMouseUp = useCallback(() => {
-        isDraggingRef.current = false;
-        document.removeEventListener('mousemove', throttledMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-    }, [throttledMouseMove]);
+    }, [handleMouseUp, throttledMouseMove]);
 
     // 插入格式化文本
     const insertFormat = (prefix: string, suffix: string) => {
