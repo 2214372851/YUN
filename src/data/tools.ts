@@ -409,6 +409,13 @@ const otherTools: Tool[] = [
         category: '开发工具',
     },
     {
+        id: 'lorem-picsum',
+        name: 'Lorem Picsum',
+        description: '随机占位图片',
+        href: 'https://picsum.photos/',
+        category: '开发工具',
+    },
+    {
         id: 'itdog-http',
         name: 'IT Dog HTTP 测试',
         description: '测试目标网站的访问速度和可用性。',
