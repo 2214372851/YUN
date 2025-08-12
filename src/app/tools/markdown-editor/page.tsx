@@ -12,7 +12,7 @@ import {Italic} from "@/components/icon/italic";
 import {Quote} from "@/components/icon/quote";
 import {Code} from "@/components/icon/code";
 import {Link} from "@/components/icon/link";
-import {Image} from "@/components/icon/image";
+import {Image as ImageIcon} from "@/components/icon/image";
 import {List} from "@/components/icon/list";
 import {OrderedList} from "@/components/icon/ordered-list";
 import {Task} from "@/components/icon/task";
@@ -150,7 +150,7 @@ hello
         {icon: Quote, title: '引用', prefix: '> ', suffix: ''},
         {icon: Code, title: '行内代码', prefix: '`', suffix: '`'},
         {icon: Link, title: '链接', prefix: '[链接文本](', suffix: ')'},
-        {icon: Image, title: '图片', prefix: '![替代文本](', suffix: ')'},
+        {icon: ImageIcon, title: '图片', prefix: '![替代文本](', suffix: ')'},
         {icon: List, title: '无序列表', prefix: '- ', suffix: ''},
         {icon: OrderedList, title: '有序列表', prefix: '1. ', suffix: ''},
         {icon: Task, title: '任务', prefix: '- [ ] ', suffix: ''},
@@ -165,7 +165,7 @@ hello
         {icon: Export, title: '导出', action: () => setShowExportMenu(!showExportMenu), primary: true, hasMenu: true},
     ];
 
-    
+
     // 使用节流处理鼠标移动更新
     const updatePaneWidth = useCallback((e: MouseEvent) => {
         if (!containerRef.current) return;
@@ -534,7 +534,7 @@ hello
                                                             <span
                                                                 className={`flex items-center justify-center w-5 h-5 text-foreground ${exportLoading ? 'animate-spin' : ''}`}>
                                                                 {
-                                                                    exportLoading ? <LoaderCircle/> : <Image/>
+                                                                    exportLoading ? <LoaderCircle/> : <ImageIcon/>
 
                                                                 }
                                                             </span>
