@@ -8,6 +8,7 @@ import TransitionLink from "@/components/TransitionLink";
 import dynamic from "next/dynamic";
 import {LoadingSpinner} from "@/components/ui/loading-spinner";
 import {DocItem} from "@/data/docs-navigation";
+import {useToast} from "@/hooks/use-toast";
 
 interface DocsClientProps {
     allDocs: DocItem[];
@@ -54,7 +55,7 @@ function DocNavItem({
                 )}
                 {hasChildren && (
                     <span className="ml-1">
-                        {open ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+                        {open ? <ChevronDown className="w-4 h-4"/> : <ChevronRight className="w-4 h-4"/>}
                     </span>
                 )}
             </div>
@@ -67,7 +68,7 @@ function DocNavItem({
                     }}
                 >
                     {open && doc.items!.map((child) => (
-                        <DocNavItem key={child.slug} doc={child} currentSlug={currentSlug} level={level + 1} />
+                        <DocNavItem key={child.slug} doc={child} currentSlug={currentSlug} level={level + 1}/>
                     ))}
                 </div>
             )}
@@ -87,9 +88,10 @@ export function DocNavigation({
     return (
         <div className={className}>
             <div className="sticky top-0 border-r pt-[64px] h-screen pointer-events-auto">
-                <nav className="scroll-container hover:overflow-auto space-y-1 overflow-y-auto max-h-[calc(100vh-64px)] scrollbar scrollbar-thumb-gray-700 scrollbar-track-transparent pr-4 py-4">
+                <nav
+                    className="scroll-container hover:overflow-auto space-y-1 overflow-y-auto max-h-[calc(100vh-64px)] scrollbar scrollbar-thumb-gray-700 scrollbar-track-transparent pr-4 py-4">
                     {docs.map((doc) => (
-                        <DocNavItem key={doc.slug} doc={doc} currentSlug={currentSlug} level={0} />
+                        <DocNavItem key={doc.slug} doc={doc} currentSlug={currentSlug} level={0}/>
                     ))}
                 </nav>
             </div>
@@ -150,13 +152,13 @@ function TableOfContents({headings, className}: { headings: TocItem[]; className
                                 key={heading.id}
                                 id={`table-toc-${heading.id}`}
                                 href={`#${heading.id}`}
-                                className={`py-1 rounded block text-[13px] hover:text-foreground transition-colors ${
+                                className={`py-1 border-l-2 border-l-transparent transition-all block text-[13px] hover:text-foreground ${
                                     heading.level === 1 ? 'pl-0' :
                                         heading.level === 2 ? 'pl-2' :
                                             heading.level === 3 ? 'pl-8' :
                                                 heading.level === 4 ? 'pl-14' :
                                                     heading.level === 5 ? 'pl-20' : 'pl-8'
-                                } ${isActive ? 'text-foreground font-bold bg-blue-900/70' : 'text-muted-foreground'}`}
+                                } ${isActive ? 'text-foreground border-l-white' : 'text-muted-foreground'}`}
                             >
                                 {heading.title}
                             </a>
@@ -271,10 +273,31 @@ export function DocsClient({allDocs, title, currentSlug, contentHtml, headings}:
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isTocOpen, setIsTocOpen] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
+    const {toast} = useToast()
+
 
     useEffect(() => {
         setIsMounted(true);
-    }, [])
+        const handleCopyClick = (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            const btn = target.closest('.copy-btn') as HTMLElement | null;
+            if (btn) {
+                const code = decodeURIComponent(btn.getAttribute('data-code') || '');
+                navigator.clipboard.writeText(code);
+                btn.classList.add('copied');
+                toast({
+                    title: '代码已复制',
+                    description: '代码已复制到剪贴板',
+                    duration: 2000,
+                });
+                setTimeout(() => btn.classList.remove('copied'), 1000);
+            }
+        }
+        window.addEventListener('click', handleCopyClick as EventListener);
+        return () => {
+            window.removeEventListener('click', handleCopyClick as EventListener);
+        };
+    }, [toast])
 
     const handleToggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
     const handleToggleTOC = () => setIsTocOpen(!isTocOpen);

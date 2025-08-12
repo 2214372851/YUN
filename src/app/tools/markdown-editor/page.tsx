@@ -12,7 +12,7 @@ import {Italic} from "@/components/icon/italic";
 import {Quote} from "@/components/icon/quote";
 import {Code} from "@/components/icon/code";
 import {Link} from "@/components/icon/link";
-import {Image} from "@/components/icon/image";
+import {Image as ImageIcon} from "@/components/icon/image";
 import {List} from "@/components/icon/list";
 import {OrderedList} from "@/components/icon/ordered-list";
 import {Task} from "@/components/icon/task";
@@ -45,7 +45,7 @@ const MarkdownEditorPage = () => {
 
     // 使用自定义的 useFullscreen hook
     const {isFullscreen, toggleFullscreen} = useFullscreen(editorContainerRef);
-
+    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     // 示例Markdown文本
     const defaultMarkdown = `# Markdown 编辑器示例
 
@@ -150,7 +150,7 @@ hello
         {icon: Quote, title: '引用', prefix: '> ', suffix: ''},
         {icon: Code, title: '行内代码', prefix: '`', suffix: '`'},
         {icon: Link, title: '链接', prefix: '[链接文本](', suffix: ')'},
-        {icon: Image, title: '图片', prefix: '![替代文本](', suffix: ')'},
+        {icon: ImageIcon, title: '图片', prefix: '![替代文本](', suffix: ')'},
         {icon: List, title: '无序列表', prefix: '- ', suffix: ''},
         {icon: OrderedList, title: '有序列表', prefix: '1. ', suffix: ''},
         {icon: Task, title: '任务', prefix: '- [ ] ', suffix: ''},
@@ -165,17 +165,6 @@ hello
         {icon: Export, title: '导出', action: () => setShowExportMenu(!showExportMenu), primary: true, hasMenu: true},
     ];
 
-
-    // 节流函数：限制函数执行频率
-    const throttle = useCallback((callback: (e: MouseEvent) => void, delay: number) => {
-        return (e: MouseEvent) => {
-            const now = Date.now();
-            if (now - lastUpdateTimeRef.current >= delay) {
-                callback(e);
-                lastUpdateTimeRef.current = now;
-            }
-        };
-    }, []);
 
     // 使用节流处理鼠标移动更新
     const updatePaneWidth = useCallback((e: MouseEvent) => {
@@ -192,6 +181,22 @@ hello
         setLeftPaneWidth(newLeftPaneWidth);
     }, []);
 
+    // 创建节流后的鼠标移动处理函数
+    const throttledMouseMove = useCallback(
+        (e: MouseEvent) => {
+            if (isDraggingRef.current) {
+                updatePaneWidth(e);
+            }
+        },
+        [updatePaneWidth]
+    ); // 约60fps的更新频率
+
+    const handleMouseUp = useCallback(() => {
+        isDraggingRef.current = false;
+        document.removeEventListener('mousemove', throttledMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+    }, [throttledMouseMove]);
+
     // 处理分隔线拖动
     const handleMouseDown = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
@@ -199,20 +204,7 @@ hello
         lastUpdateTimeRef.current = Date.now();
         document.addEventListener('mousemove', throttledMouseMove);
         document.addEventListener('mouseup', handleMouseUp);
-    }, []);
-
-    // 创建节流后的鼠标移动处理函数
-    const throttledMouseMove = useCallback(throttle((e: MouseEvent) => {
-        if (isDraggingRef.current) {
-            updatePaneWidth(e);
-        }
-    }, 16), [updatePaneWidth, throttle]); // 约60fps的更新频率
-
-    const handleMouseUp = useCallback(() => {
-        isDraggingRef.current = false;
-        document.removeEventListener('mousemove', throttledMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-    }, [throttledMouseMove]);
+    }, [handleMouseUp, throttledMouseMove]);
 
     // 插入格式化文本
     const insertFormat = (prefix: string, suffix: string) => {
@@ -380,6 +372,12 @@ hello
     // 当Markdown文本变化时更新预览
     useEffect(() => {
         try {
+            if (timerRef.current) {
+                clearTimeout(timerRef.current);
+            }
+            timerRef.current = setTimeout(() => {
+                localStorage.setItem('markdownText', markdownText);
+            })
             markdownToHtml(markdownText).then(({content}) => {
                 setHtmlPreview(content)
             })
@@ -391,7 +389,7 @@ hello
 
     // 组件挂载时加载示例Markdown
     useEffect(() => {
-        setMarkdownText(defaultMarkdown);
+        setMarkdownText(localStorage.getItem('markdownText') || defaultMarkdown);
     }, [defaultMarkdown]);
 
     // 组件卸载时移除事件监听器
@@ -425,7 +423,7 @@ hello
     return (
         <main className="min-h-screen flex flex-col">
             <div ref={editorContainerRef}
-                 className={`flex-1 ${isFullscreen ? 'p-0' : 'pt-32 pb-24 px-4'} main transition-all duration-300`}>
+                 className={`flex-1 ${isFullscreen ? 'p-0' : 'pt-32 pb-8 px-4'} main transition-all duration-300`}>
                 {!isFullscreen && (
                     <>
                         <h1 className="text-4xl font-bold mb-8">Markdown 编辑器</h1>
@@ -536,7 +534,7 @@ hello
                                                             <span
                                                                 className={`flex items-center justify-center w-5 h-5 text-foreground ${exportLoading ? 'animate-spin' : ''}`}>
                                                                 {
-                                                                    exportLoading ? <LoaderCircle/> : <Image/>
+                                                                    exportLoading ? <LoaderCircle/> : <ImageIcon/>
 
                                                                 }
                                                             </span>

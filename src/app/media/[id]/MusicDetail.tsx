@@ -1,21 +1,19 @@
 "use client";
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useHotkeys} from "react-hotkeys-hook";
 import {notFound, useRouter} from 'next/navigation';
 import {MediaItem} from '@/types/media';
 import gsap from "gsap";
 import Image from 'next/image'
-import Forward from "@/components/icon/forward";
-import Backward from "@/components/icon/backward";
 import {getAllMediaItems} from "@/data/media";
 import TransitionLink from "@/components/TransitionLink";
-import NumberedList from "@/components/icon/numbered-list";
 import extractThemeColors from "@/lib/getImgColor";
 import {useToast} from "@/hooks/use-toast";
 import {darkenIfNearWhite} from "@/lib/utils";
 import {useFullscreen} from "@/hooks/use-fullscreen";
-import {Maximize, Minimize} from "lucide-react";
+import {FastForwardIcon, Maximize, Minimize, PauseIcon, PlayIcon, RepeatIcon, RewindIcon} from "lucide-react";
+import RippleHeartbeat from "@/components/RippleHearbeat";
 
 
 interface LyricLine {
@@ -69,9 +67,9 @@ const MusicDetail = ({musicItem}: Props) => {
     const {toast} = useToast();
     const imgRef = useRef<HTMLImageElement>(null);
     const mediaBgRef = useRef<HTMLDivElement>(null);
-    
+
     // 使用自定义的 useFullscreen hook，获取全屏状态和控制方法
-    const { isFullscreen, toggleFullscreen, exitFullscreen } = useFullscreen(mediaBgRef);
+    const {isFullscreen, toggleFullscreen, exitFullscreen} = useFullscreen(mediaBgRef);
 
     const forward = () => {
         if (selfIndex < musicItems.length - 1) {
@@ -108,7 +106,6 @@ const MusicDetail = ({musicItem}: Props) => {
                         credentials: 'include',
                         headers: {
                             'Accept': 'text/plain',
-                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
                         }
                     });
 
@@ -135,7 +132,7 @@ const MusicDetail = ({musicItem}: Props) => {
                 }
             };
 
-            fetchLyrics();
+            fetchLyrics().then();
         } else {
             console.log('No lyricsUrl provided');
             setLyrics([{time: 0, text: '暂无歌词'}]);
@@ -260,14 +257,14 @@ const MusicDetail = ({musicItem}: Props) => {
                         className="absolute top-4 right-4 z-50 p-2 bg-black/30 hover:bg-black/50 rounded-full text-white flex items-center justify-center"
                         title="退出全屏"
                     >
-                        <Minimize className="w-5 h-5" strokeWidth={2.5} />
+                        <Minimize className="w-5 h-5" strokeWidth={2.5}/>
                     </button>
                 )}
-                
-                <div className="max-w-6xl mx-auto container flex-1 pt-32 flex flex-col justify-between h-full relative z-10">
+
+                <div
+                    className="max-w-6xl mx-auto container flex-1 pt-32 flex flex-col justify-between h-full relative z-10">
                     <div className="gap-8 h-full flex items-center justify-center">
 
-                        {/* 右侧 - 歌名、作者和歌词 */}
                         <div className="relative md:w-full h-auto flex justify-center items-center">
 
                             {lyrics.length > 0 ? (
@@ -312,7 +309,7 @@ const MusicDetail = ({musicItem}: Props) => {
                         </div>
                     </div>
                     <div className="flex items-center mb-10">
-                        {/*左侧 - 图片 */}
+                        {/*歌名、作者和歌词 */}
                         <div className="md:w-1/2 flex flex-col items-center justify-center">
                             <div className="relative">
                                 <div
@@ -320,9 +317,9 @@ const MusicDetail = ({musicItem}: Props) => {
                                     className="absolute text-sky-50 cursor-pointer size-full top-0 hover:opacity-100 opacity-0 transition flex items-center justify-center"
                                     title={isFullscreen ? "退出全屏" : "全屏显示"}
                                 >
-                                    {isFullscreen ? 
-                                        <Minimize className="w-8 h-8" strokeWidth={2.5} /> : 
-                                        <Maximize className="w-8 h-8" strokeWidth={2.5} />
+                                    {isFullscreen ?
+                                        <Minimize className="w-8 h-8" strokeWidth={2.5}/> :
+                                        <Maximize className="w-8 h-8" strokeWidth={2.5}/>
                                     }
                                 </div>
                                 <Image
@@ -346,6 +343,9 @@ const MusicDetail = ({musicItem}: Props) => {
                             ref={audioRef}/>
                     </div>
                 </div>
+            </div>
+            <div className="fixed left-0 right-0 bottom-0 flex justify-center" style={{transform: 'translateY(70%)'}}>
+                <RippleHeartbeat circles={3} size={600} color="#f3f3f3" duration={10}/>
             </div>
         </main>
     );
@@ -372,7 +372,7 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
     const router = useRouter();
 
 
-    const togglePlay = () => {
+    const togglePlay = useCallback(() => {
         const audio = audioRef.current;
         if (audio) {
             if (!audio.paused && !audio.ended && audio.readyState > 2) {
@@ -383,10 +383,21 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                 audio.play().then(() => {
                     navigator.mediaSession.playbackState = 'playing';
                     setIsPlaying(true)
+                }).catch((e) => {
+                    let errorMsg = "请检查音频文件是否存在或浏览器支持";
+                    if (e && e.name === "NotAllowedError") {
+                        errorMsg = "浏览器阻止了自动播放，请手动点击播放按钮";
+                    }
+                    toast({
+                        title: "播放失败",
+                        description: errorMsg,
+                        variant: "destructive"
+                    });
+                    console.error('Audio playback failed:', e);
                 });
             }
         }
-    };
+    }, [toast]);
 
 
     const handleLoadedMetadata = () => {
@@ -453,13 +464,13 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
             };
 
             const nexttrackCallback = () => {
-                claerState()
+                clearState()
                 router.push(`/media/${forward}/`)
 
             }
 
             const previoustrackCallback = () => {
-                claerState()
+                clearState()
                 router.push(`/media/${backward}/`)
             }
 
@@ -490,7 +501,7 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                 audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
             };
         }
-    }, [author, autoPlay, backward, duration, forward, imageUrl, router, title, toast]);
+    }, [author, autoPlay, backward, duration, forward, imageUrl, router, title, toast, togglePlay]);
 
     useEffect(() => {
         const autoPlayConfig = window.localStorage.getItem('autoPlay')
@@ -500,13 +511,13 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
         } else {
             setAutoPlay(false);
         }
-    }, []);
+    }, [togglePlay]);
 
     useEffect(() => {
 
     }, []);
 
-    const claerState = () => {
+    const clearState = () => {
         const audio = audioRef.current;
         navigator.mediaSession.playbackState = 'paused';
         if (audio) {
@@ -528,62 +539,70 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
             </audio>
             <h1 className="text-2xl font-bold mb-8 text-center">{title} - {author}</h1>
             <div className="flex items-center gap-4 flex-col md:flex-row">
-                <div className="flex gap-3">
+                <div className="flex gap-3 items-center">
                     <TransitionLink
                         id="backward"
-                        callback={() => claerState()}
-                        className="text-white hover:text-blue-400 transition-colors" href={`/media/${backward}/`}>
-                        <Backward/>
+                        callback={() => clearState()}
+                        className="text-white hover:text-blue-300 transition-colors" href={`/media/${backward}/`}>
+                        <RewindIcon size="1.5rem"/>
                     </TransitionLink>
                     <button
                         onClick={togglePlay}
-                        className="text-white hover:text-blue-400 transition-colors"
+                        className="text-white hover:text-blue-300 transition-colors"
                     >
                         {isPlaying ? (
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                      d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
+                            <PauseIcon size="1.5rem"/>
                         ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                 stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                      d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                      d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
+                            <PlayIcon size="1.5rem"/>
                         )}
                     </button>
                     <TransitionLink
                         id="forward"
-                        callback={() => claerState()}
-                        className="text-white hover:text-blue-400 transition-colors" href={`/media/${forward}/`}>
-                        <Forward/>
+                        callback={() => clearState()}
+                        className="text-white hover:text-blue-300 transition-colors" href={`/media/${forward}/`}>
+                        <FastForwardIcon size="1.5rem"/>
                     </TransitionLink>
 
                     <button
                         onClick={autoPlayCallback}
-                        className={`hover:bg-blue-600 rounded-sm transition-colors ${autoPlay ? 'bg-blue-400' : 'text-white bg-transparent'}`}
+                        className={`hover:text-blue-300 rounded-sm transition-colors ${autoPlay ? 'text-blue-400' : 'text-white bg-transparent'}`}
                     >
-                        <NumberedList/>
+                        <RepeatIcon size="1.5rem"/>
                     </button>
 
                 </div>
 
                 {/* 进度条和时间显示 */}
-                <div className="flex-1 flex flex-col justify-center gap-1 w-full">
-                    <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={progress}
-                        onChange={handleSeek}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-500"
-                        style={{
-                            background: `linear-gradient(to right, #3b82f6 ${progress}%, #e5e7eb ${progress}%)`
-                        }}
-                    />
+                <div className="flex-1 bg-red-500 gap-1 w-full">
+                    <div className="group w-full flex items-center justify-between">
+                        <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={progress}
+                            onChange={handleSeek}
+                            className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer
+                                [&::-webkit-slider-thumb]:opacity-0
+                                group-hover:[&::-webkit-slider-thumb]:opacity-100
+                                [&::-webkit-slider-thumb]:appearance-none
+                                group-hover:[&::-webkit-slider-thumb]:appearance-auto
+                                [&::-webkit-slider-thumb]:h-3
+                                [&::-webkit-slider-thumb]:w-3
+                                [&::-webkit-slider-thumb]:rounded-full
+                                [&::-webkit-slider-thumb]:bg-blue-500
+                                [&::-webkit-slider-thumb]:relative
+                                [&::-webkit-slider-thumb]:z-10
+                                [&::-webkit-slider-thumb]:transition-all
+                                [&::-webkit-slider-thumb]:duration-300
+                                [&::-webkit-slider-thumb]:left-0
+                                group-hover:[&::-webkit-slider-thumb]:transition-all
+                                group-hover:[&::-webkit-slider-thumb]:duration-300"
+                            style={{
+                                background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${progress}%, #e5e7eb ${progress}%, #e5e7eb 100%)`,
+                                transition: 'background 0.3s'
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
