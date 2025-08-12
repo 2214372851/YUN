@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'ChillHuoFangSong_ConRegular';
+    src: url('/ChillHuoFangSong_ConRegular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+.lyric-font {
+    font-family: 'ChillHuoFangSong_ConRegular', sans-serif;
+}
