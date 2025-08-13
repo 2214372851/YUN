@@ -364,7 +364,7 @@ const MusicDetail = ({musicItem}: Props) => {
                     </div>
                 </div>
                 <div className="fixed left-0 right-0 bottom-0 flex justify-center" style={{transform: 'translateY(70%)'}}>
-                    <RippleHeartbeat circles={3} size={600} color="#f3f3f3" duration={10}/>
+                    <RippleHeartbeat circles={2} size={600} color="#f3f3f3" duration={8}/>
                 </div>
             </div>
         </main>
