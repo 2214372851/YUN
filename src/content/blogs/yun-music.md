@@ -23,7 +23,7 @@ MCP（Model Context Protocol）音乐服务是一组通过本地化代理提供�
 {
   "mcpServers": {
     "yun-music": {
-      "url": "http://mcp.yhnotes.com/music"
+      "url": "https://mcp.bybxbwg.fun/music"
     }
   }
 }

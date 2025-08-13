@@ -1,73 +1,38 @@
 .ripple-heartbeat {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 }
 
 .ripple-circle {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 96%;
-  height: 96%;
-  border: 8px solid;
-  border-image: none;
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0.3);
-  opacity: 0.35;
-  animation: ripple-heartbeat 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  pointer-events: none;
-  box-shadow: 0 8px 48px 0 rgba(0,0,0,0.10), 0 2px 16px 0 rgba(0,0,0,0.06);
-  filter: blur(2.5px);
-  will-change: transform, opacity, filter;
-}
-
-.ripple-center {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 6px 32px 0 rgba(255,77,109,0.35), 0 2px 12px 0 rgba(0,0,0,0.12);
-  animation: heartbeat-center 1.2s infinite cubic-bezier(0.4,0,0.2,1);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 96%;
+    height: 96%;
+    border: 8px solid;
+    border-image: none;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0.35;
+    animation: ripple-heartbeat 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    pointer-events: none;
+    filter: blur(2px);
+    will-change: transform, opacity, filter;
 }
 
 @keyframes ripple-heartbeat {
-  0% {
-    transform: translate(-50%, -50%) scale(0.2);
-    opacity: 0.5;
-    filter: blur(2.5px);
-  }
-  40% {
-    opacity: 0.25;
-    filter: blur(3px);
-  }
-  80% {
-    opacity: 0.08;
-    filter: blur(4px);
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(2.2);
-    opacity: 0;
-    filter: blur(6px);
-  }
-}
-
-@keyframes heartbeat-center {
-  0%, 100% {
-    transform: translate(-50%, -50%) scale(1);
-  }
-  20% {
-    transform: translate(-50%, -50%) scale(1.12);
-  }
-  40% {
-    transform: translate(-50%, -50%) scale(0.96);
-  }
-  60% {
-    transform: translate(-50%, -50%) scale(1.08);
-  }
-  80% {
-    transform: translate(-50%, -50%) scale(1);
-  }
+    0% {
+        transform: translate(-50%, -50%) scale(0.2);
+        opacity: 0.5;
+    }
+    40% {
+        opacity: 0.25;
+    }
+    80% {
+        opacity: 0.08;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(2.2);
+        opacity: 0;
+    }
 }
