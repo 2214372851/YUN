@@ -226,6 +226,9 @@ const MusicDetail = ({musicItem}: Props) => {
         const interval = setInterval(updateLyrics, 100);
 
         return () => {
+            if (tl) {
+                tl.kill();
+            }
             audio.removeEventListener('timeupdate', updateLyrics);
             clearInterval(interval);
         };
