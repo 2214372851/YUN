@@ -144,6 +144,7 @@ const MusicDetail = ({musicItem}: Props) => {
     useEffect(() => {
         const audio = audioRef.current;
         if (!audio || lyrics.length === 0) return;
+        let tl: gsap.core.Timeline | null = null;
 
 
         const updateLyrics = () => {
@@ -163,9 +164,12 @@ const MusicDetail = ({musicItem}: Props) => {
 
             if (lineIndex !== -1 && lineIndex !== currentLine) {
                 const rotate = lineIndex % 2 === 0 ? 8 : -8;
-                const tl = gsap.timeline();
+                if (tl) {
+                    tl.paused();
+                }
+                tl = gsap.timeline();
                 tl.to(element, {
-                    duration: 0.2,                 // 增加动画时长
+                    duration: 0.1,                 // 增加动画时长
                     scale: 0.6,                    // 缩小得更多
                     color: "#999",                 // 颜色变得更浅
                     opacity: 0,                    //
@@ -189,7 +193,7 @@ const MusicDetail = ({musicItem}: Props) => {
                 tl.to(element, {
                     duration: 0.6,
                     opacity: 1,
-                    letterSpacing: ".3em",
+                    letterSpacing: ".2em",
                     filter: "blur(0px)",
                     y: 0,
                     rotation: 0,
@@ -198,7 +202,7 @@ const MusicDetail = ({musicItem}: Props) => {
                 tl.to(
                     elementWord,
                     {
-                        duration: 0.4,
+                        duration: 0.5,
                         scale: 1,
                         opacity: 1
                     }
@@ -356,9 +360,9 @@ const MusicDetail = ({musicItem}: Props) => {
                             ref={audioRef}/>
                     </div>
                 </div>
-            </div>
-            <div className="fixed left-0 right-0 bottom-0 flex justify-center" style={{transform: 'translateY(70%)'}}>
-                <RippleHeartbeat circles={3} size={600} color="#f3f3f3" duration={10}/>
+                <div className="fixed left-0 right-0 bottom-0 flex justify-center" style={{transform: 'translateY(70%)'}}>
+                    <RippleHeartbeat circles={3} size={600} color="#f3f3f3" duration={10}/>
+                </div>
             </div>
         </main>
     );
