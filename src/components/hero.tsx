@@ -81,9 +81,9 @@ export function Hero() {
                     sequence={[
                         "Hi, I'm Yunhai",
                         1000,
-                        'My whimsical thoughts',
+                        'Tech for life',
                         1000,
-                        'My Learning Journey',
+                        'Keep exploring',
                         1000
                     ]}
                     wrapper="h1"

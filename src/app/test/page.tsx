@@ -70,8 +70,8 @@ function TestPage() {
                         {
                             new Array(20).fill(0).map((_, i) => (
                                 <div key={i}
-                                     className="flex justify-center items-center w-1/3 h-1/2 m-[40px] text-white bg-black/50 flex-shrink-0">
-                                    text {i}
+                                     className="p-2 overflow-hidden flex justify-center items-center w-1/3 h-1/2 m-[40px] text-white bg-black/50 flex-shrink-0">
+                                    <img src="https://minio-endpoint.bybxbwg.fun/docs/卡提希娅.png" alt="卡提希娅" className="size-full"/>
                                 </div>
                             ))
                         }

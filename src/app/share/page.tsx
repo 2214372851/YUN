@@ -3,7 +3,17 @@
 import {useState, useRef, DragEvent, ChangeEvent, FormEvent, useEffect} from "react";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 import {useToast} from "@/hooks/use-toast";
+import TransitionLink from "@/components/TransitionLink";
 
 // API 基础 URL
 const API_BASE_URL = "https://share-api.yhnotes.com";
@@ -52,6 +62,10 @@ export default function SharePage() {
     const [deployedProjects, setDeployedProjects] = useState<DeployedProject[]>([]);
     const [isSearching, setIsSearching] = useState<boolean>(false);
     const [searchError, setSearchError] = useState<string | null>(null);
+    
+    // 删除确认对话框状态
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
+    const [projectToDelete, setProjectToDelete] = useState<string | null>(null);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const {toast} = useToast();
@@ -108,6 +122,7 @@ export default function SharePage() {
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             const selectedFile = e.target.files[0];
+            e.target.value = "";
             if (selectedFile.type === "application/zip" || selectedFile.name.endsWith('.zip')) {
                 setFile(selectedFile);
                 setUploadResult(null)
@@ -197,7 +212,8 @@ export default function SharePage() {
                     // 重置表单
                     setFile(null);
                 }
-            } else {
+            }
+            else {
                 setUploadResult({
                     success: false,
                     message: result.detail?.[0]?.msg || "上传失败，请稍后重试",
@@ -450,6 +466,21 @@ export default function SharePage() {
             });
         } finally {
             setIsDeleting(false);
+            setDeleteDialogOpen(false);
+            setProjectToDelete(null);
+        }
+    };
+
+    // 打开删除确认对话框
+    const openDeleteDialog = (projectName: string) => {
+        setProjectToDelete(projectName);
+        setDeleteDialogOpen(true);
+    };
+
+    // 确认删除
+    const confirmDelete = () => {
+        if (projectToDelete) {
+            handleDeleteDeployedProject(projectToDelete);
         }
     };
 
@@ -503,6 +534,7 @@ export default function SharePage() {
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 setFile(null);
+                                                setUploadResult(null)
                                             }}
                                             type="button"
                                         >
@@ -534,7 +566,11 @@ export default function SharePage() {
                                     </svg>
                                     <div>
                                         <h4 className="text-sm font-medium text-blue-500">提示</h4>
-                                        <p className="text-sm mt-1">ZIP文件不能大于50MB且必须包含meta.json文件，其中的project属性将作为项目名称</p>
+
+                                        <div className="text-sm mt-1">
+                                            ZIP文件不能大于50MB且必须包含meta.json文件，其中的project属性将作为项目名称，
+                                            <TransitionLink href="/blog/yun-share/" className="inline-block border-b-blue-500 border-b-2">使用指南</TransitionLink>。
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -712,32 +748,60 @@ export default function SharePage() {
                                                     访问项目
                                                 </Button>
 
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
-                                                    disabled={isDeleting}
-                                                    onClick={() => handleDeleteDeployedProject(project.name)}
-                                                >
-
-                                                    {isDeleting ? (
-                                                        <svg className="animate-spin h-4 w-4"
-                                                             xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                             viewBox="0 0 24 24">
-                                                            <circle className="opacity-25" cx="12" cy="12" r="10"
-                                                                    stroke="currentColor" strokeWidth="4"></circle>
-                                                            <path className="opacity-75" fill="currentColor"
-                                                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                        </svg>
-                                                    ) : (
-                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4"
-                                                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path strokeLinecap="round" strokeLinejoin="round"
-                                                                  strokeWidth={2}
-                                                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                        </svg>
-                                                    )}
-                                                </Button>
+                                                <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+                                                    <DialogTrigger asChild>
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
+                                                            disabled={isDeleting}
+                                                            onClick={() => openDeleteDialog(project.name)}
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4"
+                                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path strokeLinecap="round" strokeLinejoin="round"
+                                                                      strokeWidth={2}
+                                                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                            </svg>
+                                                        </Button>
+                                                    </DialogTrigger>
+                                                    <DialogContent>
+                                                        <DialogHeader>
+                                                            <DialogTitle>确认删除项目</DialogTitle>
+                                                            <DialogDescription>
+                                                                您确定要删除项目 "{projectToDelete}" 吗？此操作不可撤销，项目的所有数据将被永久删除。
+                                                            </DialogDescription>
+                                                        </DialogHeader>
+                                                        <DialogFooter>
+                                                            <Button 
+                                                                variant="outline" 
+                                                                onClick={() => setDeleteDialogOpen(false)}
+                                                                disabled={isDeleting}
+                                                            >
+                                                                取消
+                                                            </Button>
+                                                            <Button 
+                                                                variant="destructive" 
+                                                                onClick={confirmDelete}
+                                                                disabled={isDeleting}
+                                                            >
+                                                                {isDeleting ? (
+                                                                    <>
+                                                                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4"
+                                                                             xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                             viewBox="0 0 24 24">
+                                                                            <circle className="opacity-25" cx="12" cy="12" r="10"
+                                                                                    stroke="currentColor" strokeWidth="4"></circle>
+                                                                            <path className="opacity-75" fill="currentColor"
+                                                                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                                        </svg>
+                                                                        删除中...
+                                                                    </>
+                                                                ) : "确认删除"}
+                                                            </Button>
+                                                        </DialogFooter>
+                                                    </DialogContent>
+                                                </Dialog>
                                             </div>
                                         </div>
                                     ))}
