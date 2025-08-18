@@ -8,7 +8,7 @@ import {useRef, useState} from 'react';
 import {Menu, X} from 'lucide-react';
 import TransitionLink from "@/components/TransitionLink";
 import {STORAGE_HOST} from "@/data/baseUrl";
-import {Command} from "@/components/Command";
+import {Command} from "@/components/command";
 
 const navLinks = [
     {href: "/blog/", text: "Blog"},
