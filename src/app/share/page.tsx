@@ -4,6 +4,7 @@ import {useState, useRef, DragEvent, ChangeEvent, FormEvent, useEffect} from "re
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {useToast} from "@/hooks/use-toast";
+import TransitionLink from "@/components/TransitionLink";
 
 // API 基础 URL
 const API_BASE_URL = "https://share-api.yhnotes.com";
@@ -108,6 +109,7 @@ export default function SharePage() {
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             const selectedFile = e.target.files[0];
+            e.target.value = "";
             if (selectedFile.type === "application/zip" || selectedFile.name.endsWith('.zip')) {
                 setFile(selectedFile);
                 setUploadResult(null)
@@ -197,7 +199,8 @@ export default function SharePage() {
                     // 重置表单
                     setFile(null);
                 }
-            } else {
+            }
+            else {
                 setUploadResult({
                     success: false,
                     message: result.detail?.[0]?.msg || "上传失败，请稍后重试",
@@ -503,6 +506,7 @@ export default function SharePage() {
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 setFile(null);
+                                                setUploadResult(null)
                                             }}
                                             type="button"
                                         >
@@ -534,7 +538,11 @@ export default function SharePage() {
                                     </svg>
                                     <div>
                                         <h4 className="text-sm font-medium text-blue-500">提示</h4>
-                                        <p className="text-sm mt-1">ZIP文件不能大于50MB且必须包含meta.json文件，其中的project属性将作为项目名称</p>
+
+                                        <div className="text-sm mt-1">
+                                            ZIP文件不能大于50MB且必须包含meta.json文件，其中的project属性将作为项目名称，
+                                            <TransitionLink href="/blog/yun-share/" className="inline-block border-b-blue-500 border-b-2">使用指南</TransitionLink>。
+                                        </div>
                                     </div>
                                 </div>
                             </div>
