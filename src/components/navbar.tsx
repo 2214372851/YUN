@@ -8,6 +8,7 @@ import {useRef, useState} from 'react';
 import {Menu, X} from 'lucide-react';
 import TransitionLink from "@/components/TransitionLink";
 import {STORAGE_HOST} from "@/data/baseUrl";
+import {Command} from "@/components/Command";
 
 const navLinks = [
     {href: "/blog/", text: "Blog"},
@@ -154,16 +155,21 @@ export function Navbar() {
                 </nav>
 
                 {/* GitHub Icon */}
-                <div className="hidden md:flex items-center">
-                    <a
-                        href="https://github.com/2214372851"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-white transition-colors p-2 rounded-md hover:bg-white/5"
-                    >
-                        <Image src="/github-mark-white.svg" alt="github" width={5} height={5}
-                               className="size-5"></Image>
-                    </a>
+                <div className="flex gap-3">
+                    <div className="hidden md:flex items-center">
+                        <Command />
+                    </div>
+                    <div className="hidden md:flex items-center">
+                        <a
+                            href="https://github.com/2214372851"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gray-400 hover:text-white transition-colors p-2 rounded-md hover:bg-white/5"
+                        >
+                            <Image src="/github-mark-white.svg" alt="github" width={5} height={5}
+                                   className="size-5"></Image>
+                        </a>
+                    </div>
                 </div>
 
                 {/* Mobile Menu Button: Positioned absolutely on mobile */}
