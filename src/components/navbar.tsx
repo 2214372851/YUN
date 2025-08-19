@@ -110,13 +110,13 @@ export function Navbar() {
                                 {/* 下拉菜单 */}
                                 <div
                                     className={cn(
-                                        "absolute left-1/2 -translate-x-1/2 top-full mt-2 w-[40vw] bg-background/95 backdrop-blur-md border border-white/10 rounded-lg shadow-xl z-50 transition-all duration-150 p-2",
+                                        "absolute left-1/2 -translate-x-1/2 top-full mt-2 w-[60vw] bg-background/95 backdrop-blur-md border border-white/10 rounded-lg shadow-xl z-50 transition-all duration-150 p-2",
                                         hoveredDropdown === link.text ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
                                     )}
                                     onMouseEnter={() => handleMouseEnter(link.text)}
                                     onMouseLeave={handleMouseLeave}
                                 >
-                                    <div className="grid grid-cols-2 gap-6 bg-[#151617] rounded-md p-4">
+                                    <div className="grid grid-cols-3 gap-6 bg-[#151617] rounded-md p-4">
                                         {link.children.map(child => (
                                             <TransitionLink
                                                 key={child.href}
