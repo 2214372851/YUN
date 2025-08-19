@@ -6,7 +6,6 @@ import {Footer} from "@/components/footer";
 import React from "react";
 import {Toaster} from "@/components/ui/toaster"
 import {baseUrl, image, siteName} from '@/config/site';
-import Head from "next/head";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -74,10 +73,6 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="zh-CN">
-        <Head>
-            {/* 网站监控脚本 */}
-            <script defer src="https://cloud.umami.is/script.js" data-website-id="e7012192-3cfd-4138-af60-453aa655c7f9"></script>
-        </Head>
         <body className={inter.className}>
         <Navbar/>
         <Toaster/>
