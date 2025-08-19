@@ -10,7 +10,7 @@ const footerLinks = [
         title: "Service",
         links: [
             {href: "https://minio-console.yhnotes.com/", label: "OSS"},
-            {href: "https://uptime.yhnotes.com/status/aliyun", label: "Service Status"},
+            {href: "https://uptime.yhnotes.com/status/yun", label: "Service Status"},
             {href: "https://status.yhnotes.com/", label: "Server Status"},
         ],
     },
