@@ -330,7 +330,15 @@ export const mediaItems: MediaItem[] = [
         author: '很美味',
         musicUrl: `${STORAGE_HOST}/docs/nzbz-hmw.mp3`,
         lyricsUrl: `${STORAGE_HOST}/docs/nzbz-hmw.lrc`,
-    }
+    },
+    {
+        id: 'lkwdyl-wyw',
+        title: '离开我的依赖',
+        imageUrl: `${STORAGE_HOST}/docs/离开我的依赖-王艳薇.jpg`,
+        author: '王艳薇',
+        musicUrl: `${STORAGE_HOST}/docs/离开我的依赖-王艳薇.mp3`,
+        lyricsUrl: `${STORAGE_HOST}/docs/离开我的依赖-王艳薇.lrc`,
+    },
 
 ];
 
