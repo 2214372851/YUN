@@ -314,6 +314,13 @@ const mcpTools: Tool[] = [
         description: 'MCP 浏览器监控和交互工具',
         href: 'https://github.com/AgentDeskAI/browser-tools-mcp',
         category: 'MCP',
+    },
+    {
+        id: 'smithery',
+        name: 'Smithery',
+        description: 'MCP 服务集合',
+        href: 'https://smithery.ai/',
+        category: 'MCP',
     }
 
 ];
