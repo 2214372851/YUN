@@ -173,13 +173,6 @@ const devTools: Tool[] = [
         category: '开发工具'
     },
     {
-        id: 'suburl',
-        name: '订阅转换',
-        description: '魔法订阅转换工具，支持将各种订阅链接转换为标准格式。',
-        href: 'https://suburl.v1.mk/',
-        category: '开发工具'
-    },
-    {
         id: 'pypistats',
         name: 'PyPI Stats',
         description: '查看 PyPI 模块的下载统计信息。',
@@ -242,6 +235,13 @@ const devTools: Tool[] = [
         href: 'https://getcssscan.com/css-box-shadow-examples',
         category: '开发工具',
     },
+    {
+        id: 'sealos',
+        name: 'Sealos',
+        description: '一站式云开发平台，提供即时协作开发、无缝部署和环境隔离能力，助您高效管理开发工作流程，轻松实现团队协作。',
+        href: 'https://sealos.run/',
+        category: '开发工具',
+    }
 ]
 
 const mcpTools: Tool[] = [
@@ -313,6 +313,13 @@ const mcpTools: Tool[] = [
         name: 'MCP BrowserTools',
         description: 'MCP 浏览器监控和交互工具',
         href: 'https://github.com/AgentDeskAI/browser-tools-mcp',
+        category: 'MCP',
+    },
+    {
+        id: 'smithery',
+        name: 'Smithery',
+        description: 'MCP 服务集合',
+        href: 'https://smithery.ai/',
         category: 'MCP',
     }
 
@@ -579,6 +586,13 @@ const aiTools: Tool[] = [
         href: 'https://witsyai.com',
         category: 'AI 衍生工具',
     },
+    {
+        id: 'same',
+        name: 'Same',
+        description: '自然语言提示即可无代码快速创建、迭代并部署 AI 驱动的 Web 应用',
+        href: 'https://same.so/',
+        category: 'AI 衍生工具',
+    },
 ]
 
 const iconTools: Tool[] = [
@@ -730,13 +744,6 @@ const otherTools: Tool[] = [
         category: '桌面工具'
     },
     {
-        id: 'itdog-http',
-        name: 'IT Dog HTTP 测试',
-        description: '测试目标网站的访问速度和可用性。',
-        href: 'https://www.itdog.cn/http/',
-        category: '网络工具',
-    },
-    {
         id: 'wallspic',
         name: 'Wallspic',
         description: '免费的壁纸软件',
@@ -771,7 +778,6 @@ const otherTools: Tool[] = [
         href: 'https://nextbconvert.com/',
         category: '文件转换'
     },
-
     {
         id: 'omakub',
         name: 'OMAKUB',
@@ -815,28 +821,12 @@ const otherTools: Tool[] = [
         category: '趣味工具',
     },
     {
-        id: 'ustc-speedtest',
-        name: '中科大测速网站',
-        description: '中国科学技术大学提供的网络测速服务。',
-        href: 'https://test.ustc.edu.cn/#',
-        category: '网络工具',
-    },
-    {
-        id: 'ipinfo-lite',
-        name: 'IPinfo Lite',
-        description: '一个轻量级的 IP 地址查询工具，提供快速、简洁的 IP 地理位置和元数据查询服务。',
-        href: 'https://ipinfo.io/lite',
-        category: '网络工具'
-    },
-    {
         id: 'excalidraw',
         name: 'Excalidraw',
         description: '虚拟协作白板工具，类手写风格, 简洁易用。',
         href: 'https://excalidraw.com/',
         category: '绘图工具',
     },
-
-
     {
         id: 'tldraw',
         name: 'Tldraw',
@@ -900,8 +890,66 @@ const otherTools: Tool[] = [
         href: 'https://tutu.to/upload',
         category: '图床',
     },
+    {
+        id: 'Umami',
+        name: 'Umami',
+        description: '开源、隐私友好的网页分析工具。',
+        href: 'https://umami.is/',
+        category: '网站分析',
+    }
 ];
 
+const netTools: Tool[] = [
+    {
+        id: 'zashboard',
+        name: 'zashboard',
+        description: 'Mihomo 内核 Web 控制台',
+        href: 'https://github.com/Zephyruso/zashboard',
+        category: '网络工具',
+    },
+    {
+        id: 'natfrp',
+        name: 'SAKURA FRP',
+        description: '免费易用的内网穿透工具，提供稳定的端口映射服务。',
+        href: 'www.natfrp.com',
+        category: '网络工具',
+    },
+    {
+        id: 'ustc-speedtest',
+        name: '中科大测速网站',
+        description: '中国科学技术大学提供的网络测速服务。',
+        href: 'https://test.ustc.edu.cn/#',
+        category: '网络工具',
+    },
+    {
+        id: 'ipinfo-lite',
+        name: 'IPinfo Lite',
+        description: '一个轻量级的 IP 地址查询工具，提供快速、简洁的 IP 地理位置和元数据查询服务。',
+        href: 'https://ipinfo.io/lite',
+        category: '网络工具'
+    },
+    {
+        id: 'itdog-http',
+        name: 'IT Dog HTTP 测试',
+        description: '测试目标网站的访问速度和可用性。',
+        href: 'https://www.itdog.cn/http/',
+        category: '网络工具',
+    },
+    {
+        id: 'suburl',
+        name: '订阅转换',
+        description: '订阅转换工具，支持将各种订阅链接转换为标准格式。',
+        href: 'https://suburl.v1.mk/',
+        category: '网络工具'
+    },
+    {
+        id: 'digital-plat',
+        name: 'DigitalPlat',
+        description: '提供永久免费的域名',
+        href: 'https://dash.domain.digitalplat.org/',
+        category: '网络工具'
+    }
+]
 
 // 存储所有工具，确保 id 唯一
 const allToolDataMap = new Map<string, Tool>();
@@ -915,7 +963,8 @@ const allToolDataMap = new Map<string, Tool>();
     ...aiTools,
     ...iconTools,
     ...serverTools,
-    ...otherTools
+    ...otherTools,
+    ...netTools
 ].forEach(tool => {
     if (!allToolDataMap.has(tool.id)) {
         allToolDataMap.set(tool.id, tool); // 添加唯一工具到 Map

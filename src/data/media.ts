@@ -148,6 +148,14 @@ export const mediaItems: MediaItem[] = [
         lyricsUrl: `${STORAGE_HOST}/docs/谪仙 伊格赛听&叶里.lrc`,
     },
     {
+        id: 'zw-on',
+        title: '知我',
+        imageUrl: 'https://minio-endpoint.yhnotes.com/docs/知我-哦漏.jpg',
+        author: '国风堂/哦漏',
+        lyricsUrl: 'https://minio-endpoint.yhnotes.com/docs/知我-哦漏.lrc',
+        musicUrl: 'https://minio-endpoint.yhnotes.com/docs/知我-哦漏.mp3',
+    },
+    {
         id: 'bc-ss',
         title: '参商',
         imageUrl: `${STORAGE_HOST}/docs/bc-ss.jpg`,
@@ -322,7 +330,15 @@ export const mediaItems: MediaItem[] = [
         author: '很美味',
         musicUrl: `${STORAGE_HOST}/docs/nzbz-hmw.mp3`,
         lyricsUrl: `${STORAGE_HOST}/docs/nzbz-hmw.lrc`,
-    }
+    },
+    {
+        id: 'lkwdyl-wyw',
+        title: '离开我的依赖',
+        imageUrl: `${STORAGE_HOST}/docs/离开我的依赖-王艳薇.jpg`,
+        author: '王艳薇',
+        musicUrl: `${STORAGE_HOST}/docs/离开我的依赖-王艳薇.mp3`,
+        lyricsUrl: `${STORAGE_HOST}/docs/离开我的依赖-王艳薇.lrc`,
+    },
 
 ];
 

@@ -2,6 +2,156 @@
 title: 常用命令
 ---
 
+
+
+## Prometheus 组件之 redis_exporter 指标
+
+Prometheus 的架构中，主服务器本身不直接采集 Redis 的各类运行指标。为了监控 Redis 的内存、连接数、命中率等常用性能数据，我们通常借助社区维护的 **redis_exporter** 作为中间桥梁。
+
+**redis_exporter** 由 Golang 编写，零依赖，解压即可运行，非常轻量。
+
+---
+
+### **1. 下载与解压**
+
+你可以从 redis_exporter 的 [GitHub Releases](https://github.com/oliver006/redis_exporter/releases) 页面获取最新版本。
+
+以 1.63.0 版本为例，下载并解压：
+
+```bash
+wget https://github.com/oliver006/redis_exporter/releases/download/v1.63.0/redis_exporter-v1.63.0.linux-amd64.tar.gz
+tar -zxf redis_exporter-v1.63.0.linux-amd64.tar.gz
+```
+
+此时可以直接使用以下命令启动 redis_exporter（假设 Redis 在本地 6379，无密码）：
+
+```bash
+./redis_exporter-v1.63.0.linux-amd64/redis_exporter \
+  --redis.addr=redis://127.0.0.1:6379
+```
+
+默认监听 `9121` 端口，访问 `http://<host-ip>:9121/metrics` 可看到采集到的 Redis 指标。
+
+---
+
+### **2. 注册为 systemd 服务**
+
+和 node_exporter 一样，建议以 systemd 服务方式运行，便于后台运行和开机自启。
+
+1. **复制可执行文件到环境路径：**
+
+   ```bash
+   sudo cp redis_exporter-v1.63.0.linux-amd64/redis_exporter /usr/local/bin/
+   ```
+
+2. **创建服务文件 `/usr/lib/systemd/system/redis_exporter.service`：**
+
+   ```ini
+   [Unit]
+   Description=redis_exporter
+   Documentation=https://github.com/oliver006/redis_exporter
+   After=network.target
+
+   [Service]
+   Type=simple
+   User=root
+   Group=root
+   ExecStart=/usr/local/bin/redis_exporter \
+     --redis.addr=redis://127.0.0.1:6379
+   ExecReload=/bin/kill -s HUP $MAINPID
+   ExecStop=/bin/kill -s QUIT $MAINPID
+   Restart=on-failure
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+
+   > 如果 Redis 有密码，`--redis.addr` 可写为 `redis://:密码@127.0.0.1:6379`
+
+3. **加载服务并启动：**
+
+   ```bash
+   sudo systemctl daemon-reload
+   sudo systemctl start redis_exporter
+   sudo systemctl enable redis_exporter
+   ```
+
+4. **查看运行状态：**
+
+   ```bash
+   sudo systemctl status redis_exporter
+   ```
+
+---
+
+### **3. 在 Prometheus 中配置抓取**
+
+修改 `prometheus.yml`，添加 redis_exporter 抓取配置：
+
+```yaml
+scrape_configs:
+  - job_name: 'redis_exporter'
+    static_configs:
+      - targets: ['localhost:9121']
+```
+
+加载配置：
+
+```bash
+curl -X POST http://localhost:9090/-/reload
+```
+
+或者：
+
+```bash
+sudo systemctl restart prometheus
+```
+
+---
+
+### **4. 验证 redis_exporter**
+
+- **浏览器访问：** `http://<host-ip>:9121/metrics`  
+  可看到导出的各类 Redis 性能数据。
+
+- **Prometheus 界面验证：** 打开 http://<prometheus-ip>:9090，执行：
+
+  ```
+  up{job="redis_exporter"}
+  ```
+
+  返回 `1` 表示成功采集。
+
+---
+
+### **5. 常用优化参数**
+
+- **指定 Redis 密码：**
+
+  ```bash
+  --redis.addr=redis://:yourpassword@127.0.0.1:6379
+  ```
+
+- **同时采集多个 Redis 实例：**
+
+  ```bash
+  --redis.addr=redis://127.0.0.1:6379 --redis.addr=redis://192.168.1.100:6379
+  ```
+
+- **自定义监听端口：**
+
+  ```bash
+  --web.listen-address=:9121
+  ```
+
+- **设置日志级别：**
+
+  ```bash
+  --log.level=warn
+  ```
+
+---
+
 ## Prometheus 组件之 node_exporter 机器指标
 
 Prometheus 的架构中 Prometheus Server 本身并不直接提供主机级别的监控指标，但我们通常希望对宿主机 CPU、内存、磁盘等基础指标进行收集。**node_exporter** 就是 Prometheus 官方提供的系统级指标导出器。  
@@ -111,8 +261,6 @@ sudo systemctl restart prometheus
   ```
 
 ---
-
-
 
 ## 内网穿透（云服务器）
 
