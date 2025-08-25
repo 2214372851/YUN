@@ -489,6 +489,20 @@ const llmProviderTools: Tool[] = [
 
 const aiTools: Tool[] = [
     {
+        id: 'free-qwen3',
+        name: 'Free Qwen3',
+        description: '世界首个免费无限制 分布式 AI 算力平台',
+        href: 'https://qwen3.slmnb.cn',
+        category: 'AI 衍生工具'
+    },
+    {
+        id: 'lm-speed',
+        name: 'LM Speed',
+        description: '全面的速度测试和分析优化 AI 应用性能',
+        href: 'https://lmspeed.net/',
+        category: 'AI 衍生工具'
+    },
+    {
         id: 'napkin-ai',
         name: 'Napkin AI',
         description: '将文本内容自动生成可编辑的可视化图表、流程图和信息图，适用于演示、博客、社交媒体等多场景。',
