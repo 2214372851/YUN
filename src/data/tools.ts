@@ -969,7 +969,14 @@ const netTools: Tool[] = [
         description: '提供永久免费的域名',
         href: 'https://dash.domain.digitalplat.org/',
         category: '网络工具'
-    }
+    },
+    {
+        id: 'gh-proxy',
+        name: 'Github 加速',
+        description: '将GitHub链接转换为多区域加速链接，解决GitHub访问慢、下载失败等问题',
+        href: 'https://gh-proxy.com/',
+        category: '网络工具'
+    },
 ]
 
 // 存储所有工具，确保 id 唯一
