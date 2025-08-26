@@ -354,6 +354,13 @@ const aiCommunityTools: Tool[] = [
         href: 'https://lmarena.ai/',
         category: 'AI 社区'
     },
+    {
+        id: 'autodl',
+        name: 'AutoDL',
+        description: '稳定可靠、价格公道的GPU租赁算力云',
+        href: 'https://www.autodl.com/',
+        category: 'AI 社区'
+    },
 ]
 
 const llmProviderTools: Tool[] = [
