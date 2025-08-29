@@ -15,6 +15,7 @@ import {useFullscreen} from "@/hooks/use-fullscreen";
 import {FastForwardIcon, Maximize, Minimize, PauseIcon, PlayIcon, RepeatIcon, RewindIcon} from "lucide-react";
 import RippleHeartbeat from "@/components/RippleHearbeat";
 import './index.css'
+import ElasticSlider from "@/components/blocks/Components/ElasticSlider/ElasticSlider";
 
 
 interface LyricLine {
@@ -433,8 +434,8 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
         }
     };
 
-    const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const seekTime = (parseFloat(e.target.value) / 100) * duration;
+    const handleSeek = (value: number) => {
+        const seekTime = (value / 100) * duration;
         const audio = audioRef.current;
         if (audio) {
             audio.currentTime = seekTime;
@@ -467,6 +468,7 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                         setCurrentTime(newCurrentTime);
                         setProgress(newProgress);
                         setDuration(newDuration);
+                        setIsPlaying( !audio.paused && !audio.ended && audio.readyState > 2)
                     }
                     if (autoPlay) {
                         if (!nextToast.current && newDuration - newCurrentTime <= 10) {
@@ -593,34 +595,13 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                 </div>
 
                 {/* 进度条和时间显示 */}
-                <div className="flex-1 bg-red-500 gap-1 w-full">
+                <div className="flex-1 gap-1 w-full">
                     <div className="group w-full flex items-center justify-between">
-                        <input
-                            type="range"
-                            min="0"
-                            max="100"
+                        <ElasticSlider
                             value={progress}
+                            maxValue={100}
                             onChange={handleSeek}
-                            className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer
-                                [&::-webkit-slider-thumb]:opacity-0
-                                group-hover:[&::-webkit-slider-thumb]:opacity-100
-                                [&::-webkit-slider-thumb]:appearance-none
-                                group-hover:[&::-webkit-slider-thumb]:appearance-auto
-                                [&::-webkit-slider-thumb]:h-3
-                                [&::-webkit-slider-thumb]:w-3
-                                [&::-webkit-slider-thumb]:rounded-full
-                                [&::-webkit-slider-thumb]:bg-blue-500
-                                [&::-webkit-slider-thumb]:relative
-                                [&::-webkit-slider-thumb]:z-10
-                                [&::-webkit-slider-thumb]:transition-all
-                                [&::-webkit-slider-thumb]:duration-300
-                                [&::-webkit-slider-thumb]:left-0
-                                group-hover:[&::-webkit-slider-thumb]:transition-all
-                                group-hover:[&::-webkit-slider-thumb]:duration-300"
-                            style={{
-                                background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${progress}%, #e5e7eb ${progress}%, #e5e7eb 100%)`,
-                                transition: 'background 0.3s'
-                            }}
+                            className="w-full"
                         />
                     </div>
                 </div>

@@ -54,6 +54,13 @@ const devTools: Tool[] = [
         category: '开发工具',
     },
     {
+        id: 'react-bits',
+        name: 'React Bits',
+        description: '一个收集了许多 React 技巧和最佳实践的资源库，帮助开发者提升 React 开发技能。',
+        href: 'https://reactbits.dev/',
+        category: '开发工具',
+    },
+    {
         id: 'allinssl',
         name: 'AllinSSL',
         description: '一个用于自动申请和部署 HTTPS 证书的开源工具集，支持多种平台和服务器环境。',
@@ -354,6 +361,13 @@ const aiCommunityTools: Tool[] = [
         href: 'https://lmarena.ai/',
         category: 'AI 社区'
     },
+    {
+        id: 'autodl',
+        name: 'AutoDL',
+        description: '稳定可靠、价格公道的GPU租赁算力云',
+        href: 'https://www.autodl.com/',
+        category: 'AI 社区'
+    },
 ]
 
 const llmProviderTools: Tool[] = [
@@ -488,6 +502,20 @@ const llmProviderTools: Tool[] = [
 ]
 
 const aiTools: Tool[] = [
+    {
+        id: 'free-qwen3',
+        name: 'Free Qwen3',
+        description: '世界首个免费无限制 分布式 AI 算力平台',
+        href: 'https://qwen3.slmnb.cn',
+        category: 'AI 衍生工具'
+    },
+    {
+        id: 'lm-speed',
+        name: 'LM Speed',
+        description: '全面的速度测试和分析优化 AI 应用性能',
+        href: 'https://lmspeed.net/',
+        category: 'AI 衍生工具'
+    },
     {
         id: 'napkin-ai',
         name: 'Napkin AI',
@@ -948,7 +976,14 @@ const netTools: Tool[] = [
         description: '提供永久免费的域名',
         href: 'https://dash.domain.digitalplat.org/',
         category: '网络工具'
-    }
+    },
+    {
+        id: 'gh-proxy',
+        name: 'Github 加速',
+        description: '将GitHub链接转换为多区域加速链接，解决GitHub访问慢、下载失败等问题',
+        href: 'https://gh-proxy.com/',
+        category: '网络工具'
+    },
 ]
 
 // 存储所有工具，确保 id 唯一

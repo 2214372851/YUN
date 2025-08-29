@@ -1,0 +1,1145 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "assistant-ui 后端对接 API",
+    "version": "1.0.0",
+    "description": "与 assistant-ui 前端（LocalRuntime / ExternalStoreRuntime / useChatRuntime）对接的后端接口规范。包含同步与流式 /api/chat、附件上传、线程管理（包含 rename/archive/unarchive/delete 的明确结构）、tool-result 回调、反馈与健康检查等接口。"
+  },
+  "servers": [
+    {
+      "url": "https://api.example.com",
+      "description": "示例服务器，部署时替换为真实地址"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/api/chat": {
+      "post": {
+        "summary": "聊天主接口（支持同步与流式）",
+        "description": "接收前端 messages，返回模型输出。支持非流式 JSON 响应或流式 SSE (text/event-stream)。前端会在 cancel 时断开连接并传递 AbortSignal，服务端应支持取消上游请求。",
+        "operationId": "postChat",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRequest"
+              },
+              "examples": {
+                "simple": {
+                  "value": {
+                    "messages": [
+                      {
+                        "id": "u1",
+                        "role": "user",
+                        "content": [
+                          { "type": "text", "text": "你好" }
+                        ]
+                      }
+                    ],
+                    "options": { "threadId": "optional-thread-id", "stream": true }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "成功。可返回非流式 JSON（application/json）或流式 text/event-stream（SSE）。实现可同时支持两种 content-type。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatResponse"
+                },
+                "examples": {
+                  "nonStream": {
+                    "value": {
+                      "content": [
+                        { "type": "text", "text": "你好，我能帮你什么？" }
+                      ],
+                      "metadata": { "model": "gpt-4o", "elapsedMs": 123 }
+                    }
+                  }
+                }
+              },
+              "text/event-stream": {
+                "schema": {
+                  "type": "string",
+                  "description": "SSE 或逐块 JSON 流。每个事件的 data 字段应为 JSON，示例事件形态见 components.examples.sseExample。"
+                },
+                "examples": {
+                  "sseExample": {
+                    "value": "data: {\"type\":\"delta\",\"content\":[{\"type\":\"text\",\"text\":\"你好，\"}]}\n\ndata: {\"type\":\"delta\",\"content\":[{\"type\":\"text\",\"text\":\"世界\"}]}\n\ndata: {\"type\":\"done\"}\n\n"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数错误",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "未授权",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          },
+          "500": {
+            "description": "服务器内部错误",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/upload": {
+      "post": {
+        "summary": "上传附件（multipart/form-data）",
+        "description": "上传文件并返回可在消息中引用的 URL/id。实现需校验 mime/type 与大小，建议做防病毒扫描并返回带签名或 CDN 地址。",
+        "operationId": "uploadFile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "要上传的文件字段名为 file"
+                  }
+                },
+                "required": [
+                  "file"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "上传成功，返回附件信息",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadResponse"
+                },
+                "examples": {
+                  "ok": {
+                    "value": {
+                      "id": "att_123",
+                      "url": "https://cdn.example.com/att_123.png",
+                      "mime": "image/png",
+                      "name": "photo.png"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "文件校验失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未授权",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/upload/{id}": {
+      "delete": {
+        "summary": "删除附件（可选）",
+        "operationId": "deleteUpload",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "附件 ID"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "删除成功，无返回体"
+          },
+          "404": {
+            "description": "未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/threads": {
+      "get": {
+        "summary": "列出会话线程（ExternalStoreRuntime 场景）",
+        "operationId": "listThreads",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "线程数组",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreadsResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "创建新线程",
+        "operationId": "createThread",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreadListItem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/threads/{threadId}/messages": {
+      "get": {
+        "summary": "获取线程消息（历史）",
+        "operationId": "getThreadMessages",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "线程消息数组",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessagesResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "线程未找到",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "向线程追加消息",
+        "operationId": "appendThreadMessage",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadMessageLike"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "追加成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean"
+                    },
+                    "messageId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/threads/{threadId}": {
+      "patch": {
+        "summary": "线程操作：rename / archive / unarchive / delete",
+        "description": "统一的线程操作接口。请求体包含 op 字段（rename/archive/unarchive/delete）以及对应的参数（例如 rename 需要 title）。支持乐观并发控制（可选 clientVersion 或 If-Match header）。",
+        "operationId": "patchThread",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "可选：用于乐观并发控制（传 version 或 ETag）"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadPatchRequest"
+              },
+              "examples": {
+                "rename": {
+                  "value": {
+                    "op": "rename",
+                    "title": "新的会话标题",
+                    "clientVersion": 5
+                  }
+                },
+                "archive": {
+                  "value": {
+                    "op": "archive"
+                  }
+                },
+                "unarchive": {
+                  "value": {
+                    "op": "unarchive"
+                  }
+                },
+                "delete_soft": {
+                  "value": {
+                    "op": "delete",
+                    "hard": false
+                  }
+                },
+                "delete_hard": {
+                  "value": {
+                    "op": "delete",
+                    "hard": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "操作成功，返回更新后的线程信息（软删除/rename/archive/unarchive）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThreadPatchResponse"
+                },
+                "examples": {
+                  "renameOk": {
+                    "value": {
+                      "ok": true,
+                      "threadId": "t123",
+                      "title": "新的会话标题",
+                      "status": "regular",
+                      "updatedAt": "2025-08-27T12:34:56Z",
+                      "version": 6
+                    }
+                  },
+                  "archiveOk": {
+                    "value": {
+                      "ok": true,
+                      "threadId": "t123",
+                      "title": "旧会话",
+                      "status": "archived",
+                      "archivedAt": "2025-08-27T12:34:56Z",
+                      "version": 7
+                    }
+                  },
+                  "deleteOk": {
+                    "value": {
+                      "ok": true,
+                      "threadId": "t123",
+                      "deleted": true,
+                      "deletedAt": "2025-08-27T12:40:00Z",
+                      "version": 8
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "硬删除成功（无返回体）"
+          },
+          "400": {
+            "description": "请求参数错误（例如 title 为空）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未授权",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "禁止，权限不足（例如非线程持有者尝试硬删除）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "线程不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "并发冲突（version 不匹配）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "conflict": {
+                    "value": {
+                      "error": "version conflict",
+                      "currentVersion": 7
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务器内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tool-result": {
+      "post": {
+        "summary": "外部系统回传工具执行结果（可选）",
+        "operationId": "postToolResult",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToolResultRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "已接收",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "summary": "健康检查",
+        "operationId": "getHealth",
+        "responses": {
+          "200": {
+            "description": "服务可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/feedback": {
+      "post": {
+        "summary": "消息反馈",
+        "operationId": "postFeedback",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "保存成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT or API key"
+      }
+    },
+    "schemas": {
+      "MessagePart": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/TextPart"
+          },
+          {
+            "$ref": "#/components/schemas/ImagePart"
+          },
+          {
+            "$ref": "#/components/schemas/ToolCallPart"
+          },
+          {
+            "$ref": "#/components/schemas/ToolResultPart"
+          },
+          {
+            "$ref": "#/components/schemas/FilePart"
+          }
+        ],
+        "description": "消息片段，可为文本、图片、工具调用、工具结果或文件等"
+      },
+      "TextPart": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "text"
+            ]
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "text"
+        ]
+      },
+      "ImagePart": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "image"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "alt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "url"
+        ]
+      },
+      "FilePart": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "file"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "name": {
+            "type": "string"
+          },
+          "mime": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "url"
+        ]
+      },
+      "ToolCallPart": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "tool-call"
+            ]
+          },
+          "toolCallId": {
+            "type": "string"
+          },
+          "toolName": {
+            "type": "string"
+          },
+          "args": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "type",
+          "toolCallId",
+          "toolName"
+        ]
+      },
+      "ToolResultPart": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "tool-result"
+            ]
+          },
+          "toolCallId": {
+            "type": "string"
+          },
+          "result": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "type",
+          "toolCallId",
+          "result"
+        ]
+      },
+      "ThreadMessageLike": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "user",
+              "assistant",
+              "system",
+              "tool"
+            ]
+          },
+          "content": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MessagePart"
+                }
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "type": "object"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "in_progress",
+              "complete",
+              "cancelled"
+            ]
+          }
+        },
+        "required": [
+          "role",
+          "content"
+        ]
+      },
+      "ChatRequest": {
+        "type": "object",
+        "properties": {
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ThreadMessageLike"
+            }
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "threadId": {
+                "type": "string"
+              },
+              "stream": {
+                "type": "boolean",
+                "description": "是否请求流式响应（仅为建议，服务器可决定）"
+              },
+              "maxTokens": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "required": [
+          "messages"
+        ]
+      },
+      "ChatResponse": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessagePart"
+            }
+          },
+          "messageId": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object"
+          }
+        }
+      },
+      "UploadResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "mime": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "url"
+        ]
+      },
+      "ThreadListItem": {
+        "type": "object",
+        "properties": {
+          "threadId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "regular",
+              "archived"
+            ]
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "threadId",
+          "title"
+        ]
+      },
+      "ThreadsResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ThreadListItem"
+        }
+      },
+      "MessagesResponse": {
+        "type": "object",
+        "properties": {
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ThreadMessageLike"
+            }
+          }
+        }
+      },
+      "ToolResultRequest": {
+        "type": "object",
+        "properties": {
+          "toolCallId": {
+            "type": "string"
+          },
+          "result": {
+            "type": "object"
+          },
+          "messageId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "toolCallId",
+          "result"
+        ]
+      },
+      "FeedbackRequest": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "positive",
+              "negative"
+            ]
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "messageId",
+          "type"
+        ]
+      },
+      "HealthResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "uptime": {
+            "type": "number"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "ThreadPatchRequest": {
+        "type": "object",
+        "description": "统一的线程操作请求体。op 指示操作类型：rename/archive/unarchive/delete。其他字段按 op 语义使用。",
+        "properties": {
+          "op": {
+            "type": "string",
+            "enum": [
+              "rename",
+              "archive",
+              "unarchive",
+              "delete"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "description": "rename 时必须，新的线程标题"
+          },
+          "hard": {
+            "type": "boolean",
+            "description": "delete 时可选，表示是否做硬删除（物理删除）。需要管理员权限。默认 false（软删除）"
+          },
+          "clientVersion": {
+            "type": "integer",
+            "description": "可选：客户端的线程 version，用于乐观并发检查"
+          }
+        },
+        "required": [
+          "op"
+        ],
+        "examples": {
+          "rename": {
+            "value": {
+              "op": "rename",
+              "title": "新的会话标题",
+              "clientVersion": 5
+            }
+          },
+          "archive": {
+            "value": {
+              "op": "archive"
+            }
+          },
+          "unarchive": {
+            "value": {
+              "op": "unarchive"
+            }
+          },
+          "delete_soft": {
+            "value": {
+              "op": "delete",
+              "hard": false
+            }
+          }
+        }
+      },
+      "ThreadPatchResponse": {
+        "type": "object",
+        "description": "返回更新后的线程信息或删除信息",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          },
+          "threadId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "regular",
+              "archived"
+            ]
+          },
+          "archivedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted": {
+            "type": "boolean"
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "version": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "examples": {
+      "sseExample": {
+        "summary": "SSE 增量流示例",
+        "value": [
+          {
+            "type": "delta",
+            "content": [
+              {
+                "type": "text",
+                "text": "你好，"
+              }
+            ]
+          },
+          {
+            "type": "delta",
+            "content": [
+              {
+                "type": "text",
+                "text": "世界"
+              }
+            ]
+          },
+          {
+            "type": "done"
+          }
+        ]
+      }
+    }
+  }
+}
