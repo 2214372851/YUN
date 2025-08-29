@@ -6,6 +6,7 @@ import Image from 'next/image';
 import {TypeAnimation} from 'react-type-animation';
 import TransitionLink from "@/components/TransitionLink";
 import {STORAGE_HOST} from "@/data/baseUrl";
+import Particles from "@/components/blocks/Backgrounds/Particles/Particles";
 
 
 function ProductDiagram() {
@@ -39,7 +40,7 @@ function ProductDiagram() {
                             // translateX: index * 30,
                             // translateY: index * -40,
                         }}
-                        animate={{
+                        whileInView={{
                             opacity: 1,
                             y: 0,
                             rotateX: 40,
@@ -48,6 +49,7 @@ function ProductDiagram() {
                             translateX: index * 50,
                             translateY: index * -40,
                         }}
+                        viewport={{ once: true, amount: 0.3 }}
                         key={index}
                         exit={{opacity: 0, x: 0}} // 添加退出动画
                         transition={{duration: 1, delay: !index ? 0 : index + 0.3}} // 为进入和退出动画设置时长
@@ -75,40 +77,55 @@ export function Hero() {
                 animate={{opacity: 1, y: 0}}
                 exit={{opacity: 0, x: 100}} // 添加退出动画
                 transition={{duration: 2}} // 为进入和退出动画设置时长
-                className="max-w-4xl mx-auto"
+                className="w-full mx-auto relative min-h-screen h-fit flex flex-col justify-center"
             >
-                <TypeAnimation
-                    sequence={[
-                        "Hi, I'm Yunhai",
-                        1000,
-                        'Tech for life',
-                        1000,
-                        'Keep exploring',
-                        1000
-                    ]}
-                    wrapper="h1"
-                    cursor={true}
-                    repeat={Infinity}
-                    className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-6"
-                />
-                <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
-                    I hope the content here can help you
-                </p>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <Button size="lg" asChild className="px-8 py-6 text-base">
-                        <TransitionLink href="/docs">Start reading</TransitionLink>
-                    </Button>
+                <div className="absolute size-full z-0">
+                    <Particles
+                        particleColors={['#ffffff', '#ffffff']}
+                        particleCount={50}
+                        particleSpread={10}
+                        speed={0.1}
+                        particleBaseSize={100}
+                        moveParticlesOnHover={false}
+                        alphaParticles={false}
+                        disableRotation={false}
+                    />
+                </div>
 
-                    <Button size="lg" variant="secondary" asChild className="px-8 py-6 text-base">
-                        <TransitionLink href="/about" className="flex items-center gap-2">
-                            <span>Introduce me</span>
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
-                                      strokeLinejoin="round"/>
-                            </svg>
-                        </TransitionLink>
-                    </Button>
+                <div className="z-10">
+                    <TypeAnimation
+                        sequence={[
+                            "Hi, I'm Yunhai",
+                            1000,
+                            'Tech for life',
+                            1000,
+                            'Keep exploring',
+                            1000
+                        ]}
+                        wrapper="h1"
+                        cursor={true}
+                        repeat={Infinity}
+                        className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-6"
+                    />
+                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
+                        I hope the content here can help you
+                    </p>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <Button size="lg" asChild className="px-8 py-6 text-base">
+                            <TransitionLink href="/docs">Start reading</TransitionLink>
+                        </Button>
+
+                        <Button size="lg" variant="secondary" asChild className="px-8 py-6 text-base">
+                            <TransitionLink href="/about" className="flex items-center gap-2">
+                                <span>Introduce me</span>
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
+                                          strokeLinejoin="round"/>
+                                </svg>
+                            </TransitionLink>
+                        </Button>
+                    </div>
                 </div>
             </motion.div>
 

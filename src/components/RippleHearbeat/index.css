@@ -16,7 +16,6 @@
     opacity: 0.35;
     animation: ripple-heartbeat 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     pointer-events: none;
-    filter: blur(2px);
     will-change: transform, opacity, filter;
 }
 

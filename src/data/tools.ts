@@ -54,6 +54,13 @@ const devTools: Tool[] = [
         category: '开发工具',
     },
     {
+        id: 'react-bits',
+        name: 'React Bits',
+        description: '一个收集了许多 React 技巧和最佳实践的资源库，帮助开发者提升 React 开发技能。',
+        href: 'https://reactbits.dev/',
+        category: '开发工具',
+    },
+    {
         id: 'allinssl',
         name: 'AllinSSL',
         description: '一个用于自动申请和部署 HTTPS 证书的开源工具集，支持多种平台和服务器环境。',
