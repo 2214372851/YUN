@@ -799,6 +799,50 @@ class MyClass():
     
 ```
 
+### 特殊属性
+
+**slots**
+
+- 推荐用法：在类定义体内显式声明，例如 class C: **slots** = ("a",)
+- 效果：限制实例属性，只允许列出的槽（除非把 "**dict**" 放入 **slots**）；能节省内存并禁止动态添加任意属性。
+- 不可行/不推荐：在类创建后试图“修改” **slots**（无效或导致混乱）。不要在不理解继承/弱引用等细节的情况下随意使用。
+- 何时使用：内存敏感的场景或需要禁止动态属性时。
+
+**dict**
+
+- 注意：class.**dict** 是一个只读 mappingproxy，不能被直接替换。instance.**dict** 是普通 dict（如果类允许实例字典）。
+- 在类体写 **dict** = {}：
+  - 这只是在类命名空间中创建一个名为 "**dict**" 的普通名字，最终类的真实 **dict**（mappingproxy）不被替换。几乎没有正当用途且易引发混淆，通常不要这么做。
+- 可做的事：可以通过赋值给类来添加/修改类属性，这会反映在 class.**dict** 的映射中（不能整个替换 mappingproxy）。 示例： class C: pass C.x = 1 # 合法，会出现在 C.**dict** 中 C.**dict** = {} # TypeError: can't set attribute
+
+**module**
+
+- 可人为设置并且经常可用（尤其在动态创建类或影响 pickle 时）。
+- 在类体通常不必手动写，因为解释器会自动设置为定义模块名；但可以在运行时修改： MyClass.**module** = "some.module"
+- 影响：pickle/反序列化和某些工具展示类来源时会用到 **module**。
+
+**doc**
+
+- 可人为设置（并且常用）。通常在类体最开始放三引号文档字符串，Python 会把它设为 **doc**；也可以在运行时修改： MyClass.**doc** = "新的文档字符串"
+- 推荐：用三引号字符串或在创建类后设置 **doc** 都可以。
+
+**annotations**
+
+- 用于存放类级别或函数的类型注解（PEP 526 等）。它是一个 dict，可以在类创建后读取或修改： MyClass.**annotations**['x'] = int
+- 在类体内显式写 **annotations** = {} 一般没必要，但在元编程/动态创建类时可以用来预先控制注解集合。
+- 注意：对注解的修改不会自动改变运行时行为（除非有工具/框架读取这些注解）。
+
+```python
+class A:
+    __slots__ = ("a",) # 使用 __slots__ 可以节省内存, 但不支持动态添加属性
+    __dict__ = {} # __dict__ 用于存储实例属性, 不建议使用
+    __module__ = __name__ # __module__ 是类定义所在的模块名，在使用pickle等序列化工具时会用到
+    __doc__ = __doc__ # __doc__ 是类的文档字符串
+    __annotations__ = {}
+```
+
+
+
 ## 元类
 
 ### 基于类创建对象
@@ -1973,15 +2017,15 @@ graph LR
 >           print(f'{fun.name}运行结束')
 >           return v
 >       return task
->                                                                                                                                                                               
+>                                                                                                                                                                                   
 >      @taskRun
 >       def taskA():
 >           time.sleep(5)
->                                                                                                                                                                             
+>                                                                                                                                                                                 
 >       @taskRun
 >       def taskB():
 >           time.sleep(8)
->                                                                                                                                                                             
+>                                                                                                                                                                                 
 >       taskA()
 >       taskB()
 >     

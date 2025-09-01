@@ -44,6 +44,10 @@ const findDocNavigation = (docsDirectory = docsDirs) => {
                 title: data.title || slug,
                 content: content || '',
             })
+            // console.log(`Indexed doc: ${slug}`);
+
+            // 清空变量
+
         }
     });
 }
