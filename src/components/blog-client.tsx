@@ -2,7 +2,7 @@
 import dynamic from "next/dynamic";
 
 const BlogClient = ({content}: { content: string }) => {
-    return dynamic(() => import('@/components/markdown-view'),
+    const MarkdownView = dynamic(() => import('@/components/markdown-view'),
         {
             ssr: false,
             loading: () => (
@@ -22,6 +22,7 @@ const BlogClient = ({content}: { content: string }) => {
             )
         }
     )
+    return (<MarkdownView contentHtml={content} />)
 }
 
 export default BlogClient;
