@@ -6,9 +6,7 @@ import {getAllTools} from '@/data/tools';
 import {Tool} from "@/types/tools";
 import {Button} from "@/components/ui/button"; // 引入 Button 用于筛选器
 import {cn} from "@/lib/utils";
-import TransitionLink from "@/components/TransitionLink";
-import type {Metadata} from "next";
-import {image, siteName} from "@/config/site"; // 引入 cn 用于条件样式
+import {Link} from "next-view-transitions"
 
 // ToolCard 组件保持不变...
 interface ToolCardProps {
@@ -39,9 +37,9 @@ function ToolCard({tool}: ToolCardProps) {
         );
     } else {
         return (
-            <TransitionLink href={href} className="h-full group">
+            <Link href={href} className="h-full group">
                 {cardContent}
-            </TransitionLink>
+            </Link>
         );
     }
 }

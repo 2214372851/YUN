@@ -3,7 +3,7 @@
 import {usePathname} from "next/navigation";
 import {useState} from "react";
 import {DocItem} from "@/data/docs-navigation";
-import TransitionLink from "@/components/TransitionLink";
+import {Link} from "next-view-transitions"
 
 interface DocsSidebarProps {
     navigation: DocItem[];
@@ -70,9 +70,9 @@ export function DocsSidebar({navigation}: DocsSidebarProps) {
                             </svg>
                         </>
                     ) : (
-                        <TransitionLink href={`/docs/${section.slug}`} className="w-full">
+                        <Link href={`/docs/${section.slug}`} className="w-full">
                             {section.title}
-                        </TransitionLink>
+                        </Link>
                     )}
                 </div>
 
@@ -80,14 +80,14 @@ export function DocsSidebar({navigation}: DocsSidebarProps) {
                 {section.items && isOpen && (
                     <div className="pl-4 mt-1 space-y-1 border-l border-white/10">
                         {section.items.map((item) => (
-                            <TransitionLink
+                            <Link
                                 key={item.slug}
                                 href={`/docs/${item.slug}`}
                                 className={`block py-1 text-sm transition-colors
                   ${isActive(item.slug) ? "text-white" : "text-muted-foreground hover:text-white"}`}
                             >
                                 {item.title}
-                            </TransitionLink>
+                            </Link>
                         ))}
                     </div>
                 )}

@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import {Link} from "next-view-transitions"
 import {Separator} from "./ui/separator";
-import TransitionLink from "@/components/TransitionLink";
+
 import {usePathname} from "next/navigation";
 
 const footerLinks = [
@@ -65,10 +65,10 @@ export function Footer() {
                                     <li key={link.label}>
                                         {
                                             link.href.startsWith("/") ? (
-                                                <TransitionLink href={link.href}
+                                                <Link href={link.href}
                                                                 className="text-sm text-muted-foreground hover:text-white transition-colors">
                                                     {link.label}
-                                                </TransitionLink>
+                                                </Link>
                                             ) : (
                                                 <Link
                                                     target={link.href.startsWith('http') ? '_blank' : ''}

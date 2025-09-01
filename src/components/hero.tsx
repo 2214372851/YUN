@@ -4,7 +4,7 @@ import {Button} from "./ui/button";
 import {motion} from "framer-motion";
 import Image from 'next/image';
 import {TypeAnimation} from 'react-type-animation';
-import TransitionLink from "@/components/TransitionLink";
+import {Link} from "next-view-transitions"
 import {STORAGE_HOST} from "@/data/baseUrl";
 import Particles from "@/components/blocks/Backgrounds/Particles/Particles";
 
@@ -82,7 +82,7 @@ export function Hero() {
                 <div className="absolute size-full z-0">
                     <Particles
                         particleColors={['#ffffff', '#ffffff']}
-                        particleCount={50}
+                        particleCount={150}
                         particleSpread={10}
                         speed={0.1}
                         particleBaseSize={100}
@@ -112,18 +112,18 @@ export function Hero() {
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <Button size="lg" asChild className="px-8 py-6 text-base">
-                            <TransitionLink href="/docs">Start reading</TransitionLink>
+                            <Link href="/docs">Start reading</Link>
                         </Button>
 
                         <Button size="lg" variant="secondary" asChild className="px-8 py-6 text-base">
-                            <TransitionLink href="/about" className="flex items-center gap-2">
+                            <Link href="/about" className="flex items-center gap-2">
                                 <span>Introduce me</span>
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
                                           strokeLinejoin="round"/>
                                 </svg>
-                            </TransitionLink>
+                            </Link>
                         </Button>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 import { getAllAPIDocuments } from "@/lib/api";
 import { siteName } from '@/config/site';
 import { Metadata } from "next";
-import TransitionLink from "@/components/TransitionLink";
+import {Link} from "next-view-transitions"
 
 // 生成页面元数据
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default async function APIPage() {
           {apiDocuments.length > 0 ? (
             apiDocuments.map((api) => (
               <div key={api.id} className="block rounded-lg border border-white/5 bg-card hover:bg-[hsl(var(--linear-gray))/0.1] hover:border-white/20 transition-colors overflow-hidden p-6">
-                <TransitionLink href={`/api/${api.id}`} className="group">
+                <Link href={`/api/${api.id}`} className="group">
                   <h2 className="text-xl font-semibold mb-2">{api.title}</h2>
                   <div className="text-xs bg-primary/10 text-primary inline-block px-2 py-1 rounded mb-3">
                     版本 {api.version}
@@ -32,7 +32,7 @@ export default async function APIPage() {
                       {api.description}
                     </p>
                   )}
-                </TransitionLink>
+                </Link>
               </div>
             ))
           ) : (

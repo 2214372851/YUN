@@ -2,7 +2,7 @@
 
 import {Button} from "./ui/button";
 import {motion} from "framer-motion";
-import TransitionLink from "@/components/TransitionLink";
+import {Link} from "next-view-transitions"
 
 export function CallToAction() {
     return (
@@ -17,10 +17,10 @@ export function CallToAction() {
                 <h2 className="text-3xl md:text-4xl font-bold mb-12">Learn more about me</h2>
                 <div className="flex flex-wrap justify-center gap-4">
                     <Button variant="outline" size="lg" asChild className="px-8 py-6 text-base">
-                        <TransitionLink href="/blog" className="text-gray-300">View the blog</TransitionLink>
+                        <Link href="/blog" className="text-gray-300">View the blog</Link>
                     </Button>
                     <Button size="lg" asChild className="px-8 py-6 text-base">
-                        <TransitionLink href="/docs">View the docs</TransitionLink>
+                        <Link href="/docs">View the docs</Link>
                     </Button>
                 </div>
             </motion.div>

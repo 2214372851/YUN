@@ -1,7 +1,7 @@
 'use client';
 import {motion} from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
+import {Link} from "next-view-transitions"
 import {image} from '@/config/site';
 import {STORAGE_HOST} from "@/data/baseUrl";
 

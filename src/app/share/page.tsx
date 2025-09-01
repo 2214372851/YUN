@@ -13,7 +13,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import {useToast} from "@/hooks/use-toast";
-import TransitionLink from "@/components/TransitionLink";
+import {Link} from "next-view-transitions"
 
 // API 基础 URL
 const API_BASE_URL = "https://share-api.yhnotes.com";
@@ -569,7 +569,7 @@ export default function SharePage() {
 
                                         <div className="text-sm mt-1">
                                             ZIP文件不能大于50MB且必须包含meta.json文件，其中的project属性将作为项目名称，
-                                            <TransitionLink href="/blog/yun-share/" className="inline-block border-b-blue-500 border-b-2">使用指南</TransitionLink>。
+                                            <Link href="/blog/yun-share/" className="inline-block border-b-blue-500 border-b-2">使用指南</Link>。
                                         </div>
                                     </div>
                                 </div>

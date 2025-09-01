@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import {Link} from "next-view-transitions"
 import {motion} from "framer-motion";
 import Image from "next/image";
 import {STORAGE_HOST} from "@/data/baseUrl";

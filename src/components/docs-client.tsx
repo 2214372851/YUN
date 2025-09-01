@@ -4,9 +4,8 @@ import {useEffect, useMemo, useState} from 'react';
 import {ChevronDown, ChevronRight, List, Menu, X} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 import type {TableOfContents as TocItem} from "@/lib/markdown";
-import TransitionLink from "@/components/TransitionLink";
+import {Link} from "next-view-transitions"
 import dynamic from "next/dynamic";
-import {LoadingSpinner} from "@/components/ui/loading-spinner";
 import {DocItem} from "@/data/docs-navigation";
 import {useToast} from "@/hooks/use-toast";
 
@@ -49,9 +48,9 @@ function DocNavItem({
                         {doc.title}
                     </span>
                 ) : (
-                    <TransitionLink href={`/docs/${doc.slug}`} className="flex-1 block">
+                    <Link href={`/docs/${doc.slug}`} className="flex-1 block">
                         {doc.title}
-                    </TransitionLink>
+                    </Link>
                 )}
                 {hasChildren && (
                     <span className="ml-1">
@@ -266,8 +265,25 @@ function MobileControls({onToggleSidebar, onToggleTOC, isSidebarOpen, isTocOpen}
 }
 
 const MarkdownView = dynamic(() => import('@/components/markdown-view'),
-    {ssr: false, loading: () => <LoadingSpinner fullScreen={true}/>}
+    {
+        ssr: false, loading: () => (
+            <div>
+                <div className="animate-pulse space-y-4">
+                    <div className="h-10 bg-gray-300 rounded w-3/4"></div>
+                    <div className="h-6 bg-gray-300 rounded w-full"></div>
+                    <div className="h-6 bg-gray-300 rounded w-full"></div>
+                    <div className="h-6 bg-gray-300 rounded w-5/6"></div>
+                    <div className="h-6 bg-gray-300 rounded w-full"></div>
+                    <div className="h-6 bg-gray-300 rounded w-full"></div>
+                    <div className="h-6 bg-gray-300 rounded w-full"></div>
+                    <div className="h-6 bg-gray-300 rounded w-full"></div>
+                    <div className="h-6 bg-gray-300 rounded w-5/6"></div>
+                </div>
+            </div>
+        )
+    }
 );
+
 
 export function DocsClient({allDocs, title, currentSlug, contentHtml, headings}: DocsClientProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);

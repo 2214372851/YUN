@@ -1,11 +1,10 @@
-// src/app/media/page.tsx
 "use client";
 
 import React from 'react';
 import {getAllMediaItems} from '@/data/media';
 import type {MediaItem} from '@/types/media';
 import Image from 'next/image'
-import TransitionLink from "@/components/TransitionLink";
+import {Link} from "next-view-transitions"
 
 interface MediaCardProps {
     item: MediaItem;
@@ -34,9 +33,9 @@ function MediaCard({item}: MediaCardProps) {
     );
 
     return (
-        <TransitionLink href={`/media/${item.id}`} className="h-full group">
+        <Link href={`/media/${item.id}`} className="h-full group">
             {cardContent}
-        </TransitionLink>
+        </Link>
     );
 }
 

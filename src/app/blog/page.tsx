@@ -1,5 +1,5 @@
 import {getAllBlogPosts} from "@/data/blog-posts";
-import TransitionLink from "@/components/TransitionLink";
+import {Link} from "next-view-transitions"
 import {image, siteName} from '@/config/site';
 import type {Metadata} from 'next';
 import {STORAGE_HOST} from "@/data/baseUrl";
@@ -16,12 +16,13 @@ interface BlogPostProps {
 
 function FeaturedPost({index, slug, category, title, imageUrl, excerpt}: BlogPostProps) {
     return (
-        <TransitionLink
+        <Link
             href={`/blog/${slug}`}
             className="brightness-[0.8] hover:brightness-[1] block rounded-lg border border-white/5 hover:border-white/20  bg-card  transition-colors overflow-hidden p-1 h-full"
         >
             <div
                 className="h-64 rounded-md overflow-hidden flex items-center justify-center mb-4">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                     src={imageUrl || `${STORAGE_HOST}/docs/YUN Blog bg ${index}.svg`}
                     alt={title}
@@ -44,13 +45,13 @@ function FeaturedPost({index, slug, category, title, imageUrl, excerpt}: BlogPos
                     <p className="text-sm text-muted-foreground line-clamp-1">{excerpt}</p>
                 )}
             </div>
-        </TransitionLink>
+        </Link>
     );
 }
 
 function RegularPost({slug, category, title, date}: BlogPostProps) {
     return (
-        <TransitionLink
+        <Link
             href={`/blog/${slug}`}
             className="flex justify-between items-center hover:bg-[hsl(var(--linear-gray))/0.05] transition-colors group w-full"
         >
@@ -59,7 +60,7 @@ function RegularPost({slug, category, title, date}: BlogPostProps) {
                 <span className="col-span-2 text-sm text-muted-foreground text-center">{category}</span>
                 {date && <span className="col-span-2 text-sm text-muted-foreground text-center">{date}</span>}
             </div>
-        </TransitionLink>
+        </Link>
     );
 }
 
