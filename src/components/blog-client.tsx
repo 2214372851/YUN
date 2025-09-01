@@ -7,22 +7,25 @@ const BlogClient = ({content}: { content: string }) => {
             ssr: false,
             loading: () => (
                 <div>
-                    <div className="animate-pulse space-y-4">
-                        <div className="h-6 bg-gray-300 rounded w-3/4"></div>
-                        <div className="h-6 bg-gray-300 rounded w-full"></div>
-                        <div className="h-6 bg-gray-300 rounded w-full"></div>
-                        <div className="h-6 bg-gray-300 rounded w-5/6"></div>
-                        <div className="h-64 bg-gray-300 rounded w-full"></div>
-                        <div className="h-6 bg-gray-300 rounded w-full"></div>
-                        <div className="h-6 bg-gray-300 rounded w-full"></div>
-                        <div className="h-6 bg-gray-300 rounded w-full"></div>
-                        <div className="h-6 bg-gray-300 rounded w-5/6"></div>
+                    <div className="animate-pulse space-y-6">
+                        <div className="flex justify-center mb-10">
+                            <div className="h-80 bg-gray-400 rounded w-2/3"></div>
+                        </div>
+                        <div className="h-6 bg-gray-400 rounded w-1/2"></div>
+                        <div className="h-6 bg-gray-400 rounded w-3/4"></div>
+                        {
+                            Array.from({length: 10}).map((_, idx) => (
+                                <div key={idx} className="h-6 bg-gray-400 rounded w-full"></div>
+                            ))
+                        }
                     </div>
                 </div>
             )
         }
     )
-    return (<MarkdownView contentHtml={content} />)
+    return (
+        <MarkdownView contentHtml={content} />
+    )
 }
 
 export default BlogClient;

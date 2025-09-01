@@ -273,10 +273,11 @@ const MarkdownView = dynamic(() => import('@/components/markdown-view'),
                     <div className="h-6 bg-gray-300 rounded w-full"></div>
                     <div className="h-6 bg-gray-300 rounded w-full"></div>
                     <div className="h-6 bg-gray-300 rounded w-5/6"></div>
-                    <div className="h-6 bg-gray-300 rounded w-full"></div>
-                    <div className="h-6 bg-gray-300 rounded w-full"></div>
-                    <div className="h-6 bg-gray-300 rounded w-full"></div>
-                    <div className="h-6 bg-gray-300 rounded w-full"></div>
+                    {
+                        Array.from({length: 10}).map((_, idx) => (
+                            <div key={idx} className="h-6 bg-gray-300 rounded w-full"></div>
+                        ))
+                    }
                     <div className="h-6 bg-gray-300 rounded w-5/6"></div>
                 </div>
             </div>
