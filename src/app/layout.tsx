@@ -7,6 +7,8 @@ import React from "react";
 import {Toaster} from "@/components/ui/toaster"
 import {baseUrl, image, siteName} from '@/config/site';
 import Script from "next/script";
+import {ViewTransitions} from 'next-view-transitions'
+
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -73,22 +75,24 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="zh-CN">
-        {/* 网站监控脚本 */}
-        <Script
-            defer
-            src="https://cloud.umami.is/script.js"
-            data-website-id="e7012192-3cfd-4138-af60-453aa655c7f9"
-        ></Script>
-        <body className={inter.className}>
-        <Navbar/>
-        <Toaster/>
-        <main className="min-h-screen">
-            {children}
-        </main>
-        <Footer/>
-        </body>
-        </html>
+        <ViewTransitions>
+            <html lang="zh-CN">
+            {/* 网站监控脚本 */}
+            <Script
+                defer
+                src="https://cloud.umami.is/script.js"
+                data-website-id="e7012192-3cfd-4138-af60-453aa655c7f9"
+            ></Script>
+            <body className={inter.className}>
+            <Navbar/>
+            <Toaster/>
+            <main className="min-h-screen">
+                {children}
+            </main>
+            <Footer/>
+            </body>
+            </html>
+        </ViewTransitions>
     );
 }
 

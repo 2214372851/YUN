@@ -7,7 +7,8 @@ import {MediaItem} from '@/types/media';
 import gsap from "gsap";
 import Image from 'next/image'
 import {getAllMediaItems} from "@/data/media";
-import TransitionLink from "@/components/TransitionLink";
+import {Link} from "next-view-transitions"
+
 import extractThemeColors from "@/lib/getImgColor";
 import {useToast} from "@/hooks/use-toast";
 import {darkenIfNearWhite} from "@/lib/utils";
@@ -562,12 +563,12 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
             <h1 className="text-2xl font-bold mb-8 text-center">{title} - {author}</h1>
             <div className="flex items-center gap-4 flex-col md:flex-row">
                 <div className="flex gap-3 items-center">
-                    <TransitionLink
+                    <Link
                         id="backward"
-                        callback={() => clearState()}
+                        onClick={() => clearState()}
                         className="text-white hover:text-blue-300 transition-colors" href={`/media/${backward}/`}>
                         <RewindIcon size="1.5rem"/>
-                    </TransitionLink>
+                    </Link>
                     <button
                         onClick={togglePlay}
                         className="text-white hover:text-blue-300 transition-colors"
@@ -578,12 +579,12 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                             <PlayIcon size="1.5rem"/>
                         )}
                     </button>
-                    <TransitionLink
+                    <Link
                         id="forward"
-                        callback={() => clearState()}
+                        onClick={() => clearState()}
                         className="text-white hover:text-blue-300 transition-colors" href={`/media/${forward}/`}>
                         <FastForwardIcon size="1.5rem"/>
-                    </TransitionLink>
+                    </Link>
 
                     <button
                         onClick={autoPlayCallback}

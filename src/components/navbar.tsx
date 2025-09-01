@@ -6,7 +6,8 @@ import {cn} from "@/lib/utils";
 import Image from 'next/image';
 import {useRef, useState} from 'react';
 import {Menu, X} from 'lucide-react';
-import TransitionLink from "@/components/TransitionLink";
+import {Link} from "next-view-transitions"
+// import Link from "@/components/Link";
 import {STORAGE_HOST} from "@/data/baseUrl";
 import {Command} from "@/components/command";
 
@@ -80,7 +81,7 @@ export function Navbar() {
             <div
                 className="container max-w-7xl mx-auto px-4 relative flex items-center justify-center md:justify-between h-full">
                 {/* Logo Link - Centered on mobile via container justify-center */}
-                <TransitionLink href="/" className="flex items-center gap-2">
+                <Link href="/" className="flex items-center gap-2">
                     <Image
                         src={`${STORAGE_HOST}/docs/Avatar.webp`}
                         alt="YunHai Logo"
@@ -89,7 +90,7 @@ export function Navbar() {
                         className="rounded-full object-cover"
                     />
                     <span className="font-semibold">YunHai</span>
-                </TransitionLink>
+                </Link>
                 <nav className="hidden md:flex gap-2 items-center">
                     {navLinks.map((link) => (
                         link.children ? (
@@ -118,7 +119,7 @@ export function Navbar() {
                                 >
                                     <div className="grid grid-cols-3 gap-6 bg-[#151617] rounded-md p-4">
                                         {link.children.map(child => (
-                                            <TransitionLink
+                                            <Link
                                                 key={child.href}
                                                 href={child.href}
                                                 className={cn(
@@ -134,13 +135,13 @@ export function Navbar() {
                                                     className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">
                                                     {child.description}
                                                 </div>
-                                            </TransitionLink>
+                                            </Link>
                                         ))}
                                     </div>
                                 </div>
                             </div>
                         ) : (
-                            <TransitionLink
+                            <Link
                                 key={link.href}
                                 href={link.href}
                                 className={cn(
@@ -149,7 +150,7 @@ export function Navbar() {
                                 )}
                             >
                                 {link.text}
-                            </TransitionLink>
+                            </Link>
                         )
                     ))}
                 </nav>
@@ -208,35 +209,35 @@ export function Navbar() {
                                         {openMobileDropdown === link.text && (
                                             <div className="pl-4">
                                                 {link.children.map(child => (
-                                                    <TransitionLink
+                                                    <Link
                                                         key={child.href}
                                                         href={child.href}
                                                         className={cn(
                                                             "block py-2 text-sm transition-colors hover:text-white",
                                                             pathname === child.href ? "text-white" : "text-gray-400"
                                                         )}
-                                                        callback={mobileHandleClick}
+                                                        onClick={mobileHandleClick}
                                                     >
                                                         <div className="font-medium">{child.title}</div>
                                                         <div
                                                             className="text-xs text-gray-500 mt-1">{child.description}</div>
-                                                    </TransitionLink>
+                                                    </Link>
                                                 ))}
                                             </div>
                                         )}
                                     </div>
                                 ) : (
-                                    <TransitionLink
+                                    <Link
                                         key={link.href}
                                         href={link.href}
                                         className={cn(
                                             "py-2 text-sm transition-colors hover:text-white",
                                             pathname === link.href ? "text-white" : "text-gray-400"
                                         )}
-                                        callback={mobileHandleClick}
+                                        onClick={mobileHandleClick}
                                     >
                                         {link.text}
-                                    </TransitionLink>
+                                    </Link>
                                 )
                             ))}
                         </div>
