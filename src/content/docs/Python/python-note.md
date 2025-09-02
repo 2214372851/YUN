@@ -2,6 +2,10 @@
 title:  Python 技巧与库
 ---
 
+## Tortoise ORM
+
+[文档](https://tortoise.github.io/toc.html)
+
 ## 多线程进度任务执行器类
 
 - 控制最多并发任务数（即线程池大小）。
