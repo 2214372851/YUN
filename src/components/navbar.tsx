@@ -155,7 +155,7 @@ export function Navbar() {
                     ))}
                 </nav>
 
-                {/* GitHub Icon */}
+                {/* GitHub And Command Icon */}
                 <div className="flex gap-3">
                     <div className="hidden md:flex items-center">
                         <Command />
@@ -174,7 +174,10 @@ export function Navbar() {
                 </div>
 
                 {/* Mobile Menu Button: Positioned absolutely on mobile */}
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 md:hidden">
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 md:hidden flex">
+                    <div className="md:flex items-center">
+                        <Command />
+                    </div>
                     <Button
                         variant="ghost"
                         size="icon"
