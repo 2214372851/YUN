@@ -7,7 +7,9 @@ import {TypeAnimation} from 'react-type-animation';
 import {Link} from "next-view-transitions"
 import {STORAGE_HOST} from "@/data/baseUrl";
 import Particles from "@/components/blocks/Backgrounds/Particles/Particles";
-
+import {useEffect, useRef} from "react";
+import {ScrollTrigger} from "gsap/ScrollTrigger";
+import gsap from "gsap";
 
 function ProductDiagram() {
     const imageMap = [
@@ -70,6 +72,51 @@ function ProductDiagram() {
 }
 
 export function Hero() {
+
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const titleRef = useRef<HTMLDivElement>(null);
+    const scrollHeightRef = useRef<number>(0);
+
+
+    const createScrollTrigger = () => {
+        if (wrapperRef.current && titleRef.current) {
+            gsap.registerPlugin(ScrollTrigger);
+            scrollHeightRef.current = wrapperRef.current.offsetHeight;
+
+            ScrollTrigger.create({
+                trigger: wrapperRef.current,
+                start: "top top",
+                end: "bottom top",
+                scrub: true,
+                onUpdate: (self) => {
+                    if (titleRef.current) {
+                        titleRef.current.style.top = `${60+self.progress * scrollHeightRef.current}px`;
+                        titleRef.current.style.height = `${10 + self.progress * 40}%`;
+                    }
+                },
+            })
+        }
+    };
+
+    const resize = () => {
+        if (wrapperRef.current && titleRef.current) {
+            scrollHeightRef.current = wrapperRef.current.offsetHeight;
+            titleRef.current.style.top = `60px`;
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener("resize", resize);
+        return () => {
+            window.removeEventListener("resize", resize);
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        };
+    }, []);
+
+    useEffect(() => {
+        createScrollTrigger()
+    }, []);
+
     return (
         <section className="min-h-screen flex flex-col items-center justify-center text-center px-4 pt-10 pb-24">
             <motion.div
@@ -79,7 +126,7 @@ export function Hero() {
                 transition={{duration: 2}} // 为进入和退出动画设置时长
                 className="w-full mx-auto relative min-h-screen h-fit flex flex-col justify-center"
             >
-                <div className="absolute size-full z-0">
+                <div ref={wrapperRef} className="absolute size-full z-0">
                     <Particles
                         particleColors={['#ffffff', '#ffffff']}
                         particleCount={150}
@@ -90,6 +137,13 @@ export function Hero() {
                         alphaParticles={false}
                         disableRotation={false}
                     />
+                    <div
+                        ref={titleRef}
+                        className="absolute w-full text-stroke h-[100px] flex justify-center"
+                    >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={`${STORAGE_HOST}/docs/Avatar.webp`} alt="aaa" className="h-full opacity-0 md:opacity-100"/>
+                    </div>
                 </div>
 
                 <div className="z-10">
