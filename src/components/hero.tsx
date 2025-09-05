@@ -7,9 +7,6 @@ import {TypeAnimation} from 'react-type-animation';
 import {Link} from "next-view-transitions"
 import {STORAGE_HOST} from "@/data/baseUrl";
 import Particles from "@/components/blocks/Backgrounds/Particles/Particles";
-import {useEffect, useRef} from "react";
-import {ScrollTrigger} from "gsap/ScrollTrigger";
-import gsap from "gsap";
 
 function ProductDiagram() {
     const imageMap = [
