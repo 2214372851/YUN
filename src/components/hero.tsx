@@ -51,7 +51,7 @@ function ProductDiagram() {
                             translateX: index * 50,
                             translateY: index * -40,
                         }}
-                        viewport={{ once: true, amount: 0.3 }}
+                        viewport={{once: true, amount: 0.3}}
                         key={index}
                         exit={{opacity: 0, x: 0}} // 添加退出动画
                         transition={{duration: 1, delay: !index ? 0 : index + 0.3}} // 为进入和退出动画设置时长
@@ -72,51 +72,6 @@ function ProductDiagram() {
 }
 
 export function Hero() {
-
-    const wrapperRef = useRef<HTMLDivElement>(null);
-    const titleRef = useRef<HTMLDivElement>(null);
-    const scrollHeightRef = useRef<number>(0);
-
-
-    const createScrollTrigger = () => {
-        if (wrapperRef.current && titleRef.current) {
-            gsap.registerPlugin(ScrollTrigger);
-            scrollHeightRef.current = wrapperRef.current.offsetHeight;
-
-            ScrollTrigger.create({
-                trigger: wrapperRef.current,
-                start: "top top",
-                end: "bottom top",
-                scrub: true,
-                onUpdate: (self) => {
-                    if (titleRef.current) {
-                        titleRef.current.style.top = `${60+self.progress * scrollHeightRef.current}px`;
-                        titleRef.current.style.height = `${10 + self.progress * 40}%`;
-                    }
-                },
-            })
-        }
-    };
-
-    const resize = () => {
-        if (wrapperRef.current && titleRef.current) {
-            scrollHeightRef.current = wrapperRef.current.offsetHeight;
-            titleRef.current.style.top = `60px`;
-        }
-    };
-
-    useEffect(() => {
-        window.addEventListener("resize", resize);
-        return () => {
-            window.removeEventListener("resize", resize);
-            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-        };
-    }, []);
-
-    useEffect(() => {
-        createScrollTrigger()
-    }, []);
-
     return (
         <section className="min-h-screen flex flex-col items-center justify-center text-center px-4 pt-10 pb-24">
             <motion.div
@@ -126,7 +81,7 @@ export function Hero() {
                 transition={{duration: 2}} // 为进入和退出动画设置时长
                 className="w-full mx-auto relative min-h-screen h-fit flex flex-col justify-center"
             >
-                <div ref={wrapperRef} className="absolute size-full z-0">
+                <div className="absolute size-full z-0">
                     <Particles
                         particleColors={['#ffffff', '#ffffff']}
                         particleCount={150}
@@ -137,13 +92,6 @@ export function Hero() {
                         alphaParticles={false}
                         disableRotation={false}
                     />
-                    <div
-                        ref={titleRef}
-                        className="absolute w-full text-stroke h-[100px] flex justify-center"
-                    >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={`${STORAGE_HOST}/docs/Avatar.webp`} alt="aaa" className="h-full opacity-0 md:opacity-100"/>
-                    </div>
                 </div>
 
                 <div className="z-10">
@@ -174,7 +122,8 @@ export function Hero() {
                                 <span>Introduce me</span>
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                      xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
+                                    <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1.5"
+                                          strokeLinecap="round"
                                           strokeLinejoin="round"/>
                                 </svg>
                             </Link>
