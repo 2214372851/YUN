@@ -348,6 +348,14 @@ export const mediaItems: MediaItem[] = [
         lyricsUrl: `${STORAGE_HOST}/docs/你在不在 很美味.lrc`,
     },
     {
+        id: 'hf-pqy',
+        title: '化风',
+        imageUrl: `${STORAGE_HOST}/docs/化风 胖球鱼.jpg`,
+        author: '胖球鱼',
+        musicUrl: `${STORAGE_HOST}/docs/化风 胖球鱼.mp3`,
+        lyricsUrl: `${STORAGE_HOST}/docs/化风 胖球鱼.lrc`,
+    },
+    {
         id: 'lkwdyl-wyw',
         title: '离开我的依赖',
         imageUrl: `${STORAGE_HOST}/docs/离开我的依赖 王艳薇.jpg`,

@@ -355,9 +355,8 @@ input[type="color"]::-moz-color-swatch {
     }
 }
 
-/*// 文字镂空描边*/
+/*文字镂空描边*/
 .text-stroke {
-
     color: transparent;
     -webkit-text-stroke: 1px hsla(var(--foreground));
 }
