@@ -166,9 +166,6 @@ const MusicDetail = ({musicItem}: Props) => {
 
             if (lineIndex !== -1 && lineIndex !== currentLine) {
                 const rotate = lineIndex % 2 === 0 ? 8 : -8;
-                if (tl) {
-                    tl.paused();
-                }
                 tl = gsap.timeline();
                 tl.to(element, {
                     duration: 0.1,                 // 增加动画时长

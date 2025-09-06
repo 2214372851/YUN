@@ -936,6 +936,13 @@ const netTools: Tool[] = [
         category: '网络工具',
     },
     {
+        id: 'wetest',
+        name: '微测网',
+        description: '提供全球主流云服务商的 CDN IP 优选、节点状态监测等服务，助力您的网络连接。',
+        href: 'https://www.wetest.vip/',
+        category: '网络工具',
+    },
+    {
         id: 'natfrp',
         name: 'SAKURA FRP',
         description: '免费易用的内网穿透工具，提供稳定的端口映射服务。',

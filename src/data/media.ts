@@ -100,6 +100,14 @@ export const mediaItems: MediaItem[] = [
         musicUrl: `${STORAGE_HOST}/docs/放 单循.mp4`,
     },
     {
+        id: 'zxy-yhdyh',
+        title: '以后的以后',
+        imageUrl: `${STORAGE_HOST}/docs/以后的以后 庄心妍.jpg`,
+        author: '庄心妍',
+        lyricsUrl: `${STORAGE_HOST}/docs/以后的以后 庄心妍.lrc`,
+        musicUrl: `${STORAGE_HOST}/docs/以后的以后 庄心妍.mp3`,
+    },
+    {
         id: 'yl-chfc',
         title: '沧海飞尘',
         imageUrl: `${STORAGE_HOST}/docs/沧海飞尘 银临.jpg`,
@@ -346,6 +354,14 @@ export const mediaItems: MediaItem[] = [
         author: '很美味',
         musicUrl: `${STORAGE_HOST}/docs/你在不在 很美味.mp3`,
         lyricsUrl: `${STORAGE_HOST}/docs/你在不在 很美味.lrc`,
+    },
+    {
+        id: 'hf-pqy',
+        title: '化风',
+        imageUrl: `${STORAGE_HOST}/docs/化风 胖球鱼.jpg`,
+        author: '胖球鱼',
+        musicUrl: `${STORAGE_HOST}/docs/化风 胖球鱼.mp3`,
+        lyricsUrl: `${STORAGE_HOST}/docs/化风 胖球鱼.lrc`,
     },
     {
         id: 'lkwdyl-wyw',

@@ -3,6 +3,8 @@
 import {useEffect, useRef} from "react";
 import {ScrollTrigger} from "gsap/ScrollTrigger";
 import gsap from "gsap";
+import LoginPage from "@/app/test/login";
+import Image from "next/image";
 
 function TestPage() {
 
@@ -62,6 +64,9 @@ function TestPage() {
             <div className="flex items-center justify-between mb-16">
                 <h1 className="text-4xl font-bold">探索 · 测试</h1>
             </div>
+            <div className="mt-2">
+                <LoginPage />
+            </div>
             <div className="mt-2 text-3xl mb-10">横向滑动</div>
 
             <div ref={wrapperRef} className="relative w-full">
@@ -71,15 +76,18 @@ function TestPage() {
                             new Array(20).fill(0).map((_, i) => (
                                 <div key={i}
                                      className="p-2 overflow-hidden flex justify-center items-center w-1/3 h-1/2 m-[40px] text-white bg-black/50 flex-shrink-0">
-                                    <img src="https://minio-endpoint.bybxbwg.fun/docs/卡提希娅.png" alt="卡提希娅" className="size-full"/>
+                                    <Image
+                                        src="https://minio-endpoint.yhnotes.com/docs/卡提希娅.png"
+                                        alt="卡提希娅"
+                                        width={20}
+                                        height={20}
+                                        className="size-full"/>
                                 </div>
                             ))
                         }
                     </div>
                 </div>
             </div>
-
-            <div className="h-[60rem] bg-white/30 mt-2">test3</div>
         </div>
     );
 }

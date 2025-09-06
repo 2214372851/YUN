@@ -354,3 +354,9 @@ input[type="color"]::-moz-color-swatch {
         border-color: rgb(255 255 255 / 0.5);
     }
 }
+
+/*文字镂空描边*/
+.text-stroke {
+    color: transparent;
+    -webkit-text-stroke: 1px hsla(var(--foreground));
+}

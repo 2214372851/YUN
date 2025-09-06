@@ -8,7 +8,6 @@ import {Link} from "next-view-transitions"
 import {STORAGE_HOST} from "@/data/baseUrl";
 import Particles from "@/components/blocks/Backgrounds/Particles/Particles";
 
-
 function ProductDiagram() {
     const imageMap = [
         {
@@ -49,7 +48,7 @@ function ProductDiagram() {
                             translateX: index * 50,
                             translateY: index * -40,
                         }}
-                        viewport={{ once: true, amount: 0.3 }}
+                        viewport={{once: true, amount: 0.3}}
                         key={index}
                         exit={{opacity: 0, x: 0}} // 添加退出动画
                         transition={{duration: 1, delay: !index ? 0 : index + 0.3}} // 为进入和退出动画设置时长
@@ -120,7 +119,8 @@ export function Hero() {
                                 <span>Introduce me</span>
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                      xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
+                                    <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1.5"
+                                          strokeLinecap="round"
                                           strokeLinejoin="round"/>
                                 </svg>
                             </Link>

@@ -3,7 +3,6 @@ import {Inter} from "next/font/google";
 import "./globals.css";
 import {Navbar} from "@/components/navbar";
 import {Footer} from "@/components/footer";
-import React from "react";
 import {Toaster} from "@/components/ui/toaster"
 import {baseUrl, image, siteName} from '@/config/site';
 import Script from "next/script";
