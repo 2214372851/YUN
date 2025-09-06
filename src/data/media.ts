@@ -100,6 +100,14 @@ export const mediaItems: MediaItem[] = [
         musicUrl: `${STORAGE_HOST}/docs/放 单循.mp4`,
     },
     {
+        id: 'zxy-yhdyh',
+        title: '以后的以后',
+        imageUrl: `${STORAGE_HOST}/docs/以后的以后 庄心妍.jpg`,
+        author: '庄心妍',
+        lyricsUrl: `${STORAGE_HOST}/docs/以后的以后 庄心妍.lrc`,
+        musicUrl: `${STORAGE_HOST}/docs/以后的以后 庄心妍.mp3`,
+    },
+    {
         id: 'yl-chfc',
         title: '沧海飞尘',
         imageUrl: `${STORAGE_HOST}/docs/沧海飞尘 银临.jpg`,
