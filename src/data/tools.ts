@@ -1,4 +1,4 @@
-import {Tool} from "@/types/tools";
+import { Tool } from "@/types/tools";
 
 const localTools: Tool[] = [
     {
@@ -819,6 +819,13 @@ const otherTools: Tool[] = [
         description: '专注下载YouTube视频，音乐，字幕与封面，兼容多个网站。',
         href: 'https://tubedown.cn/',
         category: '解析工具',
+    },
+    {
+        id: 'snapany',
+        name: 'SnapAny',
+        description: '万能视频图片解析下载',
+        href: 'https://snapany.com/zh',
+        category: '解析工具'
     },
     {
         id: 'kedou-视频解析',

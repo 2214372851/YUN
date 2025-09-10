@@ -4,7 +4,7 @@ title: 算法集
 
 > 由于用于学习所以采用多语言混写的方式，思路一致
 
-## 两数之和
+## [两数之和](https://leetcode.cn/problems/two-sum/)
 
 给定一个整数数组 `nums` 和一个整数目标值 `target`，请你在该数组中找出 **和为目标值** *`target`* 的那 **两个** 整数，并返回它们的数组下标。
 
@@ -28,7 +28,7 @@ fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
 }
 ```
 
-## 两数相加
+## [两数相加](https://leetcode.cn/problems/add-two-numbers/)
 
 给你两个 **非空** 的链表，表示两个非负的整数。它们每位数字都是按照 **逆序** 的方式存储的，并且每个节点只能存储 **一位** 数字。
 
@@ -97,6 +97,38 @@ fn main() {
     }));
     let result = add_two_numbers(l1, l2);
     println!("{:?}", result);
+}
+```
+
+
+
+## [无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/)
+
+给定一个字符串 `s` ，请你找出其中不含有重复字符的 **最长 子串** 的长度。
+
+> 解析：本算法使用 Rust 实现，时间和空间复杂度均为 O(n)。核心思想是滑动窗口：用两个指针 left 和 right 表示当前不含重复字符的子串区间。用哈希表 char_index_map 记录每个字符上一次出现的位置。每当遇到重复字符时，更新 left 指针到重复字符的下一个位置，保证窗口内无重复。每次遍历时计算当前窗口长度，更新最大值。最终返回最长无重复子串的长度。
+
+```rust
+fn length_of_longest_substring(s: String) -> i32 {
+    use std::collections::HashMap;
+    let mut char_index_map = HashMap::new();
+    let (mut left, mut max_length) = (0, 0);
+    
+    for (right, char) in s.chars().enumerate() {
+        if let Some(&prev_index) = char_index_map.get(&char) {
+            left = left.max(prev_index + 1);
+        }
+
+        char_index_map.insert(char, right);
+        max_length = max_length.max(right - left + 1);
+    }
+
+    max_length as i32
+}
+fn main() {
+    let s = String::from("pwwkew");
+    let result = length_of_longest_substring(s);
+    println!("Length of longest substring: {}", result);
 }
 ```
 
