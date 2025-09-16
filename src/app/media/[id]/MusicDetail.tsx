@@ -14,7 +14,6 @@ import {useToast} from "@/hooks/use-toast";
 import {darkenIfNearWhite} from "@/lib/utils";
 import {useFullscreen} from "@/hooks/use-fullscreen";
 import {FastForwardIcon, Maximize, Minimize, PauseIcon, PlayIcon, RepeatIcon, RewindIcon} from "lucide-react";
-import RippleHeartbeat from "@/components/RippleHearbeat";
 import './index.css'
 import ElasticSlider from "@/components/blocks/Components/ElasticSlider/ElasticSlider";
 
@@ -178,7 +177,6 @@ const MusicDetail = ({musicItem}: Props) => {
                 tl.set(element, {
                     opacity: 0,
                     letterSpacing: "4em",
-                    filter: "blur(5px)",
                     y: 20,
                     rotation: rotate
                 });
@@ -193,7 +191,6 @@ const MusicDetail = ({musicItem}: Props) => {
                     duration: 0.6,
                     opacity: 1,
                     letterSpacing: ".2em",
-                    filter: "blur(0px)",
                     y: 0,
                     rotation: 0,
                     ease: "power2.out"
@@ -305,7 +302,7 @@ const MusicDetail = ({musicItem}: Props) => {
                                         className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
                                         <div
                                             id='lyrics-word'
-                                            className={`lg:text-[13rem] lyric-font text-8xl font-bold text-center blur-[3px] pointer-events-none ${bgTextFlag ? 'text-black/20': 'text-white/20'}`}
+                                            className={`lg:text-[13rem] lyric-font text-8xl font-bold text-center pointer-events-none ${bgTextFlag ? 'text-black/20' : 'text-white/20'}`}
                                         >
                                             {currentLine == 0 ? lyrics[currentLine].text.split(' ')[0] : splitWord(lyrics[currentLine].text)}
                                         </div>
@@ -361,9 +358,6 @@ const MusicDetail = ({musicItem}: Props) => {
                             imageUrl={imageUrl}
                             ref={audioRef}/>
                     </div>
-                </div>
-                <div className="fixed left-0 right-0 bottom-0 flex justify-center" style={{transform: 'translateY(70%)'}}>
-                    <RippleHeartbeat circles={2} size={600} color="#f3f3f3" duration={8}/>
                 </div>
             </div>
         </main>
@@ -466,7 +460,7 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                         setCurrentTime(newCurrentTime);
                         setProgress(newProgress);
                         setDuration(newDuration);
-                        setIsPlaying( !audio.paused && !audio.ended && audio.readyState > 2)
+                        setIsPlaying(!audio.paused && !audio.ended && audio.readyState > 2)
                     }
                     if (autoPlay) {
                         if (!nextToast.current && newDuration - newCurrentTime <= 10) {

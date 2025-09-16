@@ -102,7 +102,7 @@ export interface ParameterObject {
   explode?: boolean;
   allowReserved?: boolean;
   schema?: SchemaObject | ReferenceObject;
-  example?: any;
+  example?: unknown;
   examples?: Record<string, ExampleObject | ReferenceObject>;
   content?: Record<string, MediaTypeObject>;
 }
@@ -115,7 +115,7 @@ export interface RequestBodyObject {
 
 export interface MediaTypeObject {
   schema?: SchemaObject | ReferenceObject;
-  example?: any;
+  example?: unknown;
   examples?: Record<string, ExampleObject | ReferenceObject>;
   encoding?: Record<string, EncodingObject>;
 }
@@ -142,22 +142,20 @@ export interface CallbackObject {
 export interface ExampleObject {
   summary?: string;
   description?: string;
-  value?: any;
+  value?: unknown;
   externalValue?: string;
 }
 
 export interface LinkObject {
   operationRef?: string;
   operationId?: string;
-  parameters?: Record<string, any>;
-  requestBody?: any;
+  parameters?: Record<string, unknown>;
+  requestBody?: unknown;
   description?: string;
   server?: ServerObject;
 }
 
-export interface HeaderObject extends Omit<ParameterObject, 'name' | 'in'> {
-  // Header object is the same as Parameter but without 'name' and 'in'
-}
+export type HeaderObject = Omit<ParameterObject, 'name' | 'in'>
 
 export interface TagObject {
   name: string;
@@ -185,7 +183,7 @@ export interface SchemaObject {
   maxProperties?: number;
   minProperties?: number;
   required?: string[];
-  enum?: any[];
+  enum?: unknown[];
   type?: string;
   allOf?: (SchemaObject | ReferenceObject)[];
   oneOf?: (SchemaObject | ReferenceObject)[];
@@ -196,14 +194,14 @@ export interface SchemaObject {
   additionalProperties?: boolean | SchemaObject | ReferenceObject;
   description?: string;
   format?: string;
-  default?: any;
+  default?: unknown;
   nullable?: boolean;
   discriminator?: DiscriminatorObject;
   readOnly?: boolean;
   writeOnly?: boolean;
   xml?: XMLObject;
   externalDocs?: ExternalDocumentationObject;
-  example?: any;
+  example?: unknown;
   deprecated?: boolean;
 }
 
