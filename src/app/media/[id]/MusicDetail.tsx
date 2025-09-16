@@ -14,7 +14,6 @@ import {useToast} from "@/hooks/use-toast";
 import {darkenIfNearWhite} from "@/lib/utils";
 import {useFullscreen} from "@/hooks/use-fullscreen";
 import {FastForwardIcon, Maximize, Minimize, PauseIcon, PlayIcon, RepeatIcon, RewindIcon} from "lucide-react";
-import RippleHeartbeat from "@/components/RippleHearbeat";
 import './index.css'
 import ElasticSlider from "@/components/blocks/Components/ElasticSlider/ElasticSlider";
 
