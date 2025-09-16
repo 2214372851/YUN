@@ -19,5 +19,5 @@ declare module 'bubbly-bg' {
 
 // 扩展全局Window接口
 interface Window {
-    bubbly: (config?: any) => void;
-} 
+    bubbly: (config?: BubblyConfig) => void;
+}

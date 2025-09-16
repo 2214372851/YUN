@@ -478,30 +478,48 @@ const llmProviderTools: Tool[] = [
         id: '火山方舟',
         name: '火山方舟',
         description: '火山方舟是字节跳动推出的通用人工智能平台，提供多种 AI 模型和服务，支持文本、图像等多模态交互。',
-        href: 'https://www.volcengine.com/'
+        href: 'https://www.volcengine.com/',
+        category: '模型服务商',
     },
     {
         id: 'openrouter',
         name: 'OpenRouter',
         description: 'OpenRouter 是一个 AI 模型聚合平台，提供多种模型的 API 接入，支持多种编程语言和框架。',
-        href: 'https://openrouter.ai/'
+        href: 'https://openrouter.ai/',
+        category: '模型服务商',
     },
     {
         id: 'azure',
         name: 'Azure',
         description: '微软的云计算平台，提供多种 AI 服务和模型，包括 Azure OpenAI Service。',
         href: 'https://azure.microsoft.com/zh-cn/',
+        category: '模型服务商',
     },
     {
         id: 'ollama',
         name: 'Ollama',
         description: '一个开源的 AI 模型运行平台，支持多种模型的本地部署和运行。',
-        href: 'https://ollama.com/'
+        href: 'https://ollama.com/',
+        category: '模型服务商',
     },
 
 ]
 
 const aiTools: Tool[] = [
+    {
+        id: 'vizard-audio2text',
+        name: 'Vizard Audio2Text',
+        description: '使用人工智能自动将音频转录为文本，在线，免费。支持超过130种语言。',
+        href: 'https://vizard.ai/cn/tools/transcribe-audio-to-text',
+        category: 'AI 衍生工具'
+    },
+    {
+        id: 'nero',
+        name: 'Nero AI',
+        description: '图片借助模型高清修复至最高4x清晰度工具',
+        href: 'https://ai.nero.com/zh-cn',
+        category: 'AI 衍生工具'
+    },
     {
         id: 'free-qwen3',
         name: 'Free Qwen3',
