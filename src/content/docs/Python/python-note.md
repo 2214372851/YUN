@@ -152,7 +152,9 @@ title.append('<a>URL</a>')
 title.remove()
 ```
 
-
+::: warn
+获取多个元素循环时需要调用 `items` 方法，否则获取到的是 `HtmlElement` 对象导致与预期不一致
+:::
 
 
 
