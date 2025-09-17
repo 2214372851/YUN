@@ -4,6 +4,14 @@ import { STORAGE_HOST } from './baseUrl';
 
 export const mediaItems: MediaItem[] = [
     {
+        id: 'ysyy-yunhai',
+        title: '盈诗月影',
+        imageUrl: `${STORAGE_HOST}/docs/盈诗月影 yunhai.png`,
+        author: 'YunHai',
+        lyricsUrl: `${STORAGE_HOST}/docs/盈诗月影 yunhai.lrc`,
+        musicUrl: `${STORAGE_HOST}/docs/盈诗月影 yunhai.mp3`,
+    },
+    {
         id: 'jjy-lrwm',
         title: '落日未眠',
         imageUrl: `${STORAGE_HOST}/docs/落日未眠 鞠婧祎.jpg`,
