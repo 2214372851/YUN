@@ -37,13 +37,6 @@ const localTools: Tool[] = [
         category: '开发工具',
     },
     {
-        id: 'lry-edit',
-        name: 'LRC 歌词编辑器',
-        description: '制作和编辑LRC格式的歌词文件，支持时间轴同步、音频播放和实时预览。',
-        href: '/tools/lry-edit',
-        category: '媒体工具',
-    },
-    {
         id: 'markdown-editor',
         name: 'Markdown 编辑器',
         description: '在线编辑和预览 Markdown 文档，支持实时预览、语法高亮和常用格式工具栏。',
