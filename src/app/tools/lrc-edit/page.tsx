@@ -108,25 +108,17 @@ const LrcEditorPage = () => {
             setCurrentLineIndex(-1);
         };
 
-        const handleLoadedMetadata = () => {
-            if (audio) {
-                setDuration(audio.duration);
-            }
-        };
-
         const handlePlay = () => setIsPlaying(true);
         const handlePause = () => setIsPlaying(false);
 
         audio.addEventListener('timeupdate', updateTime);
         audio.addEventListener('ended', handleEnded);
-        audio.addEventListener('loadedmetadata', handleLoadedMetadata);
         audio.addEventListener('play', handlePlay);
         audio.addEventListener('pause', handlePause);
 
         return () => {
             audio.removeEventListener('timeupdate', updateTime);
             audio.removeEventListener('ended', handleEnded);
-            audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
             audio.removeEventListener('play', handlePlay);
             audio.removeEventListener('pause', handlePause);
         };
