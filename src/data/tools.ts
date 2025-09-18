@@ -2,6 +2,13 @@ import { Tool } from "@/types/tools";
 
 const localTools: Tool[] = [
     {
+        id: 'lrc-edit',
+        name: 'LRC 歌词编辑器',
+        description: '制作和编辑LRC格式的歌词文件，支持时间轴同步、音频播放和实时预览。',
+        href: '/tools/lrc-edit',
+        category: '媒体工具',
+    },
+    {
         id: 'json-formatter',
         name: 'JSON 格式化工具',
         description: '在线格式化、校验和美化 JSON 数据。',
@@ -30,6 +37,13 @@ const localTools: Tool[] = [
         category: '开发工具',
     },
     {
+        id: 'lry-edit',
+        name: 'LRC 歌词编辑器',
+        description: '制作和编辑LRC格式的歌词文件，支持时间轴同步、音频播放和实时预览。',
+        href: '/tools/lry-edit',
+        category: '媒体工具',
+    },
+    {
         id: 'markdown-editor',
         name: 'Markdown 编辑器',
         description: '在线编辑和预览 Markdown 文档，支持实时预览、语法高亮和常用格式工具栏。',
@@ -39,6 +53,13 @@ const localTools: Tool[] = [
 ]
 
 const devTools: Tool[] = [
+    {
+        id: 'regexr',
+        name: 'Regexr',
+        description: '在线正则表达式测试和学习工具。',
+        href: 'https://regexr-cn.com/',
+        category: '开发工具',
+    },
     {
         id: 'ahooks',
         name: 'ahooks',

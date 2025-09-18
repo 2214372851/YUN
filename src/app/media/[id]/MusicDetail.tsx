@@ -15,7 +15,7 @@ import {darkenIfNearWhite} from "@/lib/utils";
 import {useFullscreen} from "@/hooks/use-fullscreen";
 import {FastForwardIcon, Maximize, Minimize, PauseIcon, PlayIcon, RepeatIcon, RewindIcon} from "lucide-react";
 import './index.css'
-import ElasticSlider from "@/components/blocks/Components/ElasticSlider/ElasticSlider";
+import {AudioProgressBar} from "@/components/ui/audio-progress-bar";
 
 
 interface LyricLine {
@@ -376,9 +376,8 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
     // 合并ref处理
     React.useImperativeHandle(forwardedRef, () => audioRef.current as HTMLAudioElement);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [progress, setProgress] = useState(0);
+    const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [_currentTime, setCurrentTime] = useState(0);
     const [autoPlay, setAutoPlay] = useState(false);
     const {toast} = useToast();
     const nextToast = useRef(false)
@@ -421,17 +420,15 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
             // 重置进度为0但保留当前播放状态
             if (audio.currentTime > 0) {
                 setCurrentTime(0);
-                setProgress(0);
             }
         }
     };
 
-    const handleSeek = (value: number) => {
-        const seekTime = (value / 100) * duration;
+    const handleSeek = (time: number) => {
         const audio = audioRef.current;
         if (audio) {
-            audio.currentTime = seekTime;
-            setCurrentTime(seekTime);
+            audio.currentTime = time;
+            setCurrentTime(time);
         }
     };
 
@@ -450,15 +447,13 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
     useEffect(() => {
         const audio = audioRef.current;
         if (audio) {
-            const handleTimeUpdate = () => {
+                const handleTimeUpdate = () => {
                 const audio = audioRef.current;
                 if (audio) {
                     const newCurrentTime = audio.currentTime;
                     const newDuration = audio.duration || duration;
                     if (newDuration > 0) {
-                        const newProgress = (newCurrentTime / newDuration) * 100;
                         setCurrentTime(newCurrentTime);
-                        setProgress(newProgress);
                         setDuration(newDuration);
                         setIsPlaying(!audio.paused && !audio.ended && audio.readyState > 2)
                     }
@@ -475,9 +470,7 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                         }
                     }
                 }
-            };
-
-            const nexttrackCallback = () => {
+            };            const nexttrackCallback = () => {
                 clearState()
                 router.push(`/media/${forward}/`)
 
@@ -589,10 +582,10 @@ const AudioPlayer = React.forwardRef<HTMLAudioElement, {
                 {/* 进度条和时间显示 */}
                 <div className="flex-1 gap-1 w-full">
                     <div className="group w-full flex items-center justify-between">
-                        <ElasticSlider
-                            value={progress}
-                            maxValue={100}
-                            onChange={handleSeek}
+                        <AudioProgressBar
+                            currentTime={currentTime}
+                            duration={duration}
+                            onSeek={handleSeek}
                             className="w-full"
                         />
                     </div>
