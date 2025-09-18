@@ -14,8 +14,6 @@ module.exports = {
                 allow: '/',
                 disallow: [
                     '/api',
-                    '/tools',
-                    '/media'
                 ]
             },
         ],
@@ -23,5 +21,5 @@ module.exports = {
     sitemapSize: 5000,
     changefreq: 'weekly',
     priority: 0.7,
-    exclude: ['/test', '/test/*', '/share', '/share/*', '/docs', '/docs/*'],
+    exclude: ['/test', '/test/*', '/share', '/share/*', '/api', '/api/*'],
 };
