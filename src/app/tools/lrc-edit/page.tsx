@@ -1,10 +1,9 @@
 "use client";
 
-import React, {useState, useRef, useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Button} from "@/components/ui/button";
-import {Separator} from "@/components/ui/separator";
 import {AudioProgressBar} from "@/components/ui/audio-progress-bar";
-import {Play, Pause, Square, Upload, Download, Plus, Trash2, Clock, Music} from "lucide-react";
+import {Clock, Download, Music, Pause, Play, Plus, Square, Trash2, Upload} from "lucide-react";
 import {useToast} from "@/hooks/use-toast";
 
 interface LyricLine {
