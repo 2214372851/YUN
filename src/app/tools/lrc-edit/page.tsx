@@ -35,31 +35,18 @@ const formatTime = (seconds: number): string => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}.${ms.toString().padStart(2, '0')}`;
 };
 
-// LRC文件专用格式: [mm:ss:ms]
+// LRC文件专用格式: [mm:ss.xx]
 const formatLrcTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
-    const ms = Math.floor((seconds % 1) * 100);
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}:${ms.toString().padStart(2, '0')}`;
+    // LRC格式使用百分之一秒，不是毫秒
+    const centisecs = Math.round((seconds - Math.floor(seconds)) * 100);
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}.${centisecs.toString().padStart(2, '0')}`;
 };
 
 const parseTime = (timeStr: string): number => {
-    // 尝试解析包含小时的格式: hh:mm:ss.xx 或 hh:mm:ss
-    let match = timeStr.match(/(\d{1,2}):(\d{2}):(\d{2})(?:\.(\d{1,2}))?/);
-    if (match) {
-        const [, hours, mins, secs, ms = '0'] = match;
-        return parseInt(hours) * 3600 + parseInt(mins) * 60 + parseInt(secs) + parseInt(ms.padEnd(2, '0')) / 100;
-    }
-
-    // 尝试解析LRC格式: mm:ss:ms
-    match = timeStr.match(/(\d{1,2}):(\d{2}):(\d{1,2})/);
-    if (match) {
-        const [, mins, secs, ms] = match;
-        return parseInt(mins) * 60 + parseInt(secs) + parseInt(ms.padEnd(2, '0')) / 100;
-    }
-
-    // 尝试解析传统格式: mm:ss.xx 或 mm:ss
-    match = timeStr.match(/(\d{1,2}):(\d{2})(?:\.(\d{1,2}))?/);
+    // 解析LRC格式: mm:ss.xx 或 mm:ss
+    const match = timeStr.match(/(\d{1,2}):(\d{2})(?:\.(\d{1,2}))?/);
     if (match) {
         const [, mins, secs, ms = '0'] = match;
         return parseInt(mins) * 60 + parseInt(secs) + parseInt(ms.padEnd(2, '0')) / 100;
@@ -731,3 +718,4 @@ const LrcEditorPage = () => {
 };
 
 export default LrcEditorPage;
+
