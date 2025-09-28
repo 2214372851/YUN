@@ -467,15 +467,6 @@ export const mediaItems: MediaItem[] = [
         lyricsUrl: `${STORAGE_HOST}/docs/我看过 Zealot周星星.lrc`,
         musicUrl: `${STORAGE_HOST}/docs/我看过 Zealot周星星.mp3`,
     },
-    {
-        id: 'take-me-hand-daishi',
-        title: 'Take Me Hand',
-        imageUrl: `${STORAGE_HOST}/docs/Take Me Hand DAISHI DANCE&Cécile Corbel.jpg`,
-        author: 'DAISHI DANCE&Cécile Corbel',
-        lyricsUrl: `${STORAGE_HOST}/docs/Take Me Hand DAISHI DANCE&Cécile Corbel.lrc`,
-        musicUrl: `${STORAGE_HOST}/docs/Take Me Hand DAISHI DANCE&Cécile Corbel.mp3`,
-    },
-
 ];
 
 export function getAllMediaItems(): MediaItem[] {

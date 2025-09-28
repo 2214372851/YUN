@@ -199,6 +199,23 @@ const MusicDetail = ({musicItem}: Props) => {
 
             if (lineIndex !== -1 && lineIndex !== currentLine) {
                 const rotate = lineIndex % 2 === 0 ? 8 : -8;
+                // 判断歌词之间的时间间隔，间隔越大，动画效果越明显，如果间隔小于2秒则减弱动画效果
+                if (lyrics[currentLine].time - lyrics[lineIndex].time > -2) {
+                    tl = gsap.timeline();
+                    tl.to(element, {
+                        duration: 0.05,
+                        color: "#ccc",
+                        ease: "power2.out"
+                    });
+                    tl.call(() => setCurrentLine(lineIndex));
+                    tl.to(element, {
+                        duration: 0.3,
+                        color: "#fff",
+                        ease: "power2.out"
+                    });
+                    tl.play()
+                    return;
+                }
                 tl = gsap.timeline();
                 tl.to(element, {
                     duration: 0.1,                 // 增加动画时长
@@ -237,7 +254,6 @@ const MusicDetail = ({musicItem}: Props) => {
                         opacity: 1
                     }
                 )
-
                 tl.play();
 
             }
@@ -336,7 +352,7 @@ const MusicDetail = ({musicItem}: Props) => {
                                         className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
                                         <div
                                             id='lyrics-word'
-                                            className={`lg:text-[13rem] lyric-font text-8xl font-bold text-center pointer-events-none ${bgTextFlag ? 'text-black/20' : 'text-white/20'}`}
+                                            className={`lg:text-[13rem] lyric-font text-8xl font-bold text-center whitespace-nowrap pointer-events-none ${bgTextFlag ? 'text-black/20' : 'text-white/20'}`}
                                         >
                                             {currentLine == 0 ? lyrics[currentLine].text.split(' ')[0] : splitWord(lyrics[currentLine].text)}
                                         </div>
