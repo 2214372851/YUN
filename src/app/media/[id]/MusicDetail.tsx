@@ -25,30 +25,64 @@ interface LyricLine {
 
 const parseLRC = (lrc: string): LyricLine[] => {
     const result: LyricLine[] = [];
-    // 支持 [mm:ss.xx] 和 [mm:ss:xx] 格式
-    const timeRegex = /\[(\d+):(\d+)[.:](\d+)]/g;
 
-    // 处理所有时间标签，不管是否有换行符
-    let match;
-    while ((match = timeRegex.exec(lrc)) !== null) {
-        const minutes = parseInt(match[1]);
-        const seconds = parseInt(match[2]);
-        const milliseconds = parseInt(match[3]);
-        const time = minutes * 60 + seconds + milliseconds / 1000;
+    // 优先匹配带方括号的时间标签，支持可选小时与小数（. 或 ,）
+    const bracketTimeRegex = /\[(?:(\d+):)?(\d+):(\d+(?:[.,]\d+)?)]/g;
 
-        // 获取时间标签后的文本（直到下一个时间标签或文件结尾）
-        const textStart = match.index + match[0].length;
-        const nextMatch = timeRegex.exec(lrc);
-        const textEnd = nextMatch ? nextMatch.index : lrc.length;
-        timeRegex.lastIndex = textStart; // 重置以便下次继续匹配
+    // 用于处理行首无方括号的时间，如 "01:39.270004 歌词文本"
+    const leadingTimeRegex = /^\s*(?:(\d+):)?(\d+):(\d+(?:[.,]\d+)?)/;
 
-        const text = lrc.slice(textStart, textEnd).trim();
-        if (text) {
-            result.push({time, text});
+    const lines = lrc.split(/\r?\n/);
+
+    for (const line of lines) {
+        if (!line.trim()) continue;
+
+        // 找到该行中所有带方括号的时间标签
+        const times: number[] = [];
+        let m: RegExpExecArray | null;
+        while ((m = bracketTimeRegex.exec(line)) !== null) {
+            const hours = m[1] ? parseInt(m[1], 10) : 0;
+            const minutes = parseInt(m[2], 10);
+            const seconds = parseFloat(m[3].replace(',', '.'));
+            const timeSec = hours * 3600 + minutes * 60 + seconds;
+            if (Number.isFinite(timeSec)) times.push(timeSec);
+        }
+        // 重置以便下一行再次使用（避免 lastIndex 的副作用）
+        bracketTimeRegex.lastIndex = 0;
+
+        let text = line.replace(bracketTimeRegex, '').trim();
+
+        // 如果没有方括号时间，但行首是时间格式（无方括号），也处理一次
+        if (times.length === 0) {
+            const lead = line.match(leadingTimeRegex);
+            if (lead) {
+                const hours = lead[1] ? parseInt(lead[1], 10) : 0;
+                const minutes = parseInt(lead[2], 10);
+                const seconds = parseFloat(lead[3].replace(',', '.'));
+                const timeSec = hours * 3600 + minutes * 60 + seconds;
+                if (Number.isFinite(timeSec)) {
+                    times.push(timeSec);
+                    text = line.slice(lead[0].length).trim();
+                }
+            }
+        }
+
+        // 如果没有解析到任何时间标签，跳过该行
+        if (times.length === 0) continue;
+
+        // 空文本则忽略（与原逻辑一致）；如果想保留空行可去掉此判断
+        if (!text) continue;
+
+        // 为该行的每个时间标签都生成一个条目
+        for (const t of times) {
+            result.push({ time: t, text });
         }
     }
 
-    return result.sort((a, b) => a.time - b.time);
+    // 按时间升序（若原数据无序，统一处理）
+    result.sort((a, b) => a.time - b.time);
+
+    return result;
 };
 
 interface Props {
@@ -99,44 +133,6 @@ const MusicDetail = ({musicItem}: Props) => {
         } catch (error) {
             return text[0];
         }
-    }
-
-    // 根据文本内容决定如何拆分：
-    // - 如果文本包含拉丁字母（例如英语），并且包含空格，则认为是英文句子，不进行拆分，作为一个整体渲染。
-    // - 如果文本包含中文字符（CJK），则按字符拆分，以便逐字渲染/动画。
-    // - 其它情况：若包含空格则按空白拆分，否则作为整体返回。
-    const splitForDisplay = (text: string) => {
-        const trimmed = (text || '').trim();
-        if (!trimmed) return [''];
-
-        const hasLatin = /[A-Za-z]/.test(trimmed);
-        const hasCJK = /[\u4E00-\u9FFF]/.test(trimmed);
-        const hasSpace = /\s/.test(trimmed);
-
-        if (hasLatin && hasSpace) {
-            // 英文句子，保持原样
-            return [trimmed];
-        }
-
-        if (hasCJK) {
-            // 中文逐字拆分（保持原有视觉效果）
-            return trimmed.split(' ')
-        }
-
-        // 其它语言/混合：如果有空白则按空白拆分，否则作为整体
-        return hasSpace ? trimmed.split(/\s+/) : [trimmed];
-    }
-
-    // 返回用于在大字背景中显示的单词/片段：
-    // - 若包含 CJK，使用 splitWord 提取最长的分段（保留原先逻辑）
-    // - 否则使用 splitForDisplay 的第一个项（避免将英文按空格拆成多个单独渲染）
-    const getBigDisplayWord = (text: string) => {
-        const hasCJK = /[\u4E00-\u9FFF]/.test(text || '');
-        if (hasCJK) {
-            return splitWord(text);
-        }
-        const parts = splitForDisplay(text);
-        return parts && parts.length > 0 ? parts[0] : '';
     }
 
     useEffect(() => {
@@ -327,7 +323,7 @@ const MusicDetail = ({musicItem}: Props) => {
                                         id="lyrics"
                                         className="text-center justify-center space-y-4 tracking-[.3em]"
                                     >
-                                        {splitForDisplay(lyrics[currentLine].text).map((line, index) => (
+                                        {lyrics[currentLine].text.split(' ').map((line, index) => (
                                             <p
                                                 key={index}
                                                 className='ransition-all lyric-font text-white font-bold lg:text-[8rem] text-5xl z-20 whitespace-nowrap pointer-events-none'
@@ -342,7 +338,7 @@ const MusicDetail = ({musicItem}: Props) => {
                                             id='lyrics-word'
                                             className={`lg:text-[13rem] lyric-font text-8xl font-bold text-center pointer-events-none ${bgTextFlag ? 'text-black/20' : 'text-white/20'}`}
                                         >
-                                            {getBigDisplayWord(lyrics[currentLine].text)}
+                                            {currentLine == 0 ? lyrics[currentLine].text.split(' ')[0] : splitWord(lyrics[currentLine].text)}
                                         </div>
                                     </div>
                                 </div>
