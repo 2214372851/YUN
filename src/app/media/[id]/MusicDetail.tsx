@@ -101,6 +101,44 @@ const MusicDetail = ({musicItem}: Props) => {
         }
     }
 
+    // 根据文本内容决定如何拆分：
+    // - 如果文本包含拉丁字母（例如英语），并且包含空格，则认为是英文句子，不进行拆分，作为一个整体渲染。
+    // - 如果文本包含中文字符（CJK），则按字符拆分，以便逐字渲染/动画。
+    // - 其它情况：若包含空格则按空白拆分，否则作为整体返回。
+    const splitForDisplay = (text: string) => {
+        const trimmed = (text || '').trim();
+        if (!trimmed) return [''];
+
+        const hasLatin = /[A-Za-z]/.test(trimmed);
+        const hasCJK = /[\u4E00-\u9FFF]/.test(trimmed);
+        const hasSpace = /\s/.test(trimmed);
+
+        if (hasLatin && hasSpace) {
+            // 英文句子，保持原样
+            return [trimmed];
+        }
+
+        if (hasCJK) {
+            // 中文逐字拆分（保持原有视觉效果）
+            return trimmed.split(' ')
+        }
+
+        // 其它语言/混合：如果有空白则按空白拆分，否则作为整体
+        return hasSpace ? trimmed.split(/\s+/) : [trimmed];
+    }
+
+    // 返回用于在大字背景中显示的单词/片段：
+    // - 若包含 CJK，使用 splitWord 提取最长的分段（保留原先逻辑）
+    // - 否则使用 splitForDisplay 的第一个项（避免将英文按空格拆成多个单独渲染）
+    const getBigDisplayWord = (text: string) => {
+        const hasCJK = /[\u4E00-\u9FFF]/.test(text || '');
+        if (hasCJK) {
+            return splitWord(text);
+        }
+        const parts = splitForDisplay(text);
+        return parts && parts.length > 0 ? parts[0] : '';
+    }
+
     useEffect(() => {
         if (lyricsUrl) {
             const fetchLyrics = async (retryCount = 0) => {
@@ -289,7 +327,7 @@ const MusicDetail = ({musicItem}: Props) => {
                                         id="lyrics"
                                         className="text-center justify-center space-y-4 tracking-[.3em]"
                                     >
-                                        {lyrics[currentLine].text.split(' ').map((line, index) => (
+                                        {splitForDisplay(lyrics[currentLine].text).map((line, index) => (
                                             <p
                                                 key={index}
                                                 className='ransition-all lyric-font text-white font-bold lg:text-[8rem] text-5xl z-20 whitespace-nowrap pointer-events-none'
@@ -304,7 +342,7 @@ const MusicDetail = ({musicItem}: Props) => {
                                             id='lyrics-word'
                                             className={`lg:text-[13rem] lyric-font text-8xl font-bold text-center pointer-events-none ${bgTextFlag ? 'text-black/20' : 'text-white/20'}`}
                                         >
-                                            {currentLine == 0 ? lyrics[currentLine].text.split(' ')[0] : splitWord(lyrics[currentLine].text)}
+                                            {getBigDisplayWord(lyrics[currentLine].text)}
                                         </div>
                                     </div>
                                 </div>
