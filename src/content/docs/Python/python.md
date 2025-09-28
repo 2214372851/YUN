@@ -42,7 +42,7 @@ graph TB;
 
 **conda 与 poetry 组合**
 
-[Anaconda](https://www.anaconda.com/download)数据科学工具包(内置了1500+发行库)，[Miniconda](https://docs.conda.io/projects/miniconda/en/latest/)提供基础解释器与conda环境
+[Anaconda](https://www.anaconda.com/download) 数据科学工具包(内置了1500+发行库)，[Miniconda](https://docs.conda.io/projects/miniconda/en/latest/) 提供基础解释器与conda环境
 
 Poetry 在此作为项目管理方案，更多可以前往 [Poetry](../Python-yun-poetry) 查看
 
@@ -1008,17 +1008,6 @@ flowchart TD
     G --> H[返回原始函数执行结果]
     H --> I[包装函数返回结果]
     I --> J[装饰后的函数返回结果]
-
-    style A fill:#f9f,stroke:#333,stroke-width:1px
-    style B fill:#bbf,stroke:#333,stroke-width:1px
-    style C fill:#bfb,stroke:#333,stroke-width:1px
-    style D fill:#ffb,stroke:#333,stroke-width:1px
-    style E fill:#f96,stroke:#333,stroke-width:1px
-    style F fill:#fcf,stroke:#333,stroke-width:1px
-    style G fill:#cfc,stroke:#333,stroke-width:1px
-    style H fill:#cff,stroke:#333,stroke-width:1px
-    style I fill:#ffc,stroke:#333,stroke-width:1px
-    style J fill:#ccf,stroke:#333,stroke-width:1px
 ```
 
 当我们的 `Callable` 对象调用只有一个参数且该参数是 `Callable` 时，即可认为该对象是支持装饰器语法

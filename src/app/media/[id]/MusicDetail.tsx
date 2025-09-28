@@ -25,30 +25,64 @@ interface LyricLine {
 
 const parseLRC = (lrc: string): LyricLine[] => {
     const result: LyricLine[] = [];
-    // 支持 [mm:ss.xx] 和 [mm:ss:xx] 格式
-    const timeRegex = /\[(\d+):(\d+)[.:](\d+)]/g;
 
-    // 处理所有时间标签，不管是否有换行符
-    let match;
-    while ((match = timeRegex.exec(lrc)) !== null) {
-        const minutes = parseInt(match[1]);
-        const seconds = parseInt(match[2]);
-        const milliseconds = parseInt(match[3]);
-        const time = minutes * 60 + seconds + milliseconds / 1000;
+    // 优先匹配带方括号的时间标签，支持可选小时与小数（. 或 ,）
+    const bracketTimeRegex = /\[(?:(\d+):)?(\d+):(\d+(?:[.,]\d+)?)]/g;
 
-        // 获取时间标签后的文本（直到下一个时间标签或文件结尾）
-        const textStart = match.index + match[0].length;
-        const nextMatch = timeRegex.exec(lrc);
-        const textEnd = nextMatch ? nextMatch.index : lrc.length;
-        timeRegex.lastIndex = textStart; // 重置以便下次继续匹配
+    // 用于处理行首无方括号的时间，如 "01:39.270004 歌词文本"
+    const leadingTimeRegex = /^\s*(?:(\d+):)?(\d+):(\d+(?:[.,]\d+)?)/;
 
-        const text = lrc.slice(textStart, textEnd).trim();
-        if (text) {
-            result.push({time, text});
+    const lines = lrc.split(/\r?\n/);
+
+    for (const line of lines) {
+        if (!line.trim()) continue;
+
+        // 找到该行中所有带方括号的时间标签
+        const times: number[] = [];
+        let m: RegExpExecArray | null;
+        while ((m = bracketTimeRegex.exec(line)) !== null) {
+            const hours = m[1] ? parseInt(m[1], 10) : 0;
+            const minutes = parseInt(m[2], 10);
+            const seconds = parseFloat(m[3].replace(',', '.'));
+            const timeSec = hours * 3600 + minutes * 60 + seconds;
+            if (Number.isFinite(timeSec)) times.push(timeSec);
+        }
+        // 重置以便下一行再次使用（避免 lastIndex 的副作用）
+        bracketTimeRegex.lastIndex = 0;
+
+        let text = line.replace(bracketTimeRegex, '').trim();
+
+        // 如果没有方括号时间，但行首是时间格式（无方括号），也处理一次
+        if (times.length === 0) {
+            const lead = line.match(leadingTimeRegex);
+            if (lead) {
+                const hours = lead[1] ? parseInt(lead[1], 10) : 0;
+                const minutes = parseInt(lead[2], 10);
+                const seconds = parseFloat(lead[3].replace(',', '.'));
+                const timeSec = hours * 3600 + minutes * 60 + seconds;
+                if (Number.isFinite(timeSec)) {
+                    times.push(timeSec);
+                    text = line.slice(lead[0].length).trim();
+                }
+            }
+        }
+
+        // 如果没有解析到任何时间标签，跳过该行
+        if (times.length === 0) continue;
+
+        // 空文本则忽略（与原逻辑一致）；如果想保留空行可去掉此判断
+        if (!text) continue;
+
+        // 为该行的每个时间标签都生成一个条目
+        for (const t of times) {
+            result.push({ time: t, text });
         }
     }
 
-    return result.sort((a, b) => a.time - b.time);
+    // 按时间升序（若原数据无序，统一处理）
+    result.sort((a, b) => a.time - b.time);
+
+    return result;
 };
 
 interface Props {
@@ -165,6 +199,23 @@ const MusicDetail = ({musicItem}: Props) => {
 
             if (lineIndex !== -1 && lineIndex !== currentLine) {
                 const rotate = lineIndex % 2 === 0 ? 8 : -8;
+                // 判断歌词之间的时间间隔，间隔越大，动画效果越明显，如果间隔小于2秒则减弱动画效果
+                if (lyrics[currentLine].time - lyrics[lineIndex].time > -2) {
+                    tl = gsap.timeline();
+                    tl.to(element, {
+                        duration: 0.05,
+                        color: "#ccc",
+                        ease: "power2.out"
+                    });
+                    tl.call(() => setCurrentLine(lineIndex));
+                    tl.to(element, {
+                        duration: 0.3,
+                        color: "#fff",
+                        ease: "power2.out"
+                    });
+                    tl.play()
+                    return;
+                }
                 tl = gsap.timeline();
                 tl.to(element, {
                     duration: 0.1,                 // 增加动画时长
@@ -203,7 +254,6 @@ const MusicDetail = ({musicItem}: Props) => {
                         opacity: 1
                     }
                 )
-
                 tl.play();
 
             }
@@ -302,7 +352,7 @@ const MusicDetail = ({musicItem}: Props) => {
                                         className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
                                         <div
                                             id='lyrics-word'
-                                            className={`lg:text-[13rem] lyric-font text-8xl font-bold text-center pointer-events-none ${bgTextFlag ? 'text-black/20' : 'text-white/20'}`}
+                                            className={`lg:text-[13rem] lyric-font text-8xl font-bold text-center whitespace-nowrap pointer-events-none ${bgTextFlag ? 'text-black/20' : 'text-white/20'}`}
                                         >
                                             {currentLine == 0 ? lyrics[currentLine].text.split(' ')[0] : splitWord(lyrics[currentLine].text)}
                                         </div>

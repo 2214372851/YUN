@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import {motion} from "framer-motion";
-import { image } from '@/config/site';
+import {image} from '@/config/site';
 import {STORAGE_HOST} from "@/data/baseUrl";
 
 export default function About() {
@@ -38,6 +38,37 @@ export default function About() {
                             </p>
                         </div>
                     </div>
+                </motion.div>
+            </section>
+
+            {/* Github state */}
+            <section className="py-16 px-4">
+                <motion.div
+                    initial={{opacity: 0, y: 20}}
+                    whileInView={{opacity: 1, y: 0}}
+                    transition={{duration: 0.5}}
+                    viewport={{once: true}}
+                    className="max-w-4xl mx-auto"
+                >
+                    <div className="flex flex-col gap-2">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                            src="https://github-readme-stats.vercel.app/api?username=2214372851&theme=transparent&show_icons=true&hide_border=true&show=reviews&hide_title=true&hide=contribs&number_format=long"
+                            alt="github stats"
+                            width={400}
+                            height={200}
+                            className="w-full max-h-[300px] object-cover border p-2 rounded-lg"
+                        />
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                            src='https://github-readme-activity-graph.vercel.app/graph?username=2214372851&theme=github-compact&hide_border=true&area=true&custom_title=Contribution%20Graph'
+                            alt={'github state'}
+                            width={800}
+                            height={200}
+                            className="w-full h-auto object-cover border p-2 rounded-lg"
+                        />
+                    </div>
+
                 </motion.div>
             </section>
 
