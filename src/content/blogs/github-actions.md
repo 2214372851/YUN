@@ -4,7 +4,7 @@ category: CI/CD, 自动化, Rust
 excerpt: 全面剖析一个 Rust 项目的 GitHub Actions 工作流配置，涵盖自动测试、跨平台构建与一键发布流程。
 lastEdited: 2025年6月14日
 tags: [GitHub Actions, CI/CD, 自动化发布, Rust, 跨平台构建, 持续集成]
-imageUrl: https://minio-endpoint.yhnotes.com/docs/github-actions.png
+imageUrl: https://minio-endpoint.yhnotes.com/imgs/github-actions.png
 ---
 
 

@@ -4,7 +4,7 @@ category: "技术, 爬虫, AI"
 excerpt: "基于大模型技术实现的智能、高效的网页数据抓取。"
 lastEdited: "2025年6月9日"
 tags: ["Playwright MCP", "大模型", "爬虫", "自动化测试"]
-imageUrl: https://minio-endpoint.yhnotes.com/docs/playwright-mcp.png
+imageUrl: https://minio-endpoint.yhnotes.com/imgs/playwright-mcp.png
 ---
 
 ## 引言
@@ -117,7 +117,7 @@ Playwright 是由微软推出的一个强大的浏览器自动化库，支持多
 
 > 当前我有一个网站，例如：`https://rda.ucar.edu/datasets/d386000/`，我需要把网页中的非结构话数据转为 json
 
-![playwright mcp chat](https://minio-endpoint.yhnotes.com/docs/playwright-mcp-chat.png)
+![playwright mcp chat](https://minio-endpoint.yhnotes.com/imgs/playwright-mcp-chat.png)
 
 当然这里只是一个简单的示例，你可以通过编写详细提示词让模型从列表页面开始逐个解析页面为结构化数据，目前大模型没有保存文件的能力，你可以添加一个 MCP [Filesystem MCP Server](https://github.com/modelcontextprotocol/servers/blob/main/src/filesystem) 即可让大模型将解析后的数据保存到磁盘。
 

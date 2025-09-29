@@ -4,14 +4,14 @@ category: 游记
 excerpt: "初春的夜风还带着一丝凉意，准备开启一场说走就走的夜游。"
 lastEdited: "2025年4月6日"
 tags: ["游记", "上海", "东方明珠"]
-imageUrl: "https://minio-endpoint.yhnotes.com/docs/IMG_20250405_185851.jpg"
+imageUrl: "https://minio-endpoint.yhnotes.com/imgs/IMG_20250405_185851.jpg"
 ---
 
 > 初春的夜风还带着一丝凉意，准备开启一场说走就走的夜游。相比白日的喧嚣与繁忙，我更喜欢夜晚的上海——在灯火阑珊中，这座城市的心跳显得尤为动人。
 
 ## 抬头仰望，高楼如星舰般耀眼
 
-![IMG_20250405_190024](https://minio-endpoint.yhnotes.com/docs/IMG_20250405_190024.jpg)
+![IMG_20250405_190024](https://minio-endpoint.yhnotes.com/imgs/IMG_20250405_190024.jpg)
 
 去往东方明珠的路上，首先映入眼帘的便是这三位“天际线守护者”——上海中心、环球金融中心与金茂大厦。它们在夜色中披上灯光外衣，挺拔而庄严，仿佛一艘艘来自未来的星舰。
 
@@ -19,7 +19,7 @@ imageUrl: "https://minio-endpoint.yhnotes.com/docs/IMG_20250405_185851.jpg"
 
 ## 十字路口的城市剧场
 
-![IMG_20250405_190046](https://minio-endpoint.yhnotes.com/docs/IMG_20250405_190046.jpg)
+![IMG_20250405_190046](https://minio-endpoint.yhnotes.com/imgs/IMG_20250405_190046.jpg)
 
 在这座四通八达的都市中心，每一个红绿灯前的等待，都是一次与城市的对话。站在路口，目光所及皆是灯火通明的摩天大楼，与远处那熟悉的东方明珠遥遥相望。
 
@@ -27,7 +27,7 @@ imageUrl: "https://minio-endpoint.yhnotes.com/docs/IMG_20250405_185851.jpg"
 
 ## 东方明珠的绚烂绽放
 
-![IMG_20250405_192248](https://minio-endpoint.yhnotes.com/docs/IMG_20250405_192248.jpg)
+![IMG_20250405_192248](https://minio-endpoint.yhnotes.com/imgs/IMG_20250405_192248.jpg)
 
 夜色中，东方明珠换上了最迷人的霓裳。粉紫与金黄的灯光自上而下点缀开来，那熟悉的球体结构此刻仿佛成了未来世界的信号塔，在空中静静发光。站在它下方仰望，那种视觉震撼和内心的悸动，难以言喻。
 
@@ -35,7 +35,7 @@ imageUrl: "https://minio-endpoint.yhnotes.com/docs/IMG_20250405_185851.jpg"
 
 ## 光影流动处，是生活的温度
 
-![IMG_20250405_192615](https://minio-endpoint.yhnotes.com/docs/IMG_20250405_192615.jpg)
+![IMG_20250405_192615](https://minio-endpoint.yhnotes.com/imgs/IMG_20250405_192615.jpg)
 
 上海的夜，不仅仅是高楼林立的象征，更是这座城市对梦想、速度与温柔的回应。当我们在灯火之中穿行，在高楼之下仰望，或许会发现，那些看似冷峻的钢筋水泥，也藏着令人动容的柔情与故事。
 
