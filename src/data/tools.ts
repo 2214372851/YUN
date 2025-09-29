@@ -194,6 +194,13 @@ const devTools: Tool[] = [
         category: '开发工具'
     },
     {
+        id: 'mongodb-atlas',
+        name: 'MongoDB Atlas',
+        description: '云 MongoDB 数据库托管服务，免费 500 MB 大小',
+        href: 'https://neon.tech/',
+        category: '开发工具'
+    },
+    {
         id: 'pypistats',
         name: 'PyPI Stats',
         description: '查看 PyPI 模块的下载统计信息。',
