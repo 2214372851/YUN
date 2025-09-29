@@ -4,12 +4,12 @@ category: "记录"
 excerpt: 所有的相遇都会别离，但别离又是为了下次更好的相遇。
 lastEdited: 2025年4月17日
 tags: [日常,记录]
-imageUrl: https://minio-endpoint.yhnotes.com/docs/IMG_20250416_114840.jpg
+imageUrl: https://minio-endpoint.yhnotes.com/imgs/IMG_20250416_114840.jpg
 ---
 
 ## 相见时难别亦难，东风无力百花残。
 
-![IMG_20250416_221336](https://minio-endpoint.yhnotes.com/docs/IMG_20250416_221336.jpg)
+![IMG_20250416_221336](https://minio-endpoint.yhnotes.com/imgs/IMG_20250416_221336.jpg)
 
 人生如逆旅，每次转身都伴随着别离的无尽的遗憾。什么是遗憾，是生离死别？是爱而不得？还是每次的别离呢？我总在感叹身边的人一个一个的离开，谁也不知道这是不是最后一次再见。但是我知道很多人这一生最后一次见面已经在不经意间见完了。讨厌别离，总是在别离后的某一瞬间突然想起最后一次回头时没有好好看看你。
 
@@ -23,7 +23,7 @@ imageUrl: https://minio-endpoint.yhnotes.com/docs/IMG_20250416_114840.jpg
 
 ## “桃李春风一杯酒，江湖夜雨十年灯。”
 
-![IMG_20250413_060347](https://minio-endpoint.yhnotes.com/docs/IMG_20250413_060347.jpg)
+![IMG_20250413_060347](https://minio-endpoint.yhnotes.com/imgs/IMG_20250413_060347.jpg)
 
 其实很多时候，我都在自问，如果人生可以重来一次，我会不会更勇敢一些，会不会在你离开前多说一句“别走”。可惜人生不是演戏，没有重拍的机会，遗憾才成了人生的常态。
 
@@ -39,7 +39,7 @@ imageUrl: https://minio-endpoint.yhnotes.com/docs/IMG_20250416_114840.jpg
 
 ## 多情自古伤离别，更那堪冷落清秋节。
 
-![IMG_20250417_190823](https://minio-endpoint.yhnotes.com/docs/IMG_20250417_190823.jpg)
+![IMG_20250417_190823](https://minio-endpoint.yhnotes.com/imgs/IMG_20250417_190823.jpg)
 
 离别的痛苦，正如秋风扫落叶，无情地带走了所有的温暖。我们无法预料离别的时刻，有时它是无声的，有时却又是在最不经意间悄然来临。岁月的流逝，就像秋风般不可阻挡，带走了曾经的轻松与欢愉，也带来了无法言喻的伤感。
 

@@ -4,7 +4,7 @@ category: "技术, API工具"
 excerpt: "介绍MCP音乐服务器的功能及使用方法，包括搜索歌曲和获取歌曲详情，帮助开发者快速集成音乐服务。"
 lastEdited: "2025年6月5日"
 tags: ["MCP", "API", "音乐"]
-imageUrl: https://minio-endpoint.yhnotes.com/docs/yun-music.png
+imageUrl: https://minio-endpoint.yhnotes.com/imgs/yun-music.png
 ---
 
 ## 什么是MCP音乐服务?

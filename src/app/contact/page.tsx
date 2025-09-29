@@ -52,7 +52,7 @@ export default function Contact() {
                     className="max-w-4xl mx-auto"
                 >
                     <h2 className="text-3xl font-bold mb-8 text-center mt-8 md:mt-0">Contact Methods</h2>
-                    <div className="space-y-6">
+                    <div className="gap-3 grid grid-cols-2">
                         <div className="border rounded-lg p-6 hover:bg-white/5 transition-colors">
                             <h3 className="flex items-center text-xl font-semibold mb-4">
                                 <div className="size-3 bg-blue-500 mr-3 rounded-full"/>
@@ -99,7 +99,7 @@ export default function Contact() {
                                 <div className="size-3 bg-green-500 mr-3 rounded-full"/>
                                 WeChat
                             </h3>
-                            <div className="flex">
+                            <div className="md:flex">
                                 <p className="text-muted-foreground text-lg mb-4">
                                     I can be contacted in this way, but of course you need to indicate your intention
                                     when
@@ -108,7 +108,8 @@ export default function Contact() {
                                 <Image
                                     width={120}
                                     height={120}
-                                    alt="aaa"
+                                    alt="wx"
+                                    className="size-36"
                                     src={`${STORAGE_HOST}/docs/contact-wechat.png`}/>
                             </div>
 
@@ -184,7 +185,37 @@ export default function Contact() {
                 </motion.div>
             </section>
 
-            {/*<Footer/>*/}
+            {/* Github state */}
+            <section className="py-16 px-4">
+                <motion.div
+                    initial={{opacity: 0, y: 20}}
+                    whileInView={{opacity: 1, y: 0}}
+                    transition={{duration: 0.5}}
+                    viewport={{once: true}}
+                    className="max-w-4xl mx-auto"
+                >
+                    <h2 className="text-3xl font-bold mb-8 text-center mt-8 md:mt-0">Github State</h2>
+                    <div className="grid grid-cols-2 gap-2">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                            src="https://github-readme-stats.vercel.app/api?username=2214372851&theme=transparent&show_icons=true&hide_border=true&show=reviews&hide_title=true&hide=contribs&number_format=long"
+                            alt="github stats"
+                            width={400}
+                            height={200}
+                            className="w-full max-h-[300px] object-cover border p-2 rounded-lg"
+                        />
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                            src='https://github-readme-activity-graph.vercel.app/graph?username=2214372851&theme=github-compact&hide_border=true&area=true&custom_title=Contribution%20Graph'
+                            alt={'github state'}
+                            width={800}
+                            height={200}
+                            className="w-full h-auto object-cover border p-2 rounded-lg"
+                        />
+                    </div>
+                </motion.div>
+            </section>
+
         </main>
     );
 }
