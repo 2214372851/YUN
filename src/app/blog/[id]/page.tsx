@@ -189,7 +189,7 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
 
                                 <CommentSystem
                                     defaultConfig={{
-                                        baseUrl: 'http://localhost:8000',
+                                        baseUrl: 'https://comments-api.yhnotes.com',
                                         timeout: 10000,
                                     }}
                                     className="mt-8"

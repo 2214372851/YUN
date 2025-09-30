@@ -73,20 +73,6 @@ export function CommentSkeleton({
                 </div>
               </div>
             </Card>
-
-            {/* 加载提示 */}
-            <div className="text-center py-6">
-              <div className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-full border border-primary/20">
-                <div className="relative">
-                  <div className="w-5 h-5 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></div>
-                  <div className="absolute inset-0 w-5 h-5 border-2 border-transparent border-r-primary/40 rounded-full animate-spin" 
-                       style={{animationDirection: 'reverse', animationDuration: '1.5s'}}></div>
-                </div>
-                <span className="text-sm font-medium bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                  正在加载评论系统，请稍候...
-                </span>
-              </div>
-            </div>
           </div>
         </div>
       </div>

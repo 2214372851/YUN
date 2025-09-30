@@ -15,7 +15,7 @@ export default function CommentSystemPage() {
 
       <CommentSystem 
         defaultConfig={{
-          baseUrl: 'http://localhost:8000',
+          baseUrl: 'https://comments-api.yhnotes.com',
           timeout: 10000,
         }}
         defaultPage="comments-demo"
