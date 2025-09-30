@@ -43,6 +43,13 @@ const localTools: Tool[] = [
         href: '/tools/markdown-editor',
         category: '开发工具',
     },
+    {
+        id: 'comment-system',
+        name: '评论系统客户端',
+        description: '静态网站评论系统的客户端工具，支持API地址配置、评论管理和多层级回复功能。',
+        href: '/tools/comment-system',
+        category: '开发工具',
+    },
 ]
 
 const devTools: Tool[] = [
