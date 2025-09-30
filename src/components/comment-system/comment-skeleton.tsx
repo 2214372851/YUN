@@ -21,7 +21,7 @@ export function CommentSkeleton({
   className = '',
 }: CommentSkeletonProps) {
   // 避免SSR水合问题，在客户端渲染完成后再显示复杂动画
-  const [isClient, setIsClient] = useState(false);
+  const [, setIsClient] = useState(false);
   
   useEffect(() => {
     setIsClient(true);
