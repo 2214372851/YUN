@@ -44,7 +44,9 @@ export function CommentList({
 }: CommentListProps) {
   return (
     <Card className={`p-6 ${className}`}>
-      <h2 className="text-xl font-semibold mb-4">评论列表</h2>
+      <h2 className="text-xl font-semibold mb-4">
+        评论列表
+      </h2>
       
       {loading && comments.length === 0 ? (
         // 初始加载状态 - 使用骨架屏
@@ -115,7 +117,7 @@ interface CommentItemProps {
 
 function CommentItem({ comment, client, onReply, onRefreshTrigger }: CommentItemProps) {
   return (
-    <div className="border rounded-lg p-4 hover:bg-muted/30 transition-colors duration-200 bg-gradient-to-r from-background via-background to-background/95">
+    <div className="border rounded-lg p-4 transition-all duration-300 bg-gradient-to-r from-background via-background to-background/95 hover:border-primary/50 hover:shadow-md hover:bg-primary/5">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-sm font-medium shadow-lg hover:shadow-xl transition-shadow">

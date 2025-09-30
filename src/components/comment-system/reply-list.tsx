@@ -190,7 +190,7 @@ interface ReplyItemProps {
 
 function ReplyItem({ reply, onReply }: ReplyItemProps) {
   return (
-    <div className="bg-gradient-to-r from-muted/30 via-muted/20 to-transparent rounded-lg p-3 hover:from-muted/40 hover:via-muted/25 hover:to-muted/5 transition-colors duration-200">
+    <div className="rounded-lg p-3 transition-all duration-300 hover:bg-primary/10 hover:shadow-sm">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 bg-gradient-to-br from-green-400 via-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-xs font-medium shadow-lg">

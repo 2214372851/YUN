@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { UserStorage } from '@/lib/user-storage';
 import type { CommentCreate, CommentResponse } from '@/components/comment-system/comment';
 
 interface CommentFormProps {
@@ -47,6 +48,32 @@ export const CommentForm = forwardRef<HTMLDivElement, CommentFormProps>(
     
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
+    const [isUserInfoLoaded, setIsUserInfoLoaded] = useState(false); // 用户信息加载状态
+    const [showStorageHint, setShowStorageHint] = useState(false); // 显示存储提示
+
+    // 初始化时加载存储的用户信息
+    useEffect(() => {
+      const loadUserInfo = () => {
+        const storedUserInfo = UserStorage.load();
+        if (storedUserInfo) {
+          setFormData(prev => ({
+            ...prev,
+            username: storedUserInfo.username,
+            email: storedUserInfo.email,
+          }));
+          setIsUserInfoLoaded(true);
+          
+          // 显示加载提示动画
+          setTimeout(() => {
+            setShowStorageHint(true);
+            setTimeout(() => setShowStorageHint(false), 3000);
+          }, 500);
+        }
+      };
+      
+      // 延迟加载，避免SSR问题
+      setTimeout(loadUserInfo, 100);
+    }, []);
 
     // 表单验证
     const validateForm = (): boolean => {
@@ -68,8 +95,8 @@ export const CommentForm = forwardRef<HTMLDivElement, CommentFormProps>(
       
       if (!formData.content.trim()) {
         newErrors.content = '评论内容不能为空';
-      } else if (formData.content.length < 10) {
-        newErrors.content = '评论内容至少需要10个字符';
+      } else if (formData.content.length < 3) {
+        newErrors.content = '评论内容至少需要3个字符';
       } else if (formData.content.length > 2000) {
         newErrors.content = '评论内容不能超过2000个字符';
       }
@@ -88,11 +115,17 @@ export const CommentForm = forwardRef<HTMLDivElement, CommentFormProps>(
       try {
         const success = await onSubmit(formData);
         if (success) {
-          // 清空表单
+          // 保存用户信息到本地存储
+          UserStorage.save({
+            username: formData.username,
+            email: formData.email,
+          });
+          
+          // 清空表单（保留用户信息）
           setFormData({
-            username: '',
-            email: '',
-            content: '',
+            username: formData.username, // 保留用户名
+            email: formData.email,       // 保留邮箱
+            content: '',                 // 清空内容
             parent_id: replyTo?.id || null,
           });
           setErrors({});
@@ -142,15 +175,27 @@ export const CommentForm = forwardRef<HTMLDivElement, CommentFormProps>(
           <h2 className={`font-semibold ${compact ? 'text-lg' : 'text-xl'}`}>
             {replyTo ? `回复 @${replyTo.username}` : '发表评论'}
           </h2>
-          {replyTo && onCancelReply && (
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={onCancelReply}
-            >
-              取消回复
-            </Button>
-          )}
+          <div className="flex items-center gap-2">
+            {/* 用户信息加载提示 */}
+            {showStorageHint && (
+              <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-600 text-xs rounded-full border border-green-500/30 animate-in fade-in-0 slide-in-from-top-2 duration-300">
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                已自动填入保存的信息
+              </div>
+            )}
+            
+            {replyTo && onCancelReply && (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={onCancelReply}
+              >
+                取消回复
+              </Button>
+            )}
+          </div>
         </div>
         
         {replyTo && (
@@ -167,8 +212,16 @@ export const CommentForm = forwardRef<HTMLDivElement, CommentFormProps>(
         <form onSubmit={handleSubmit} className={compact ? 'space-y-3' : 'space-y-4'}>
           <div className={`grid grid-cols-1 gap-${compact ? '3' : '4'} ${compact ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
             <div>
-              <Label htmlFor="username">
+              <Label htmlFor="username" className="flex items-center gap-1">
                 用户名 <span className="text-red-500">*</span>
+                {isUserInfoLoaded && (
+                  <div className="flex items-center gap-1 text-xs text-green-600">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    已保存
+                  </div>
+                )}
               </Label>
               <Input
                 id="username"
@@ -186,8 +239,16 @@ export const CommentForm = forwardRef<HTMLDivElement, CommentFormProps>(
             </div>
             
             <div>
-              <Label htmlFor="email">
+              <Label htmlFor="email" className="flex items-center gap-1">
                 邮箱 <span className="text-red-500">*</span>
+                {isUserInfoLoaded && (
+                  <div className="flex items-center gap-1 text-xs text-green-600">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    已保存
+                  </div>
+                )}
               </Label>
               <Input
                 id="email"
@@ -216,7 +277,7 @@ export const CommentForm = forwardRef<HTMLDivElement, CommentFormProps>(
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => 
                 updateFormData('content', e.target.value)
               }
-              placeholder={replyTo ? '写下你的回复...' : '请输入评论内容（至少10个字符）'}
+              placeholder={replyTo ? '写下你的回复...' : '请输入评论内容（至少3个字符）'}
               className={`mt-1 ${errors.content ? 'border-red-500' : ''}`}
               rows={compact ? (replyTo ? 2 : 3) : (replyTo ? 3 : 4)}
               disabled={disabled || isSubmitting}
@@ -232,32 +293,58 @@ export const CommentForm = forwardRef<HTMLDivElement, CommentFormProps>(
             </div>
           </div>
           
-          <div className="flex items-center gap-2">
-            <Button 
-              type="submit" 
-              disabled={disabled || isSubmitting}
-              className={`transition-all duration-200 text-white font-medium ${
-                isSubmitting 
-                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 animate-pulse' 
-                  : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'
-              } shadow-md hover:shadow-lg border-0`}
-            >
-              {isSubmitting ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                  发表中...
-                </>
-              ) : (
-                <>
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                      d={replyTo ? "M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" : "M12 19l9 2-9-18-9 18 9-2zm0 0v-8"} 
-                    />
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Button 
+                type="submit" 
+                disabled={disabled || isSubmitting}
+                className={`transition-all duration-200 text-white font-medium ${
+                  isSubmitting 
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 animate-pulse' 
+                    : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'
+                } shadow-md hover:shadow-lg border-0`}
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    发表中...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                        d={replyTo ? "M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" : "M12 19l9 2-9-18-9 18 9-2zm0 0v-8"} 
+                      />
+                    </svg>
+                    {replyTo ? '发表回复' : '发表评论'}
+                  </>
+                )}
+              </Button>
+              
+              {/* 清除存储按钮 */}
+              {isUserInfoLoaded && !disabled && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    UserStorage.clear();
+                    setFormData(prev => ({
+                      ...prev,
+                      username: '',
+                      email: '',
+                    }));
+                    setIsUserInfoLoaded(false);
+                  }}
+                  className="text-xs text-muted-foreground hover:text-orange-600 transition-colors"
+                >
+                  <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
-                  {replyTo ? '发表回复' : '发表评论'}
-                </>
+                  清除保存信息
+                </Button>
               )}
-            </Button>
+            </div>
             
             {!disabled && (
               <p className="text-muted-foreground text-sm">
