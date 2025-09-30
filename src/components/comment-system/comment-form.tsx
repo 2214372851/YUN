@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import type { CommentCreate, CommentResponse } from '@/types/comment';
+import type { CommentCreate, CommentResponse } from '@/components/comment-system/comment';
 
 interface CommentFormProps {
   /** 提交回调 */

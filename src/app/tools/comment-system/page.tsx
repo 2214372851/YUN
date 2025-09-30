@@ -5,7 +5,7 @@ import { CommentSystem } from '@/components/comment-system';
 export default function CommentSystemPage() {
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 mt-32">
       <div className="text-center mb-6">
         <h1 className="text-3xl font-bold mb-2">评论系统客户端</h1>
         <p className="text-muted-foreground mb-6">

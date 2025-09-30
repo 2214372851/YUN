@@ -3,8 +3,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import type { CommentResponse } from '@/types/comment';
-import type { CommentClient } from '@/lib/comment-client';
+import type { CommentResponse } from '@/components/comment-system/comment';
+import type { CommentClient } from '@/components/comment-system/comment-client';
 
 interface ReplyListProps {
   /** 父评论 */

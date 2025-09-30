@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { CommentClient } from '@/lib/comment-client';
+import { CommentClient } from './comment-client';
 import { CommentList } from './comment-list';
 import { CommentForm } from './comment-form';
 import { CommentSkeleton } from './comment-skeleton';
@@ -15,7 +15,7 @@ import type {
   CommentCreate, 
   HealthCheck,
   CommentClientConfig 
-} from '@/types/comment';
+} from '@/components/comment-system/comment';
 
 interface CommentSystemProps {
   /** 默认的API配置 */

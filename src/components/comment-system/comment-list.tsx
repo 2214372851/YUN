@@ -4,8 +4,8 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ReplyList } from './reply-list';
 import { CommentSkeleton } from './comment-skeleton';
-import type { CommentResponse } from '@/types/comment';
-import type { CommentClient } from '@/lib/comment-client';
+import type { CommentResponse } from '@/components/comment-system/comment';
+import type { CommentClient } from '@/components/comment-system/comment-client';
 
 interface CommentListProps {
   /** 评论列表 */
