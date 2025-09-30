@@ -5,6 +5,7 @@ import Script from "next/script";
 import BlogClient from "@/components/blog-client";
 import {Metadata} from "next";
 import {baseUrl, image, siteName} from '@/config/site';
+import {CommentSystem} from "@/components/comment-system";
 
 // 生成所有可能的博客文章路径
 export async function generateStaticParams() {
@@ -163,6 +164,7 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
                                 {post.imageUrl && (
                                     <div
                                         className="flex w-full h-[200px] sm:h-[300px] md:h-[400px] mb-8 rounded-lg overflow-hidden">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img
                                             src={post.imageUrl}
                                             alt={post.title}
@@ -184,6 +186,16 @@ export default async function BlogPost({params}: { params: Promise<{ id: string 
                                         ))}
                                     </div>
                                 </div>
+
+                                <CommentSystem
+                                    defaultConfig={{
+                                        baseUrl: 'https://comments-api.yhnotes.com',
+                                        timeout: 10000,
+                                    }}
+                                    className="mt-8"
+                                    showConfigPanel={false}
+                                    showHealthStatus={false}
+                                />
 
                             </article>
                         </div>
