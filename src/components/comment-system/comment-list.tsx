@@ -124,7 +124,7 @@ function CommentItem({ comment, client, onReply, onRefreshTrigger }: CommentItem
             {comment.username.charAt(0).toUpperCase()}
           </div>
           <div>
-            <span className="font-medium bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+            <span className="font-medium">
               {comment.username}
             </span>
             <span className="text-sm text-muted-foreground ml-2 opacity-75">#{comment.id}</span>
