@@ -237,16 +237,23 @@ export function CommentSystem({
                     console.log('处理回复逻辑，replyingTo:', replyingTo);
                     console.log('replyRefreshTrigger:', replyRefreshTrigger);
 
-                    // 更新本地父评论的回复数量
-                    setComments(prevComments =>
-                        prevComments.map(comment =>
-                            comment.id === replyingTo.id
-                                ? {...comment, reply_count: comment.reply_count + 1}
-                                : comment
-                        )
-                    );
+                    // 更新本地父评论的回复数量（支持顶级评论和子评论）
+                    if (replyingTo.parent_id === null) {
+                        // 顶级评论的回复
+                        setComments(prevComments =>
+                            prevComments.map(comment =>
+                                comment.id === replyingTo.id
+                                    ? {...comment, reply_count: comment.reply_count + 1}
+                                    : comment
+                            )
+                        );
+                    } else {
+                        // 子评论的回复 - 需要更新整个评论树
+                        // 这里我们只触发刷新，因为更新嵌套结构比较复杂
+                        // 实际的回复数量会在刷新时从服务器获取
+                    }
 
-                    // 触发回复列表刷新
+                    // 触发回复列表刷新（适用于顶级评论和子评论）
                     triggerReplyRefresh(replyingTo.id);
                 } else {
                     // 如果是主评论，刷新整个评论列表
@@ -447,6 +454,7 @@ export function CommentSystem({
                             </div>
                         ) : null
                     }
+                    onUpdateComments={setComments}
                 />
             )}
         </div>

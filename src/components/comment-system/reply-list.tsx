@@ -1,5 +1,4 @@
 'use client';
-'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
@@ -21,6 +20,8 @@ interface ReplyListProps {
   replyForm?: React.ReactNode;
   /** 自定义样式类名 */
   className?: string;
+  /** 用于更新父组件评论列表的方法 */
+  onUpdateParentComments?: (updateFn: (comments: CommentResponse[]) => CommentResponse[]) => void;
 }
 
 export function ReplyList({
@@ -31,6 +32,7 @@ export function ReplyList({
   replyingToId,
   replyForm,
   className = '',
+  onUpdateParentComments,
 }: ReplyListProps) {
   const [replies, setReplies] = useState<CommentResponse[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -78,8 +80,19 @@ export function ReplyList({
         // 2秒后清除自动展开标记
         setTimeout(() => setAutoExpanded(false), 2000);
       }
+      
+      // 如果提供了更新父评论的方法，更新回复数量
+      if (onUpdateParentComments) {
+        onUpdateParentComments(prevComments => 
+          prevComments.map(comment => 
+            comment.id === parentComment.id 
+              ? {...comment, reply_count: comment.reply_count + 1} 
+              : comment
+          )
+        );
+      }
     }
-  }, [onRefreshTrigger, parentComment.id, isExpanded, fetchReplies]);
+  }, [onRefreshTrigger, parentComment.id, isExpanded, fetchReplies, onUpdateParentComments]);
 
   // 监听回复状态变化，如果用户正在回复此列表中的评论，自动展开
   useEffect(() => {
@@ -170,6 +183,7 @@ export function ReplyList({
                 onReply={onReply}
                 replyingToId={replyingToId}
                 replyForm={replyForm}
+                client={client} // 传递 client 属性用于递归
               />
             </div>
           ))}
@@ -206,9 +220,11 @@ interface ReplyItemProps {
   onReply?: (comment: CommentResponse) => void;
   replyingToId?: number | null;
   replyForm?: React.ReactNode;
+  // 添加 client 属性用于递归渲染子回复
+  client?: CommentClient;
 }
 
-function ReplyItem({ reply, onReply, replyingToId, replyForm }: ReplyItemProps) {
+function ReplyItem({ reply, onReply, replyingToId, replyForm, client }: ReplyItemProps) {
   return (
     <>
       <div className="rounded-lg p-3 transition-all duration-300 hover:bg-primary/10 hover:shadow-sm">
@@ -265,6 +281,17 @@ function ReplyItem({ reply, onReply, replyingToId, replyForm }: ReplyItemProps) 
             {replyForm}
           </div>
         </div>
+      )}
+      
+      {/* 递归渲染子回复列表 */}
+      {client && reply.reply_count > 0 && (
+        <ReplyList 
+          parentComment={reply}
+          client={client}
+          onReply={onReply}
+          replyingToId={replyingToId}
+          replyForm={replyForm}
+        />
       )}
     </>
   );
