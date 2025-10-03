@@ -3,7 +3,7 @@ title: 红月下的碎碎念
 category: "日常"
 excerpt: 江天一色无纤尘，皎皎空中孤月轮。
 lastEdited: 2025年9月8日
-tags: [日常，月食]
+tags: [日常,月食]
 imageUrl: https://minio-endpoint.yhnotes.com/imgs/blood-moon-1.png
 ---
 

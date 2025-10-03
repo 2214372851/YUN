@@ -188,7 +188,7 @@ export function CommentSystem({
         // 内联模式：在评论下方显示表单
         setReplyingTo(comment);
         setShowInlineForm(false); // 先隐藏主表单
-
+        
         // 延迟滚动，等待DOM更新
         setTimeout(() => {
             if (replyFormRef.current) {
