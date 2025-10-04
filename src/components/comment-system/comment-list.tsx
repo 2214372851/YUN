@@ -26,6 +26,8 @@ interface CommentListProps {
   replyingToId?: number | null;
   /** 回复表单组件 */
   replyForm?: React.ReactNode;
+  /** 更新评论列表的方法 */
+  onUpdateComments?: (updateFn: (comments: CommentResponse[]) => CommentResponse[]) => void;
   /** 自定义样式类名 */
   className?: string;
 }
@@ -40,6 +42,7 @@ export function CommentList({
   onRefreshTrigger,
   replyingToId,
   replyForm,
+  onUpdateComments,
   className = '',
 }: CommentListProps) {
   return (
@@ -63,7 +66,9 @@ export function CommentList({
                 comment={comment}
                 client={client}
                 onReply={onReply}
+                replyingToId={replyingToId}
                 onRefreshTrigger={onRefreshTrigger}
+                replyForm={replyForm}
               />
               
               {/* 内联回复表单 */}
@@ -113,9 +118,12 @@ interface CommentItemProps {
   client?: CommentClient;
   onReply?: (comment: CommentResponse) => void;
   onRefreshTrigger?: {commentId: number, timestamp: number} | null;
+  replyingToId?: number | null;
+  replyForm?: React.ReactNode;
+  onUpdateComments?: (updateFn: (comments: CommentResponse[]) => CommentResponse[]) => void;
 }
 
-function CommentItem({ comment, client, onReply, onRefreshTrigger }: CommentItemProps) {
+function CommentItem({ comment, client, onReply, onRefreshTrigger, replyingToId, replyForm, onUpdateComments }: CommentItemProps) {
   return (
     <div className="border rounded-lg p-4 transition-all duration-300 bg-gradient-to-r from-background via-background to-background/95 hover:border-primary/50 hover:shadow-md hover:bg-primary/5">
       <div className="flex items-center justify-between mb-2">
@@ -124,7 +132,7 @@ function CommentItem({ comment, client, onReply, onRefreshTrigger }: CommentItem
             {comment.username.charAt(0).toUpperCase()}
           </div>
           <div>
-            <span className="font-medium bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+            <span className="font-medium" data-username={comment.username}>
               {comment.username}
             </span>
             <span className="text-sm text-muted-foreground ml-2 opacity-75">#{comment.id}</span>
@@ -180,6 +188,9 @@ function CommentItem({ comment, client, onReply, onRefreshTrigger }: CommentItem
           client={client}
           onReply={onReply}
           onRefreshTrigger={onRefreshTrigger}
+          replyingToId={replyingToId}
+          replyForm={replyForm}
+          onUpdateParentComments={onUpdateComments}
         />
       )}
     </div>

@@ -1,5 +1,4 @@
 'use client';
-'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
@@ -15,8 +14,14 @@ interface ReplyListProps {
   onReply?: (comment: CommentResponse) => void;
   /** 回复刷新触发器 */
   onRefreshTrigger?: {commentId: number, timestamp: number} | null;
+  /** 正在回复的评论 ID */
+  replyingToId?: number | null;
+  /** 回复表单组件 */
+  replyForm?: React.ReactNode;
   /** 自定义样式类名 */
   className?: string;
+  /** 用于更新父组件评论列表的方法 */
+  onUpdateParentComments?: (updateFn: (comments: CommentResponse[]) => CommentResponse[]) => void;
 }
 
 export function ReplyList({
@@ -24,7 +29,10 @@ export function ReplyList({
   client,
   onReply,
   onRefreshTrigger,
+  replyingToId,
+  replyForm,
   className = '',
+  onUpdateParentComments,
 }: ReplyListProps) {
   const [replies, setReplies] = useState<CommentResponse[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -58,10 +66,9 @@ export function ReplyList({
     }
   }, [client, parentComment.id]);
 
-  // 监听刷新触发器
+  // 监听刷新触发器和回复状态变化
   useEffect(() => {
     if (onRefreshTrigger && onRefreshTrigger.commentId === parentComment.id) {
-      console.log(`接收到刷新信号 for comment ${parentComment.id}`);
       if (isExpanded) {
         // 如果已展开，直接刷新
         fetchReplies();
@@ -73,8 +80,30 @@ export function ReplyList({
         // 2秒后清除自动展开标记
         setTimeout(() => setAutoExpanded(false), 2000);
       }
+      
+      // 如果提供了更新父评论的方法，更新回复数量
+      if (onUpdateParentComments) {
+        onUpdateParentComments(prevComments => 
+          prevComments.map(comment => 
+            comment.id === parentComment.id 
+              ? {...comment, reply_count: comment.reply_count + 1} 
+              : comment
+          )
+        );
+      }
     }
-  }, [onRefreshTrigger, parentComment.id, isExpanded, fetchReplies]);
+  }, [onRefreshTrigger, parentComment.id, isExpanded, fetchReplies, onUpdateParentComments]);
+
+  // 监听回复状态变化，如果用户正在回复此列表中的评论，自动展开
+  useEffect(() => {
+    if (replyingToId && replies.some(reply => reply.id === replyingToId) && !isExpanded) {
+      setIsExpanded(true);
+      // 如果还没有加载回复，加载回复
+      if (replies.length === 0) {
+        fetchReplies();
+      }
+    }
+  }, [replyingToId, replies, isExpanded, parentComment.id, fetchReplies]);
 
   // 切换展开/收起状态
   const toggleExpanded = async () => {
@@ -152,6 +181,9 @@ export function ReplyList({
               <ReplyItem 
                 reply={reply} 
                 onReply={onReply}
+                replyingToId={replyingToId}
+                replyForm={replyForm}
+                client={client} // 传递 client 属性用于递归
               />
             </div>
           ))}
@@ -186,56 +218,82 @@ export function ReplyList({
 interface ReplyItemProps {
   reply: CommentResponse;
   onReply?: (comment: CommentResponse) => void;
+  replyingToId?: number | null;
+  replyForm?: React.ReactNode;
+  // 添加 client 属性用于递归渲染子回复
+  client?: CommentClient;
 }
 
-function ReplyItem({ reply, onReply }: ReplyItemProps) {
+function ReplyItem({ reply, onReply, replyingToId, replyForm, client }: ReplyItemProps) {
   return (
-    <div className="rounded-lg p-3 transition-all duration-300 hover:bg-primary/10 hover:shadow-sm">
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-gradient-to-br from-green-400 via-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-xs font-medium shadow-lg">
-            {reply.username.charAt(0).toUpperCase()}
+    <>
+      <div className="rounded-lg p-3 transition-all duration-300 hover:bg-primary/10 hover:shadow-sm">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-gradient-to-br from-green-400 via-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-xs font-medium shadow-lg">
+              {reply.username.charAt(0).toUpperCase()}
+            </div>
+            <div>
+              <span className="font-medium text-sm bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent" data-username={reply.username}>
+                {reply.username}
+              </span>
+              <span className="text-xs text-muted-foreground ml-2 opacity-75">#{reply.id}</span>
+            </div>
           </div>
-          <div>
-            <span className="font-medium text-sm bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              {reply.username}
-            </span>
-            <span className="text-xs text-muted-foreground ml-2 opacity-75">#{reply.id}</span>
+          <div className="text-xs text-muted-foreground opacity-75 hover:opacity-100 transition-opacity">
+            {formatDate(reply.created_at)}
           </div>
-        </div>
-        <div className="text-xs text-muted-foreground opacity-75 hover:opacity-100 transition-opacity">
-          {formatDate(reply.created_at)}
-        </div>
-      </div>
-      
-      <div className="text-sm leading-relaxed mb-2 text-foreground/90">{reply.content}</div>
-      
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3 text-xs text-muted-foreground opacity-75">
-          {reply.system_type && (
-            <span className="bg-muted/50 px-2 py-1 rounded-full">
-              系统: {reply.system_type}
-            </span>
-          )}
-          {reply.location && (
-            <span className="bg-muted/50 px-2 py-1 rounded-full">
-              位置: {reply.location}
-            </span>
-          )}
         </div>
         
-        {onReply && (
-          <Button 
-            variant="ghost" 
-            size="sm"
-            onClick={() => onReply(reply)}
-            className="text-xs h-6 px-2 hover:bg-primary/10 hover:text-primary transition-colors duration-200"
-          >
-            回复
-          </Button>
-        )}
+        <div className="text-sm leading-relaxed mb-2 text-foreground/90">{reply.content}</div>
+        
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3 text-xs text-muted-foreground opacity-75">
+            {reply.system_type && (
+              <span className="bg-muted/50 px-2 py-1 rounded-full">
+                系统: {reply.system_type}
+              </span>
+            )}
+            {reply.location && (
+              <span className="bg-muted/50 px-2 py-1 rounded-full">
+                位置: {reply.location}
+              </span>
+            )}
+          </div>
+          
+          {onReply && (
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => onReply(reply)}
+              className="text-xs h-6 px-2 hover:bg-primary/10 hover:text-primary transition-colors duration-200"
+            >
+              回复
+            </Button>
+          )}
+        </div>
       </div>
-    </div>
+      
+      {/* 内联回复表单 */}
+      {replyingToId === reply.id && replyForm && (
+        <div className="mt-3 ml-6 pl-4 border-l-2 border-primary/20 animate-in slide-in-from-top-2 duration-300" data-reply-form-container="true">
+          <div className="py-3">
+            {replyForm}
+          </div>
+        </div>
+      )}
+      
+      {/* 递归渲染子回复列表 */}
+      {client && reply.reply_count > 0 && (
+        <ReplyList 
+          parentComment={reply}
+          client={client}
+          onReply={onReply}
+          replyingToId={replyingToId}
+          replyForm={replyForm}
+        />
+      )}
+    </>
   );
 }
 

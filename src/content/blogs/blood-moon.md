@@ -3,7 +3,7 @@ title: 红月下的碎碎念
 category: "日常"
 excerpt: 江天一色无纤尘，皎皎空中孤月轮。
 lastEdited: 2025年9月8日
-tags: [日常，月食]
+tags: [日常,月食]
 imageUrl: https://minio-endpoint.yhnotes.com/imgs/blood-moon-1.png
 ---
 
@@ -28,7 +28,7 @@ imageUrl: https://minio-endpoint.yhnotes.com/imgs/blood-moon-1.png
 
 月球正在离开地球本影（umbra），被本影遮挡的暗红部分在缩小，明亮的太阳直射带在扩大。
 
-![渐出本影](https://minio-endpoint.yhnotes.com/imgs/blood moon-2.png)
+![渐出本影](https://minio-endpoint.yhnotes.com/imgs/blood%20moon-2.png)
 
 ## 蚌埠行
 
@@ -36,7 +36,7 @@ imageUrl: https://minio-endpoint.yhnotes.com/imgs/blood-moon-1.png
 
 蚌埠位于安徽北部淮河中游，是一座由古代水运码头发展起来的区域性交通与物流枢纽城市，地势平坦、水网密集。现代蚌埠以第二产业为主，机械制造、化工、食品加工、纺织和医药是重要支柱，同时周边平原农业发达，粮食、油料与水产养殖规模较大并与加工产业相配套。市区有龙子湖等城市湖泊和淮河沿线风貌，历史上因淮河水运而繁荣，保留了丰富的地方民俗与文化传统。交通方面，蚌埠铁路、公路网络发达，便于连接合肥、徐州、南京等中短途城市，利于物流和工业发展。总体而言，蚌埠兼具工业基础与农业资源，交通优势明显，文化与旅游以江淮地域特色为主。
 
-:::tip
+::: tip
 笔者的感受是蚌埠不是旅游城市，所以对于单纯去游玩是不建议的。
 :::
 
